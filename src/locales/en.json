@@ -1,0 +1,973 @@
+{
+  "seo": {
+    "homeTitle": "Home",
+    "homeDescription": "Coolnet - Ultra-fast fiber optic internet. High speeds with 24/7 support.",
+    "homeKeywords": "fiber internet, fast internet, coolnet, internet provider"
+  },
+  "appDownload": {  
+    "download": {
+      "title": "Download Our App Now",
+      "subtitle": "Enjoy a seamless experience managing your internet services with our smart app.",
+      "action": {
+        "pay": "Pay Bills",
+        "usage": "Monitor Usage",
+        "notifications": "Instant Notifications",
+        "support": "Direct Support"
+      },
+      "store": {
+        "availableOn": "Available on",
+        "appStore": "App Store",
+        "directDownload": "Direct Download",
+        "android": "Android"
+      }
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "features": "Features",
+    "plans": "Plans",
+    "personal": "Personal",
+    "testimonials": "Testimonials",
+    "contact": "Contact",
+    "login": "Client Area",
+    "speedTest": "Speed Test",
+    "order": "Order Now",
+    "dealers": "Dealers",
+    "business": "Business",
+    "activateService": "Activate Service",
+    "clientArea": "Client Area",
+    "clientAreaTooltip": "Under Development - Coming Soon!",
+    "language": "Language",
+    "download": "Download App",
+    "installApp": "Install Coolnet App",
+    "iosStep1": "Tap the Share button at the bottom of Safari",
+    "iosStep2": "Scroll down and tap 'Add to Home Screen'",
+    "iosStep3": "Tap 'Add' to install the app",
+    "androidStep1": "Tap the menu button (⋮) in Chrome",
+    "androidStep2": "Tap 'Add to Home screen'",
+    "androidStep3": "Tap 'Add' to install the app"
+  },
+  "languageModal": {
+    "title": "Select Language",
+    "description": "Choose your preferred language",
+    "detected": "Detected",
+    "recommended": "Recommended",
+    "keepCurrent": "Keep current"
+  },
+  "otp": {
+    "title": "Enter the verification code",
+    "description": "Enter the 6-digit code sent to",
+    "invalid": "Invalid code. Please try again.",
+    "verifying": "Verifying...",
+    "didntReceive": "Didn't receive the code?",
+    "resend": "Resend OTP",
+    "resendIn": "Resend in",
+    "helpText": "For testing, use: 123456",
+    "error": "Please complete OTP verification before proceeding.",
+    "success": "Verification successful!",
+    "enterAgain": "Please enter the OTP again.",
+    "successDescription": "You can now proceed to the next step",
+    "resendLimitReached": "You have reached the maximum resend attempts (3). Please try again later.",
+    "resendLimitMessage": "Attempts remaining:",
+    "resendTimeoutMessage": "You can try again in",
+    "resending": "Resending...",
+    "navigationBlocked": "Please complete OTP verification before proceeding to other steps."
+
+  },
+  "hero": {
+    "badge": "Lightning Fast Fiber Internet",
+    "title": "Blazing Fast Internet for East Jerusalem",
+    "subtitle": "Experience high-speed fiber connectivity with Coolnet",
+    "ctaText": "Get Connected Now",
+    "viewPlans": "View Plans",
+    "learnMore": "Learn More",
+    "happyCustomers": "Happy Customers",
+    "ultraFastInternet": "Ultra-Fast Internet",
+    "fiberOptic": "Fiber Optic",
+    "explorePlans": "Explore Plans",
+    "downloadSpeed": "Download Speed Up To",
+    "uploadSpeed": "Upload Speed Up To",
+    "ping": "Ping",
+    "customerSupport": "Customer Support"
+  },
+  "features": {
+    "title": "Why Choose  Coolnet",
+    "subTitle": "Enjoy high speed, reliability, and effective support with Coolnet",
+    "speed": {
+      "title": "Consistent Speeds",
+      "description": "Treat yourself to a premium internet line for your peace of mind. Choose the plan that suits you from a range of options with consistent speeds to meet all your needs, plus many benefits you’ll only find with  Coolnet. Enjoy the best movies and matches."
+    },
+    "field": {
+      "title": "Field Services",
+      "description": "We’ve provided field teams to be at your side whenever you have a problem or need maintenance, ensuring your comfort and serving you with dedication."
+    },
+    "security": {
+      "title": "Cyber Protection",
+      "description": "Most importantly, your information’s security. That’s why with Coolnet, we provide the best protection methods to help prevent any cyber breach of your data or devices."
+    },
+    "support": {
+      "title": "Professional Support",
+      "description": "Since issues can always happen, we’ve set up a support center ready to answer any inquiry. Your time is valuable to us, so you won’t have to wait—we’ll be ready to take your call anytime."
+    },
+    "value": {
+      "title": "Great Value",
+      "description": "Affordable plans with no hidden fees."
+    },
+    "personlized": {
+      "title": "Personalized Services",
+      "description": "Personalized technical solutions at home."
+    }
+  },
+  "plans": {
+    "title": "Our Plans",
+    "description": "Choose the perfect plan for your home or business needs",
+    "comparisonTitle": "Compare Our Plans",
+    "startingAt": "Starting at",
+    "personal": "Personal Plans",
+    "uploadSpeed": "Upload Speed",
+    "retail": "Business Plans",
+    "downloadSpeed": "Download Speed",
+    "month": "/mo",
+    "bestValue": "Best Value",
+    "upTo": "Up to",
+    "planFeature": "Feature",
+    "ctaText": "Order Now",
+    "selectPlan": "Choose Your Plan",
+    "readMoreFeatures": "Read More Features",
+    "readMoreServices": "Discover more home services",
+    "featuresModalTitle": "Features",
+    "speedDetails": "Speed Details",
+    "planFeatures": "Plan Features",
+    "pricing": "Pricing",
+    "download": "Download",
+    "upload": "Upload",
+    "Personal": {
+      "services": {
+        "home": "Home fiber speeds",
+        "jet": "Jet shared speeds",
+        "vdsl": "Vdsl speeds"
+      },
+      "Basic": {
+        "name": "Fiber-100 Mbps",
+        "speed": "100 Mbps",
+        "features": {
+          "Unlimited": "Unlimited Download",
+          "DownloadSpeed": "100 Mbps Download",
+          "UploadSpeed": "10 Mbps Upload",
+          "Installation": "Free Installation Fees",
+          "Support": "Field Support Team",
+          "No_commitment": "No Commitment",
+          "WIFI6": "Includes one WIFI 6 Router"
+        }
+      },
+      "standard": {
+        "name": "Fiber-200 Mbps",
+        "speed": "200 Mbps",
+        "features": {
+          "Unlimited": "Unlimited Download",
+          "DownloadSpeed": "200 Mbps Download",
+          "UploadSpeed": "50 Mbps Upload",
+          "Installation": "Free Installation Fees",
+          "Support": "Field Support Team",
+          "No_commitment": "No Commitment",
+          "WIFI6": "Includes one WIFI 6 Router"
+        }
+      },
+      "premium": {
+        "name": "Fiber-1000 Mbps",
+        "speed": "1 Gbps",
+        "features": {
+          "Unlimited": "Unlimited Download",
+          "DownloadSpeed": "1000 Mbps Download",
+          "UploadSpeed": "100 Mbps Upload",
+          "Installation": "Free Installation Fees",
+          "Support": "Field Support Team",
+          "No_commitment": "No Commitment",
+          "WIFI6": "Includes one WIFI 6 Router"
+        }
+      },
+      "businessCard": {
+        "title": "Business Solutions",
+        "buttonText": "Discover Business Plans",
+        "tagline": "Tailored enterprise solutions for businesses with specialized needs"
+      },
+      "Basic+": {
+        "name": "Fiber-100 Mbps +",
+        "speed": "100 Mbps",
+        "features": {
+          "router": "Basic Wi-Fi Router Included",
+          "dataCaps": "No Data Caps",
+          "support": "Basic Technical Support",
+          "installation": "Self Installation",
+          "WIFI6": "Includes one WIFI 6 Router"
+        }
+      },
+      "standard+": {
+        "name": "Fiber-200 Mbps +",
+        "speed": "200 Mbps",
+        "features": {
+          "Unlimited": "Unlimited Download",
+          "router": "Basic Wi-Fi Router Included",
+          "dataCaps": "No Data Caps",
+          "support": "Basic Technical Support",
+          "installation": "Self Installation",
+          "WIFI6": "Includes one WIFI 6 Router"
+        }
+      },
+      "premium+": {
+        "name": "Fiber-1000 Mbps +",
+        "speed": "1 Gbps",
+        "features": {
+          "Unlimited": "Unlimited Download",
+          "router": "Basic Wi-Fi Router Included",
+          "dataCaps": "No Data Caps",
+          "support": "Basic Technical Support",
+          "installation": "Self Installation",
+          "WIFI6": "Includes one WIFI 6 Router"
+        }
+      }
+    },
+    "Business": {
+      "services": {
+        "fiber": "Fiber speeds",
+        "microwave": "Microwave"
+      },
+      "basic": {
+        "name": "Fiber-100 Mbps business",
+        "speed": "100 Mbps",
+        "features": {
+          "Unlimited": "Unlimited Download",
+          "DownloadSpeed": "100 Mbps Download",
+          "UploadSpeed": "10 Mbps Upload",
+          "Installation": "Free Installation Fees",
+          "Support": "Field Support Team",
+          "No_commitment": "No Commitment"
+        }
+      },
+      "standard": {
+        "name": "Fiber-500 Mbps business",
+        "speed": "500 Mbps",
+        "features": {
+          "Unlimited": "Unlimited Download",
+          "DownloadSpeed": "500 Mbps Download",
+          "UploadSpeed": "50 Mbps Upload",
+          "Installation": "Free Installation Fees",
+          "Support": "Field Support Team",
+          "No_commitment": "No Commitment"
+        }
+      },
+      "premium": {
+        "name": "Fiber-1000 Mbps business",
+        "speed": "1000 Mbps",
+        "features": {
+          "Unlimited": "Unlimited Download",
+          "DownloadSpeed": "1000 Mbps Download",
+          "UploadSpeed": "100 Mbps Upload",
+          "Installation": "Free Installation Fees",
+          "Support": "Field Support Team",
+          "No_commitment": "No Commitment"
+        }
+      },
+      "custom": {
+        "name": "Enterprise Custom",
+        "customPricing": "Custom Pricing",
+        "customSpeed": "Custom",
+        "contactUs": "Explore Business Solutions",
+        "price": "custom",
+        "tagline": "Tailored enterprise solutions for businesses with specialized needs",
+        "features": {
+          "tailored": "Tailored for your business",
+          "dedicated": "Dedicated bandwidth",
+          "prioritySupport": "Priority support",
+          "sla": "Service level agreement",
+          "customSolution": "Custom network solution"
+        }
+      },
+      "callUs": "Call Us for Business Solutions",
+      "callDescription": "Get personalized business plans and enterprise solutions",
+      "callNow": "Call now for business inquiries",
+      "freeCall": "Free call from any network",
+      "callButton": "Call Now",
+      "callButtonText": "Call us on *3164",
+      "businessPlanButtonText": "Order Service"
+    }
+  },
+  "speedTest": {
+    "badge": "Free Speed Test",
+    "title": "Internet Speed Test",
+    "subtitle": "Test your connection speed and get accurate measurements of your internet performance",
+    "description": "Test your connection speed and get accurate measurements of your internet performance",
+    "feature1": "Accurate download speed measurement",
+    "feature2": "Upload speed & latency testing",
+    "feature3": "Real-time connection analysis",
+    "startTest": "Start Test",
+    "runAgain": "Test Again",
+    "downloadSpeed": "Download Speed",
+    "uploadSpeed": "Upload Speed",
+    "ping": "Ping",
+    "jitter": "Jitter",
+    "download": "Download",
+    "upload": "Upload",
+    "complete": "Test Complete",
+    "ready": "Ready",
+    "infoLine1": "Our speed test provides accurate measurements of your current internet connection performance.",
+    "infoLine2": "For best results, connect via ethernet cable and close other applications during the test.",
+    "button": {
+      "start": "Start Test",
+      "testing": "Testing...",
+      "retest": "Test Again",
+      "share": "Share Results"
+    },
+    "testing": {
+      "ping": "Measuring Latency...",
+      "download": "Testing Download Speed...",
+      "upload": "Testing Upload Speed..."
+    },
+    "results": {
+      "download": "Download Speed",
+      "upload": "Upload Speed",
+      "ping": "Ping",
+      "jitter": "Jitter"
+    },
+    "info": {
+      "title": "About Speed Test",
+      "description1": "Our speed test provides accurate measurements of your current internet connection performance.",
+      "description2": "The test measures download speed, upload speed, ping (latency), and jitter (connection stability).",
+      "description3": "For best results, connect via ethernet cable and close other applications during the test."
+    },
+    "share": {
+      "title": "Share Speed Test Results",
+      "text": "My Coolnet Speed Test Results:",
+      "copied": "Results Copied!",
+      "copiedDescription": "Speed test results have been copied to your clipboard."
+    },
+    "error": {
+      "title": "Test Failed",
+      "description": "An error occurred while testing your connection. Please try again."
+    },
+    "units": {
+      "mbps": "Mbps",
+      "ms": "ms"
+    },
+    "loading": "Loading speed test...",
+    "poweredBy": "Powered by",
+    "alternatives": "Or try these speed tests",
+    "stop": "Stop",
+    "seoTitle": "Speed Test",
+    "seoDescription": "Test your internet speed with Coolnet. Check your download and upload speeds.",
+    "seoKeywords": "speed test, internet speed, download speed, upload speed, coolnet"
+  },
+  "testimonials": {
+    "title": "What Our Customers Say"
+  },
+  "services": {
+    "badge": "Our Services",
+    "error": "Failed to load services"
+  },
+  "allServices": {
+    "title": "All Services",
+    "subtitle": "Discover the features that make us the best choice",
+    "seoTitle": "Our Services",
+    "seoDescription": "Discover all the services and features offered by Coolnet",
+    "noServices": "No services available at the moment"
+  },
+  "dealers": {
+    "errorLoad": "Failed to load dealer data. Please try again.",
+    "geoNotSupported": "Location services are not supported by your browser.",
+    "geoError": "Unable to retrieve your location.",
+    "geoPermissionDenied": "Location access was denied. Please enable it in your settings.",
+    "geoPositionUnavailable": "Location information is unavailable.",
+    "geoTimeout": "Location request timed out.",
+    "loading": "Loading dealers data...",
+    "retry": "Retry",
+    "noDealers": "No dealers available at the moment.",
+    "tryAgainLater": "Please try again later.",
+    "findNearest": "Find Nearest Store",
+    "findingLocation": "Finding your location...",
+    "locationFound": "Location found!",
+    "sortedByDistance": "Sorted by distance",
+    "closestToYou": "Closest to you"
+  },
+  "customerCorner": {
+    "login": {
+      "securityNotice": "Your information is secure and protected with us."
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone Number",
+    "hearAbout": "How did you hear about us?",
+    "submit": "Submit",
+    "thankYou": "Thank You",
+    "weWillContactYou": "We will contact you shortly",
+    "callUs": "Call Us"
+  },
+  "footer": {
+    "copyright": "© 2025 Coolnet. All rights reserved.",
+    "quicklinks": "Quick Links",
+    "companyDescription": "Coolnet provides high-speed fiber internet solutions for homes and businesses across East Jerusalem.",
+    "connectingCommunities": "Connecting Communities",
+    "contactInfo": "Contact Info",
+    "support": "Customer Support",
+    "address": "Omar Lotfi Complex",
+    "addressLine2": "Anata, Jerusalem",
+    "workingHours": "Working Hours",
+    "sunThu": "Sun-Thu: 9:00 AM - 6:00 PM",
+    "friSat": "Fri-Sat: Closed",
+    "followUs": "Follow Coolnet",
+    "language": "Language"
+  },
+  "popup": {
+    "limitedTimeOffer": "Limited Time Offer",
+    "exclusiveOffer": "Exclusive Offer",
+    "joinOurNetwork": "Join our network",
+    "specialOffer": "Special Offer",
+    "leadPopupDescription": "Sign up now to receive our special promotion",
+    "phoneNumber": "Phone Number",
+    "maybeLater": "Maybe Later",
+    "getOffer": "Explore Plans"
+  },
+  "NewLine": {
+    "title": "Order a new line"
+  },
+  "order": {
+    "newLine": {
+      "title": "Order a New Line",
+      "formTitle": "New Line Request",
+      "formDescription": "Please fill in your information to request a new fiber line installation.",
+      "personalInfo": "Personal Information",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "mobile": "Mobile Number",
+      "mobilePlaceholder": "Enter your mobile number",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastNamePlaceholder": "Enter your last name",
+      "emailPlaceholder": "Enter your email",
+      "phonePlaceholder": "Enter your phone number",
+      "addressInfo": "Installation Address",
+      "address": "Street Address",
+      "selectAddress": "Select your address",
+      "city": "City",
+      "selectCity": "Select a city",
+      "zone": "Zone",
+      "state": "State",
+      "selectState": "Select a state",
+      "street": "Street Name",
+      "streetPlaceholder": "Please enter street name",
+      "houseNumber": "House Number",
+      "houseNumberPlaceholder": "Please enter house number",
+      "addressDetails": "Address",
+      "detailsPlaceholder": "More address details (e.g. floor, apt)",
+      "selectZone": "Select your zone",
+      "optional": "Optional",
+      "postal": "Postal Code",
+      "addressPlaceholder": "Enter your street address",
+      "cityPlaceholder": "Enter your city",
+      "postalPlaceholder": "Enter your postal code",
+      "planTypeSelection": "Plan Type",
+      "personal": "Personal",
+      "retail": "Business",
+      "planSelection": "Plan Selection",
+      "selectPlan": "Select a Plan",
+      "selectPlanPlaceholder": "Select a plan",
+      "selectedPlanDetails": "Selected Plan Details",
+      "speed": "Speed",
+      "price": "Price",
+      "features": "Features",
+      "identity": "identity number",
+      "identityPlaceholder": "Insert your ID number",
+      "notes": "Additional Notes",
+      "notesPlaceholder": "Any additional information we should know about your installation",
+      "submit": "Submit Request",
+      "submitting": "Submitting...",
+      "changePlan": "Change selected plan",
+      "emailInfo": "This email will be used to send you your bills and service information.",
+      "continueExistingApplication": "Continue Existing Application",
+      "startNewApplication": "Start New Application",
+      "errors": {
+        "noPlanSelected": "Please select a plan",
+        "validationFailed": "Validation Failed",
+        "checkFields": "Please check the required fields",
+        "submissionFailed": "Submission Failed",
+        "tryAgain": "Please try again later.",
+        "requiredField": "Required field",
+        "invalidPhone": "Invalid phone number",
+        "phoneFormat": "Please enter a valid phone number",
+        "invalidDealerNumber": "Dealer number must contain only digits",
+        "invalidId": "Invalid ID number",
+        "idFormat": "Please enter a valid ID number",
+        "invalidEmail": "Invalid email address",
+        "emailFormat": "Please enter a valid email address",
+        "mustBeNumber": "Dealer number must be numeric",
+        "networkError": "Network error",
+        "otpSendFailed": "Personal info saved, but OTP sending failed. You can try again.",
+        "houseNumberFormat": "House number must contain only numbers"
+        },
+      "verification": {
+        "required": "Verification Required",
+        "phoneOrIdChanged": "You have changed your phone number or ID. Please complete the verification process before proceeding."
+      },
+
+      "success": {
+        "title": "Order Submitted Successfully!",
+        "message": "Your order has been submitted successfully. You will be redirected to activate your service.",
+        "orderSubmitted": "Order Submitted Successfully!",
+        "orderSubmittedDescription": "Your order has been submitted successfully. We will contact you shortly.",
+        "otpSent": "OTP has been sent to your phone number",
+        "otpAlreadySent": "OTP was already sent to this phone number",
+        "personalInfoSubmitted": "Personal information submitted successfully"
+      },
+      "upsell": {
+        "basic": "You have chosen the 100 Mbps plan. Enjoy faster browsing and smoother streaming by upgrading to higher plans!",
+        "standard": "You have chosen the 500 Mbps plan. Get maximum performance by upgrading to the 1000 Mbps speed!",
+        "premium": "You have chosen the 1000 Mbps speed. Enjoy the highest level of performance!",
+        "businessBasic": "You have chosen the business 100 Mbps plan with symmetric upload speeds. Perfect for small businesses!",
+        "businessStandard": "You have chosen the business 500 Mbps plan with high-speed symmetric connectivity. Great for growing businesses!",
+        "businessPremium": "You have chosen the premium business 1000 Mbps plan. The ultimate solution for demanding enterprises!"
+      },
+      "preselectedPlan": "Your Selected Plan",
+      "originalSelection": "Your Original Choice",
+      "upgradeOptions": "Upgrade",
+      "currentSelection": "Your Choice",
+      "referralInfo": "How did you hear about us?",
+      "comingFrom": "Coming from",
+      "comingFromPlaceholder": "Select",
+      "referral": {
+        "friends": "Friends",
+        "social": "Social media",
+        "ads": "Ads",
+        "dealer": "Dealer",
+        "employee": "Coolnet Employee"
+      },
+      "dealerNumber": "Dealer number",
+      "dealerNumberPlaceholder": "Enter dealer number",
+      "employeeNumber": "Employee number",
+      "employeeNumberPlaceholder": "Enter employee number",
+      "step": "Step",
+      "of": "of",
+      "next": "Next",
+      "previous": "Previous",
+      "review": "Review & Submit",
+      "duplicate": {
+        "existingRequestFound": "Existing Request Found",
+        "clientFound": "We found an existing account with this ID number:",
+        "previousApplicationFound": "We found an existing request with this ID number:",
+        "existingApplicationFound": "We found an existing request with this ID number:",
+        "continueForDifferentPerson": "Continue this request for another person",
+        "goToActivateService": "Go to Activate Service",
+        "continuePreviousRequest": "Continue filling the previous request",
+        "continueWithNewRequest": "Continue with a new request",
+        "submitForSomeoneElse": "Submit a request for someone else",
+        "formStatusCheck": "Check Request Status",
+        "continue": "Continue"
+      },
+      "personalInfoDescription": "Tell us about yourself to get started",
+      "referralInfoDescription": "Help us understand how you found us",
+      "planSelectionDescription": "Choose the perfect plan for your needs",
+      "reviewDescription": "Review your information before submitting",
+      "selectedPlan": "Selected Service",
+      "planDetails": "Service Details",
+      "planType": "Plan Type",
+      "details": "Address",
+      "additionalOptions": "Additional Services",
+      "fixedIp": "Fixed IP Address",
+      "fixedIpDescription": "Get a dedicated static IP address for your connection",
+      "apFilter": "Anti-Pornography Filter",
+      "apFilterDescription": "Automatic filtering of inappropriate content for family safety",
+      "fixedIpPrice": "₪20/month",
+      "apFilterPrice": "₪10/month",
+      "planName": "Plan Name",
+      "router": {
+        "selectRouter": "Select a Router",
+        "removeSelection": "Remove Selection",
+        "rentFor": "Rent for",
+        "buyFor": "Buy for",
+        "selected": "Selected Router",
+        "name": "Router Name",
+        "5": {
+          "description": "Quantity: 1 PCS. The Nova EX12 is an AX3000 Whole Home Mesh Wi-Fi 6 System. It delivers solid Wi-Fi coverage for up to 7,000 ft². Includes four independent wireless amplifiers. Features beamforming technology for better performance."
+        },
+        "6": {
+          "description": "Quantity: 2 PCS. AX3000 dual-band Wi-Fi 6 Mesh system. Enhanced performance and coverage. Great for medium-sized homes."
+        },
+        "7": {
+          "description": "Quantity: 3 PCS. Best coverage and performance for large homes or offices. Powerful specs and high-speed dual-band. Ideal for multi-floor buildings."
+        }
+      },
+      "orderSummary": {
+        "title": "Order Summary",
+        "service": "Service",
+        "qty": "Qty",
+        "price": "Price",
+        "internetService": "Internet Service",
+        "fixedIpService": "Fixed IP Address",
+        "apFilterService": "Anti-Pornography Filter",
+        "routerRental": "Router Rental",
+        "routerPurchase": "Router Purchase",
+        "subtotal": "Subtotal",
+        "total": "Total",
+        "month": "/month",
+        "oneTime": "One-time"
+      }
+    }
+  },
+  "speedTestTitle": "Test Your Internet Speed",
+  "downloadSpeed": "Download Speed",
+  "uploadSpeed": "Upload Speed",
+  "ping": "Ping",
+  "jitter": "Jitter",
+  "startTest": "Start Speed Test",
+  "runAgain": "Test Again",
+  "dealers": {
+    "title": "Payment Locations",
+    "subtitle": "Find a store near you to make cash payments",
+    "availableStores": "Available Stores",
+    "viewLocation": "View Location",
+    "viewShopImage": "View Shop",
+    "hideShopImage": "Hide Image",
+    "getDirections": "Get Directions",
+    "call": "Call",
+    "workingHours": "Working Hours",
+    "shopDetails": "Shop Details",
+    "selectStore": "Select a store from the list to view its location on the map",
+    "findNearestStore": "Find Nearest Store",
+    "gettingLocation": "Getting location...",
+    "locationFound": "Location found",
+    "yourLocation": "Your Location",
+    "nearestToYou": "Nearest to you",
+    "sortedByDistance": "sorted by distance",
+    "away": "away",
+    "fromYourLocation": "from your location",
+    "geolocationNotSupported": "Geolocation is not supported by your browser",
+    "unableToRetrieveLocation": "Unable to retrieve your location",
+    "locationRequestDenied": "Location request denied",
+    "locationInformationUnavailable": "Location information unavailable",
+    "locationRequestTimedOut": "Location request timed out",
+    "becomeDealer": "Become a Dealer",
+    "contactDealer": "Contact Dealer",
+    "searchPlaceholder": "Search by name or location...",
+    "noResults": "No dealers found matching your search.",
+    "dealerCard": {
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "details": "Details",
+      "workingHours": "Working Hours",
+      "services": "Services",
+      "installations": "Installations",
+      "technicalSupport": "Technical Support",
+      "newConnections": "New Connections"
+    },
+    "becomeDealerSection": {
+      "title": "Become a  Coolnet Dealer",
+      "description": "Join our network of authorized dealers and help bring high-speed fiber internet to East Jerusalem.",
+      "benefits": {
+        "title": "Dealer Benefits",
+        "commission": "Competitive commissions",
+        "training": "Comprehensive training",
+        "support": "Marketing support",
+        "territory": "Exclusive territories"
+      },
+      "ctaText": "Apply Now",
+      "contactUs": "Contact us to learn more about becoming a dealer"
+    }
+  },
+  "business": {
+    "heroTitle": "Premium fiber internet solutions designed specifically for businesses and commercial establishments in East Jerusalem",
+    "whyChoose": "Why Choose Coolnet for Business",
+    "businessPlans": "Business Plans",
+    "businessPlansDescription": "Choose the plan that fits your business needs",
+    "customPricing": "Custom Pricing",
+    "contactUs": "Contact Us",
+    "readyToUpgrade": "Ready to Upgrade Your Business?",
+    "upgradeDescription": "Join hundreds of businesses that trust Coolnet for their internet needs",
+    "getStarted": "Get Started",
+    "callUs": "Call Us",
+    "features": {
+      "enterpriseGrade": {
+        "title": "Enterprise Grade",
+        "description": "Professional fiber infrastructure designed for businesses"
+      },
+      "uptime": {
+        "title": "Cyber Security",
+        "description": "Network protected from data loss and cyber threats"
+      },
+      "support": {
+        "title": "Dedicated Support",
+        "description": "Dedicated support team for businesses and organizations"
+      },
+      "installation": {
+        "title": "Ultra-Fast Internet",
+        "description": "High speeds according to business needs"
+      }
+    },
+    "customPlan": {
+      "enterpriseSolution": "Enterprise Solution",
+      "description": "Custom solutions for large companies and organizations that require special needs"
+    },
+    "trustedBy": "Our Clients",
+    "trustedByDescription": "Join hundreds of leading Jerusalem companies that rely on  Coolnet for connectivity needs"
+  },
+  "activateService": {
+    "title": "Activate Your Service",
+    "subtitle": "Enter your reference number to access your service information",
+    "welcome": "Welcome!",
+    "formSubmissionSuccess": "Your order was submitted successfully. Complete payment to activate your service.",
+    "termsAcceptance": "I agree to the terms and conditions",
+    "termsDescription": "By checking this box, you agree to our terms and conditions and privacy policy",
+    "referenceNumber": "Reference Number",
+    "referenceNumberPlaceholder": "Enter your reference number",
+    "checkService": "Check Service",
+    "notFound": "Service not found",
+    "notFoundDescription": "The reference number you entered was not found in our system. Please check the number and try again.",
+    "serviceInfo": {
+      "title": "Service Information",
+      "serviceDetails": "Review your service details below",
+      "paymentInfo": "Payment Information",
+      "personalInfo": "Personal Information",
+      "addressInfo": "Address Information",
+      "serviceDetailsSection": "Service Details",
+      "paymentDetailsSection": "Payment Information",
+      "fields": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "identityNumber": "Identity number",
+        "phoneNumber": "Phone number",
+        "email": "Email",
+        "city": "City",
+        "streetName": "Street name",
+        "zone": "Zone",
+        "houseNumber": "House number",
+        "streetNumber": "Street number",
+        "addressNotes": "Address notes",
+        "serviceSpeed": "Service speed",
+        "withTV": "With TV",
+        "withFixedIp": "With fixed IP",
+        "withApService": "With AP service",
+        "reference": "Reference",
+        "routerType": "Router type",
+        "routerIsRent": "Router is rent",
+        "isPay": "Is pay",
+        "payPrice": "Pay price",
+        "rentPrice": "Rent price",
+        "approved": "Approved",
+        "comingFrom": "Coming from",
+        "fromId": "From ID"
+      },
+      "status": {
+        "approved": "Approved",
+        "pending": "Pending",
+        "yes": "Yes",
+        "no": "No"
+      }
+    },
+    "form": {
+      "activatingService": "Complete payment information to activate your service",
+      "email": "Email",
+      "optional": "optional",
+      "emailPlaceholder": "Enter your email address",
+      "cardNumber": "Card Number",
+      "cardNumberPlaceholder": "1234 5678 9012 3456",
+      "cvv": "CVV",
+      "cvvPlaceholder": "123",
+      "month": "Month",
+      "year": "Year",
+      "cardholderName": "Cardholder Name",
+      "cardholderNamePlaceholder": "Enter full name as on card",
+      "idNumber": "ID Number",
+      "idNumberPlaceholder": "Enter your ID number",
+      "subscriptionDay": "Subscription Day",
+      "terms": "Terms and Conditions",
+      "acceptTerms": "I agree to the terms and conditions",
+      "continueButton": "Continue Payment",
+      "processing": "Processing...",
+      "scrollToAcceptTerms": "Please scroll through the entire terms and conditions to accept them",
+      "paymentSuccess": "Credit Card Added Successfully!",
+      "paymentError": "Credit Card Add Failed",
+      "paymentSuccessMessage": "Your payment has been processed successfully.",
+      "paymentErrorMessage": "There was an error processing your payment. Please try again.",
+      "cardAddedSuccessTitle": "Card Added Successfully!",
+      "cardAddedSuccessMessage": "Your card has been added successfully. Redirecting to home page...",
+      "cardAddedSuccessPopupMessage": "Your card has been added successfully! You will be redirected to the home page.",
+      "autoCloseMessage": "This popup will close automatically...",
+      "tryAgain": "Try Again",
+      "tranzillaAlt": "Tranzilla Secure Payment",
+      "tranzillaText": "Secure payment operation by Tranzilla systems",
+      "termsDetails": {
+        "term1": "Monthly subscription fee will be charged automatically on the selected day each month.",
+        "term2": "Service activation requires valid payment method and identity verification.",
+        "term3": "You agree to maintain current payment information and notify us of any changes.",
+        "term4": "Service may be suspended for non-payment after 30 days past due.",
+        "term5": "Cancellation requires 30 days written notice and may include early termination fees.",
+        "term6": "You are responsible for all usage charges incurred on your account.",
+        "term7": "Service is subject to availability and technical limitations in your area.",
+        "term8": "By continuing, you acknowledge reading and accepting our full terms of service."
+      }
+    },
+    "errors": {
+      "required": "This field is required",
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email address",
+      "cardNumberRequired": "Card number is required",
+      "cardNumberInvalid": "Please enter a valid card number",
+      "cvvRequired": "CVV is required",
+      "cvvInvalid": "CVV must be 3 digits",
+      "expiryRequired": "Expiry date is required",
+      "cardholderNameRequired": "Cardholder name is required",
+      "idNumberRequired": "ID number is required",
+      "subscriptionDayRequired": "Subscription day is required",
+      "termsRequired": "You must accept the terms and conditions to continue",
+      "mustScrollToAcceptTerms": "Please scroll through all terms and conditions to accept them"
+    }
+  },
+  "common": {
+    "close": "Close",
+    "clear": "Clear"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "returnHome": "Return to Home"
+  },
+  "qrpromotion": {
+    "invalidQR": "Invalid QR Code",
+    "invalidQRDescription": "Please use a valid QR code to access this page.",
+    "specialOffer": "Special Offer from  Coolnet",
+    "formDescription": "Fill out the form below to get our exclusive offer",
+    "personalInfo": "Personal Information",
+    "getOffer": "Get Offer",
+    "submitting": "Submitting...",
+    "privacyNotice": "Your information is secure and protected with us",
+    "success": {
+      "title": "Congratulations! 🎉",
+      "message": "You are now eligible for a free month of fiber service!",
+      "subtitle": "Your request has been submitted successfully",
+      "description": "Our team will contact you within 24 hours to activate your special offer.",
+      "freeMonth": "One Free Month",
+      "specialOffer": "Special Offer for You!",
+      "contactInfo": "You can also reach us at:",
+      "phone": "*3164",
+      "phoneDescription": "Free call from any network",
+      "requestReceived": "Your request has arrived!",
+      "teamContact": "Our team will contact you for your free month."
+    },
+    "banner": {
+      "getFreeMonth": "Get a free month"
+    },
+    "form": {
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Enter your last name",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter your phone number",
+      "zone": "Zone",
+      "zonePlaceholder": "Select your zone",
+      "zonesLoading": "Loading zones...",
+      "zonesError": "Error loading zones",
+      "submit": "Submit Request",
+      "submitting": "Submitting...",
+      "submitError": "Failed to submit request. Please try again.",
+      "zonesLoadError": "Failed to load zone data. Please try again."
+    },
+    "celebration": {
+      "continueToRegister": "Continue to Register →"
+    }
+  },
+  "customerCorner": {
+    "login": {
+      "title": "Customer Login",
+      "subtitle": "Enter your phone number to access your account",
+      "phonePlaceholder": "05X-XXX-XXXX",
+      "continue": "Continue",
+      "verifying": "Verifying...",
+      "error": "An error occurred. Please try again."
+    },
+    "dashboard": {
+      "title": "My Account",
+      "personalInfo": "Personal Information",
+      "lineStatus": "Line Status",
+      "reactivate": "Reactivate Line",
+      "reactivateConfirm": "Are you sure you want to reactivate your line?",
+      "reactivateSuccess": "Line Reactivated",
+      "reactivateSuccessDesc": "Your line has been successfully reactivated.",
+      "reactivateError": "Reactivation Failed",
+      "logout": "Logout"
+    },
+    "lineStatus": {
+      "active": "Active",
+      "suspended": "Suspended",
+      "expired": "Expired"
+    }
+  },
+  "posts": {
+    "badge": "Latest News",
+    "title": "Stay Updated",
+    "subtitle": "Get the latest news, updates, and announcements from Coolnet",
+    "readMore": "Read More",
+    "viewAll": "View All News",
+    "viewAllNews": "View All News",
+    "error": "Failed to load posts",
+    "notFound": "Post Not Found",
+    "notFoundMessage": "Sorry, we couldn't find the post you're looking for.",
+    "backToNews": "Back to News",
+    "loading": "Loading...",
+    "loadMore": "Load More",
+    "loadingMore": "Loading...",
+    "noNews": "No news available at the moment",
+    "share": "Share"
+  },
+  "allNews": {
+    "title": "All News",
+    "subtitle": "Stay updated with the latest announcements",
+    "seoDescription": "Follow the latest news and updates from Coolnet"
+  },
+  "allPlans": {
+    "title": "All Plans",
+    "subtitle": "Choose the perfect internet plan for your needs",
+    "seoDescription": "Discover all Coolnet internet plans - personal and business packages at competitive prices",
+    "noPlans": "No plans available"
+  },
+  "partners": {
+    "title": "Our Partners"
+  },
+  "businessInquiry": {
+    "title": "Business Services",
+    "subtitle": "Fill out the form and our team will get back to you shortly.",
+    "inquiringAbout": "Inquiring about:",
+    "vipMessage": "As a valued business customer, our dedicated team will personally handle your inquiry and provide you with premium service.",
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "company": "Company Name",
+      "companyPlaceholder": "Enter your company name",
+      "phone": "Phone Number",
+      "phonePlaceholder": "05X-XXX-XXXX",
+      "email": "Email Address",
+      "emailPlaceholder": "example@gmail.com",
+      "optional": "optional",
+      "submitText": "Submit",
+      "submitting": "Submitting..."
+    },
+    "validation": {
+      "nameRequired": "Full name is required",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Please enter a valid phone number",
+      "companyRequired": "Company name is required",
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email address"
+    },
+    "success": {
+      "title": "Inquiry Submitted Successfully!",
+      "message": "Thank you for your interest in our business solutions.",
+      "nextSteps": "Our business team will contact you within 24 hours to discuss your requirements and provide a premium solution.",
+      "closeButton": "Close"
+    }
+  }
+}

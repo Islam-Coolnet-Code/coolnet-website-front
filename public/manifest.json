@@ -1,0 +1,29 @@
+{
+  "name": "Coolnet",
+  "short_name": "Coolnet",
+  "description": "High-speed fiber internet provider in East Jerusalem",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#4a2d6e",
+  "theme_color": "#4a2d6e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

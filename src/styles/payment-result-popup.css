@@ -1,0 +1,136 @@
+/* Payment Result Popup Animations */
+
+@keyframes payment-popup-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes payment-popup-fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes payment-popup-slideInScale {
+  from { 
+    opacity: 0; 
+    transform: translateY(-20px) scale(0.95);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes payment-popup-slideOutScale {
+  from { 
+    opacity: 1; 
+    transform: translateY(0) scale(1);
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(-20px) scale(0.95);
+  }
+}
+
+@keyframes payment-popup-scaleIn {
+  from { 
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  to { 
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes payment-popup-checkDraw {
+  0% { 
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes payment-popup-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+@keyframes payment-popup-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes payment-popup-pulse-ring-error {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* Animation Classes */
+.payment-popup-fadeIn {
+  animation: payment-popup-fadeIn 0.3s ease-out;
+}
+
+.payment-popup-fadeOut {
+  animation: payment-popup-fadeOut 0.3s ease-in;
+}
+
+.payment-popup-slideInScale {
+  animation: payment-popup-slideInScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.payment-popup-slideOutScale {
+  animation: payment-popup-slideOutScale 0.3s ease-in;
+}
+
+.payment-popup-scaleIn {
+  animation: payment-popup-scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.payment-popup-checkDraw {
+  animation: payment-popup-checkDraw 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+
+.payment-popup-shake {
+  animation: payment-popup-shake 0.6s ease-in-out 0.3s;
+}
+
+.payment-popup-pulse-ring {
+  animation: payment-popup-pulse-ring 2s infinite;
+}
+
+.payment-popup-pulse-ring-error {
+  animation: payment-popup-pulse-ring-error 1s infinite;
+}
