@@ -7,6 +7,7 @@ on:
 
 env:
   DEPLOY_PATH: /opt/coolnet/frontend
+  WEB_ROOT: /var/www/coolnet
 
 jobs:
   build:
@@ -38,23 +39,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Copy project to deploy path
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Build for production
+        run: npm run build
+        env:
+          VITE_CMS_API_URL: ${{ vars.VITE_CMS_API_URL }}
+          VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
+
+      - name: Deploy to Nginx web root
         run: |
-          sudo mkdir -p ${{ env.DEPLOY_PATH }}
-          sudo rsync -av --exclude='.git' --exclude='node_modules' ./ ${{ env.DEPLOY_PATH }}/
+          sudo mkdir -p ${{ env.WEB_ROOT }}
+          sudo rsync -av --delete dist/ ${{ env.WEB_ROOT }}/
+          sudo chown -R www-data:www-data ${{ env.WEB_ROOT }}
 
-      - name: Deploy with Docker
-        working-directory: ${{ env.DEPLOY_PATH }}
-        run: |
-          # Build with production API URL
-          sudo docker compose build --no-cache \
-            --build-arg VITE_CMS_API_URL="${{ vars.VITE_CMS_API_URL }}" \
-            --build-arg VITE_BASE_URL="${{ vars.VITE_BASE_URL }}"
-
-          # Deploy
-          sudo docker compose up -d frontend
-
-          # Cleanup old images
-          sudo docker image prune -f
-
-          echo "Frontend deployment complete!"
+      - name: Reload Nginx
+        run: sudo nginx -t && sudo systemctl reload nginx
