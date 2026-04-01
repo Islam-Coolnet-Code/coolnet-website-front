@@ -6,8 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  DEPLOY_PATH: /opt/coolnet/frontend
-  WEB_ROOT: /var/www/coolnet
+  DEPLOY_PATH: ~/coolnet/frontend
 
 jobs:
   build:
@@ -53,11 +52,8 @@ jobs:
           VITE_CMS_API_URL: ${{ vars.VITE_CMS_API_URL }}
           VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
 
-      - name: Deploy to Nginx web root
+      - name: Deploy static files
         run: |
-          sudo mkdir -p ${{ env.WEB_ROOT }}
-          sudo rsync -av --delete dist/ ${{ env.WEB_ROOT }}/
-          sudo chown -R www-data:www-data ${{ env.WEB_ROOT }}
-
-      - name: Reload Nginx
-        run: sudo nginx -t && sudo systemctl reload nginx
+          mkdir -p ${{ env.DEPLOY_PATH }}
+          rsync -av --delete dist/ ${{ env.DEPLOY_PATH }}/
+          echo "Frontend deployed to ${{ env.DEPLOY_PATH }}"
