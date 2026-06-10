@@ -2,7 +2,7 @@ import React from 'react';
 import { NavItem } from './shared/navConfig';
 
 import { Button } from '@/components/ui/button';
-import { Globe, Phone, ChevronDown } from 'lucide-react';
+import { Globe, Phone, ChevronDown, User } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -152,7 +152,7 @@ const HeaderDesktop: React.FC<HeaderDesktopProps> = ({ t, navigate, isHomePage, 
 
             <div className="flex items-center gap-4">
               <div className={`hidden xl:flex items-center ${isRTL ? 'pl-2 border-l' : 'pr-2 border-r'} border-white/30`}>
-                <a href="tel:*3164" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''} text-white`}>
+                <a href={`tel:${contactPhone?.replace(/\s/g, '')}`} className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''} text-white`}>
                   <div className="backdrop-blur-sm rounded-full p-2 bg-white/20">
                     <Phone className="h-4 w-4 text-white" />
                   </div>
@@ -177,13 +177,13 @@ const HeaderDesktop: React.FC<HeaderDesktopProps> = ({ t, navigate, isHomePage, 
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {/* <Button
+              <Button
                 className={`bg-coolnet-purple hover:bg-coolnet-purple/80 px-4 text-white ${font}`}
-                onClick={() => window.open(`https://my.jet.net.il?language=${language}`, "_blank")}
+                onClick={() => navigate('/customer-corner')}
               >
                 <User className="h-4 w-4 me-2" />
-                {t('navigation.clientArea')}
-              </Button> */}
+                {t('navigation.customerZone')}
+              </Button>
             </div>
           </div>
         </div>

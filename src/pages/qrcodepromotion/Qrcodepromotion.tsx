@@ -153,7 +153,7 @@ const CelebrationModal = ({ t, isRTL, onClose }: { t: (key: string) => string, i
                 <div className="relative mb-4 sm:mb-6 mt-2">
                     {/* <img
                         src={coolnetLogo}
-                        alt="Jet Fiber Logo"
+                        alt="Coolnet Logo"
                         className="h-8 sm:h-16 mx-auto drop-shadow-xl"
                         onError={(e) => {
                             e.currentTarget.style.display = 'none';
@@ -366,7 +366,7 @@ export const Qrcodepromotion = () => {
                     <div className="mb-6">
                         {/* <img
                             src={coolnetLogo}
-                            alt="Jet Fiber Logo"
+                            alt="Coolnet Logo"
                             className="h-10 mx-auto mb-4"
                             onError={(e) => {
                                 e.currentTarget.style.display = 'none';
@@ -394,7 +394,7 @@ export const Qrcodepromotion = () => {
                     <div className="mb-6">
                         {/* <img
                             src={coolnetLogo}
-                            alt="Jet Fiber Logo"
+                            alt="Coolnet Logo"
                             className="h-16 mx-auto mb-4"
                             onError={(e) => {
                                 e.currentTarget.style.display = 'none';
@@ -453,7 +453,7 @@ export const Qrcodepromotion = () => {
                     <div className="text-center mb-6 sm:mb-8 font-jazeera">
                         {/* <img
                             src={coolnetLogo}
-                            alt="Jet Fiber Logo"
+                            alt="Coolnet Logo"
                             className="h-12 sm:h-20 lg:h-24 mx-auto mb-4 sm:mb-6 drop-shadow-2xl"
                             onError={(e) => {
                                 e.currentTarget.style.display = 'none';

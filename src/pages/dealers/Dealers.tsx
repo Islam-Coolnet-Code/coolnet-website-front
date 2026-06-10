@@ -4,6 +4,7 @@ import L from "leaflet";
 import { useLanguage } from "@/context/LanguageContext";
 import Footer from "@/components/Footer";
 import { useFont } from "@/hooks/use-font";
+import { useSEO } from "@/hooks/use-seo";
 import bgCityBlue from '@/assets/H_BG.png';
 import { Shop } from '@/types/dealerTypes';
 import { calculateDistance, transformDealerToShop } from '@/utils/dealerUtils';
@@ -28,6 +29,16 @@ const Dealers = () => {
     const { t, language } = useLanguage();
     const [selectedShop, setSelectedShop] = useState<Shop | null>(null);
     const { font } = useFont();
+
+    useSEO({
+      title: language === 'ar' ? 'الموزعون' : 'Dealers',
+      description: language === 'ar'
+        ? 'اعثر على أقرب موزع كولنت إليك. شبكة موزعين معتمدين في جميع أنحاء فلسطين'
+        : 'Find your nearest Coolnet dealer. Authorized dealer network across Palestine',
+      keywords: language === 'ar'
+        ? 'موزعين كولنت, نقاط بيع, وكلاء معتمدين'
+        : 'coolnet dealers, sales points, authorized dealers',
+    });
     const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
     const [locationLoading, setLocationLoading] = useState(false);
     const [locationError, setLocationError] = useState<string | null>(null);

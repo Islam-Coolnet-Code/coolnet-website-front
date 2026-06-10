@@ -284,7 +284,7 @@ export async function fetchMediaById(id: number): Promise<Media> {
 // Helper to get full media URL
 export function getMediaUrl(fileUrl: string): string {
   if (fileUrl.startsWith('http')) return fileUrl;
-  const baseUrl = import.meta.env.VITE_CMS_API_URL || '';
+  const baseUrl = (import.meta.env.VITE_CMS_API_URL || '').replace(/\/api\/?$/, '');
   return `${baseUrl}${fileUrl}`;
 }
 
@@ -390,6 +390,7 @@ export interface Order {
   routerIsRental: boolean;
   comingFrom: string | null;
   fromId: string | null;
+  referrerNumber: string | null;
   status: OrderStatus;
   isVerified: boolean;
   language: string;
@@ -417,6 +418,7 @@ export interface CreateOrderRequest {
   routerIsRental?: boolean;
   comingFrom?: string;
   fromId?: string;
+  referrerNumber?: string;
   lat?: number;
   lng?: number;
   language?: string;

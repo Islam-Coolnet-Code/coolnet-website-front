@@ -12,12 +12,14 @@ interface SEOProps {
   noIndex?: boolean;
 }
 
-const DEFAULT_TITLE = 'Coolnet - Ultra-Fast Fiber Internet';
-const DEFAULT_DESCRIPTION = 'Experience lightning-fast fiber internet with Coolnet. Up to 1Gbps speeds, 99.9% uptime, and 24/7 support.';
+const SITE_NAME = 'Coolnet';
+const SITE_URL = 'https://coolnet.ps';
+const DEFAULT_TITLE = 'Coolnet | Ultra-Fast Fiber Internet';
+const DEFAULT_DESCRIPTION = 'Experience lightning-fast fiber internet with Coolnet. Up to 1000 Mbps speeds, 99.9% uptime, and 24/7 support.';
+const DEFAULT_IMAGE = `${SITE_URL}/images/main.png`;
 
 /**
  * Custom hook for managing SEO meta tags dynamically
- * Updates document title and meta tags based on the current page
  */
 export function useSEO({
   title,
@@ -31,68 +33,53 @@ export function useSEO({
   noIndex = false,
 }: SEOProps = {}) {
   useEffect(() => {
-    // Set document title
-    const fullTitle = title ? `${title} | Coolnet` : DEFAULT_TITLE;
+    const fullTitle = title ? `${title} | ${SITE_NAME}` : DEFAULT_TITLE;
     document.title = fullTitle;
 
-    // Helper function to set or create meta tag
     const setMetaTag = (name: string, content: string, isProperty = false) => {
       const attribute = isProperty ? 'property' : 'name';
       let meta = document.querySelector(`meta[${attribute}="${name}"]`);
-
       if (!meta) {
         meta = document.createElement('meta');
         meta.setAttribute(attribute, name);
         document.head.appendChild(meta);
       }
-
       meta.setAttribute('content', content);
     };
 
-    // Set description
     const metaDescription = description || DEFAULT_DESCRIPTION;
+    const metaImage = ogImage || DEFAULT_IMAGE;
+
+    // Primary meta
     setMetaTag('description', metaDescription);
-
-    // Set keywords
-    if (keywords) {
-      setMetaTag('keywords', keywords);
-    }
-
-    // Set Open Graph tags
-    setMetaTag('og:title', ogTitle || fullTitle, true);
-    setMetaTag('og:description', ogDescription || metaDescription, true);
-    setMetaTag('og:type', ogType, true);
-
-    if (ogImage) {
-      setMetaTag('og:image', ogImage, true);
-    }
-
-    // Set Twitter Card tags
-    setMetaTag('twitter:card', 'summary_large_image');
-    setMetaTag('twitter:title', ogTitle || fullTitle);
-    setMetaTag('twitter:description', ogDescription || metaDescription);
-
-    if (ogImage) {
-      setMetaTag('twitter:image', ogImage);
-    }
-
-    // Set canonical URL
-    if (canonicalUrl) {
-      let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-      if (!link) {
-        link = document.createElement('link');
-        link.setAttribute('rel', 'canonical');
-        document.head.appendChild(link);
-      }
-      link.setAttribute('href', canonicalUrl);
-    }
-
-    // Set robots meta tag for noIndex
+    if (keywords) setMetaTag('keywords', keywords);
     if (noIndex) {
       setMetaTag('robots', 'noindex, nofollow');
     }
 
-    // Cleanup function - reset to defaults when component unmounts
+    // Open Graph
+    setMetaTag('og:title', ogTitle || fullTitle, true);
+    setMetaTag('og:description', ogDescription || metaDescription, true);
+    setMetaTag('og:type', ogType, true);
+    setMetaTag('og:image', metaImage, true);
+    setMetaTag('og:site_name', SITE_NAME, true);
+
+    // Twitter Card
+    setMetaTag('twitter:card', 'summary_large_image');
+    setMetaTag('twitter:title', ogTitle || fullTitle);
+    setMetaTag('twitter:description', ogDescription || metaDescription);
+    setMetaTag('twitter:image', metaImage);
+
+    // Canonical URL
+    const canonical = canonicalUrl || `${SITE_URL}${window.location.pathname}`;
+    let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      document.head.appendChild(link);
+    }
+    link.setAttribute('href', canonical);
+
     return () => {
       document.title = DEFAULT_TITLE;
     };

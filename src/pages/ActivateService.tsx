@@ -530,8 +530,11 @@ const ActivateService: React.FC = () => {
 
           </div>
 
-          {/* Reference Number Input - Only show when form is not displayed */}
-          {!showForm && (
+          {/* Reference Number Input - Only show when form is not displayed
+              and the reference did not come from URL/state (i.e. the user
+              arrived after filling the application form). In that case we
+              skip showing the "Check Service" button entirely. */}
+          {!showForm && !urlReferenceNumber && !passedReferenceNumber && (
             <ReferenceNumberInput
               referenceNumber={referenceNumber}
               setReferenceNumber={setReferenceNumber}
@@ -539,6 +542,14 @@ const ActivateService: React.FC = () => {
               notFound={notFound}
               onSubmit={handleReferenceSubmit}
             />
+          )}
+          {!showForm && (urlReferenceNumber || passedReferenceNumber) && (
+            <div className="max-w-lg mx-auto mb-8 flex flex-col items-center justify-center py-16">
+              <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
+              <p className={`mt-4 text-white/80 ${font}`}>
+                {loading ? '...' : t('activateService.checkService')}
+              </p>
+            </div>
           )}
           {showForm && !verified && (
             <div className='flex mx-auto justify-center p-10'>

@@ -17,6 +17,11 @@ import {
   XCircle,
   Loader2,
   QrCode,
+  CreditCard,
+  Wifi,
+  Router as RouterIcon,
+  ShieldCheck,
+  Globe,
 } from 'lucide-react';
 
 export function OrderDetailPage() {
@@ -34,6 +39,7 @@ export function OrderDetailPage() {
   ];
 
   const [order, setOrder] = useState<any>(null);
+  const [dealer, setDealer] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState('');
@@ -49,7 +55,20 @@ export function OrderDetailPage() {
   const loadOrder = async () => {
     try {
       const response = await adminApi.getOrder(parseInt(id!));
-      setOrder(response.data);
+      const orderData = response.data;
+      setOrder(orderData);
+
+      // Load dealer details if referral is from dealer
+      const source = orderData.coming_from || orderData.comingFrom;
+      const dealerId = orderData.from_id || orderData.fromId;
+      if (source === 'dealer' && dealerId) {
+        try {
+          const dealersRes = await adminApi.getDealers();
+          const dealers = dealersRes.data || [];
+          const found = dealers.find((d: any) => String(d.id) === String(dealerId));
+          if (found) setDealer(found);
+        } catch {}
+      }
     } catch (err) {
       setError(t('orderDetail.error'));
     } finally {
@@ -118,14 +137,29 @@ export function OrderDetailPage() {
                 <User size={18} className="text-slate-400" />
                 <div>
                   <div className="text-xs text-slate-400">{t('orderDetail.fullName')}</div>
-                  <div className="text-white">{order.full_name || order.fullName}</div>
+                  <div className="text-white">
+                    {[order.first_name || order.firstName, order.last_name || order.lastName]
+                      .filter(Boolean)
+                      .join(' ') || order.full_name || order.fullName || '—'}
+                  </div>
                 </div>
               </div>
+              {(order.identity_number || order.identityNumber) && (
+                <div className="flex items-center gap-3">
+                  <CreditCard size={18} className="text-slate-400" />
+                  <div>
+                    <div className="text-xs text-slate-400">{t('orderDetail.identityNumber')}</div>
+                    <div className="text-white font-mono">{order.identity_number || order.identityNumber}</div>
+                  </div>
+                </div>
+              )}
               <div className="flex items-center gap-3">
                 <Phone size={18} className="text-slate-400" />
                 <div>
                   <div className="text-xs text-slate-400">{t('orderDetail.phone')}</div>
-                  <div className="text-white">{order.phone_number || order.phoneNumber}</div>
+                  <a href={`tel:${order.phone_number || order.phoneNumber}`} className="text-blue-400 hover:text-blue-300">
+                    {order.phone_number || order.phoneNumber}
+                  </a>
                 </div>
               </div>
               {(order.email) && (
@@ -133,17 +167,47 @@ export function OrderDetailPage() {
                   <Mail size={18} className="text-slate-400" />
                   <div>
                     <div className="text-xs text-slate-400">{t('orderDetail.email')}</div>
-                    <div className="text-white">{order.email}</div>
+                    <a href={`mailto:${order.email}`} className="text-blue-400 hover:text-blue-300">{order.email}</a>
                   </div>
                 </div>
               )}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 sm:col-span-2">
                 <MapPin size={18} className="text-slate-400" />
                 <div>
                   <div className="text-xs text-slate-400">{t('orderDetail.address')}</div>
                   <div className="text-white">
-                    {order.address}, {order.city}
+                    {[
+                      order.street_name || order.streetName,
+                      order.house_number || order.houseNumber,
+                      order.zone,
+                      order.city,
+                    ]
+                      .filter(Boolean)
+                      .join(', ') || '—'}
                   </div>
+                  {(order.address_notes || order.addressNotes) && (
+                    <div className="text-xs text-slate-400 mt-1">
+                      {order.address_notes || order.addressNotes}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <ShieldCheck size={18} className={order.is_verified || order.isVerified ? 'text-green-400' : 'text-yellow-400'} />
+                <div>
+                  <div className="text-xs text-slate-400">{t('orderDetail.verificationStatus')}</div>
+                  <div className="text-white">
+                    {order.is_verified || order.isVerified
+                      ? t('orderDetail.verified')
+                      : t('orderDetail.notVerified')}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Globe size={18} className="text-slate-400" />
+                <div>
+                  <div className="text-xs text-slate-400">{t('orderDetail.language')}</div>
+                  <div className="text-white uppercase">{order.language || '—'}</div>
                 </div>
               </div>
             </div>
@@ -152,8 +216,9 @@ export function OrderDetailPage() {
           {/* Order Items */}
           <div className="bg-slate-800 rounded-xl p-6">
             <h2 className="text-lg font-semibold text-white mb-4">{t('orderDetail.orderDetails')}</h2>
-            <div className="space-y-4">
-              {order.plan && (
+            <div className="space-y-3">
+              {/* Plan (if linked) or service speed */}
+              {order.plan ? (
                 <div className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <Package size={20} className="text-blue-400" />
@@ -164,23 +229,77 @@ export function OrderDetailPage() {
                       <div className="text-sm text-slate-400">{t('orderDetail.internetPlan')}</div>
                     </div>
                   </div>
-                  <div className="text-white font-semibold">
-                    ₪{order.plan.price}
-                  </div>
+                  {order.plan.price !== undefined && (
+                    <div className="text-white font-semibold">₪{order.plan.price}</div>
+                  )}
                 </div>
-              )}
-
-              {order.router && (
+              ) : (order.service_speed || order.serviceSpeed) ? (
                 <div className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
-                  <div>
-                    <div className="text-white font-medium">{order.router.name}</div>
-                    <div className="text-sm text-slate-400">{t('orderDetail.router')}</div>
-                  </div>
-                  <div className="text-white font-semibold">
-                    ₪{order.router.price}
+                  <div className="flex items-center gap-3">
+                    <Wifi size={20} className="text-blue-400" />
+                    <div>
+                      <div className="text-white font-medium">{order.service_speed || order.serviceSpeed}</div>
+                      <div className="text-sm text-slate-400">{t('orderDetail.serviceSpeed')}</div>
+                    </div>
                   </div>
                 </div>
-              )}
+              ) : null}
+
+              {/* Router */}
+              {order.router ? (
+                <div className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <RouterIcon size={20} className="text-purple-400" />
+                    <div>
+                      <div className="text-white font-medium">{order.router.name}</div>
+                      <div className="text-sm text-slate-400">
+                        {(order.router_is_rental ?? order.routerIsRental)
+                          ? t('orderDetail.routerRental')
+                          : t('orderDetail.routerPurchase')}
+                      </div>
+                    </div>
+                  </div>
+                  {order.router.price !== undefined && (
+                    <div className="text-white font-semibold">₪{order.router.price}</div>
+                  )}
+                </div>
+              ) : (order.router_type || order.routerType) ? (
+                <div className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <RouterIcon size={20} className="text-purple-400" />
+                    <div>
+                      <div className="text-white font-medium">{order.router_type || order.routerType}</div>
+                      <div className="text-sm text-slate-400">
+                        {(order.router_is_rental ?? order.routerIsRental)
+                          ? t('orderDetail.routerRental')
+                          : t('orderDetail.routerPurchase')}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Add-ons */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg">
+                  <div className={`w-2 h-2 rounded-full ${order.with_fixed_ip || order.withFixedIp ? 'bg-green-400' : 'bg-slate-500'}`} />
+                  <div>
+                    <div className="text-sm text-white">{t('orderDetail.fixedIp')}</div>
+                    <div className="text-xs text-slate-400">
+                      {order.with_fixed_ip || order.withFixedIp ? t('orderDetail.included') : t('orderDetail.notIncluded')}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg">
+                  <div className={`w-2 h-2 rounded-full ${order.with_ap_service || order.withApService ? 'bg-green-400' : 'bg-slate-500'}`} />
+                  <div>
+                    <div className="text-sm text-white">{t('orderDetail.apService')}</div>
+                    <div className="text-xs text-slate-400">
+                      {order.with_ap_service || order.withApService ? t('orderDetail.included') : t('orderDetail.notIncluded')}
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {order.notes && (
                 <div className="p-4 bg-slate-700/50 rounded-lg">
@@ -211,6 +330,7 @@ export function OrderDetailPage() {
                         friends: t('orderDetail.friends'),
                         ads: t('orderDetail.ads'),
                         qr: t('orderDetail.qr'),
+                        neighbor: t('orderDetail.neighbor'),
                       };
                       return sourceMap[source] || source;
                     })()}
@@ -220,6 +340,62 @@ export function OrderDetailPage() {
                   <div>
                     <div className="text-xs text-slate-400 mb-1">{t('orderDetail.referralId')}</div>
                     <div className="text-white font-mono">{order.from_id || order.fromId}</div>
+                  </div>
+                )}
+                {(order.referrer_number || order.referrerNumber) && (
+                  <div>
+                    <div className="text-xs text-slate-400 mb-1">{t('orderDetail.referrerNumber')}</div>
+                    <div className="text-white font-mono">{order.referrer_number || order.referrerNumber}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Dealer Details */}
+          {dealer && (
+            <div className="bg-slate-800 rounded-xl p-6">
+              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <User size={20} className="text-orange-400" />
+                {t('orderDetail.dealer')}
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3">
+                  <User size={18} className="text-slate-400" />
+                  <div>
+                    <div className="text-xs text-slate-400">{t('orderDetail.fullName')}</div>
+                    <div className="text-white">
+                      {language === 'ar' ? (dealer.name?.ar || dealer.name?.en) : (dealer.name?.en || dealer.name?.ar)}
+                    </div>
+                  </div>
+                </div>
+                {dealer.phone && (
+                  <div className="flex items-center gap-3">
+                    <Phone size={18} className="text-slate-400" />
+                    <div>
+                      <div className="text-xs text-slate-400">{t('orderDetail.phone')}</div>
+                      <a href={`tel:${dealer.phone}`} className="text-blue-400 hover:text-blue-300">{dealer.phone}</a>
+                    </div>
+                  </div>
+                )}
+                {dealer.email && (
+                  <div className="flex items-center gap-3">
+                    <Mail size={18} className="text-slate-400" />
+                    <div>
+                      <div className="text-xs text-slate-400">{t('orderDetail.email')}</div>
+                      <a href={`mailto:${dealer.email}`} className="text-blue-400 hover:text-blue-300">{dealer.email}</a>
+                    </div>
+                  </div>
+                )}
+                {(dealer.address?.en || dealer.address?.ar) && (
+                  <div className="flex items-center gap-3">
+                    <MapPin size={18} className="text-slate-400" />
+                    <div>
+                      <div className="text-xs text-slate-400">{t('orderDetail.address')}</div>
+                      <div className="text-white">
+                        {language === 'ar' ? (dealer.address?.ar || dealer.address?.en) : (dealer.address?.en || dealer.address?.ar)}
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

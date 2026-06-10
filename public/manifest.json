@@ -1,12 +1,15 @@
 {
-  "name": "Coolnet",
+  "name": "Coolnet - Ultra-Fast Fiber Internet",
   "short_name": "Coolnet",
-  "description": "High-speed fiber internet provider in East Jerusalem",
+  "description": "Ultra-fast fiber internet provider in Palestine. Speeds up to 1000 Mbps with 24/7 support.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#4a2d6e",
   "theme_color": "#4a2d6e",
   "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["utilities", "business"],
   "icons": [
     {
       "src": "/favicon.ico",

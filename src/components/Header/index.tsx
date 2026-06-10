@@ -23,7 +23,7 @@ export const Header: React.FC = () => {
 
   const contactPhone = (() => {
     if (!siteSettings) return '';
-    const s = siteSettings.find((s: any) => s.key === 'contact_phone');
+    const s = siteSettings.find((s: any) => s.settingKey === 'contact_phone' || s.key === 'contact_phone');
     return s?.valueEn || '';
   })();
 

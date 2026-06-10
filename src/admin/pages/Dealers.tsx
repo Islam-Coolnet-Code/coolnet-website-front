@@ -19,6 +19,7 @@ import {
   Cable,
 } from 'lucide-react';
 import { MediaPicker } from '../components/MediaPicker';
+import QRCode from 'qrcode';
 
 interface Dealer {
   id: number;
@@ -63,6 +64,7 @@ export function DealersPage() {
   const [formData, setFormData] = useState(defaultForm);
   const [isSaving, setIsSaving] = useState(false);
   const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [qrDataUrl, setQrDataUrl] = useState<string>('');
 
   useEffect(() => {
     if (apiKey) {
@@ -89,10 +91,13 @@ export function DealersPage() {
     return `${baseUrl}/new-line?dealer=${dealerId}`;
   };
 
-  const getQrImageUrl = (dealerId: number) => {
-    const url = encodeURIComponent(getQrUrl(dealerId));
-    return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${url}`;
-  };
+  // Generate the QR code locally (no external service, no CORS issues)
+  const generateQrDataUrl = (dealerId: number) =>
+    QRCode.toDataURL(getQrUrl(dealerId), {
+      width: 300,
+      margin: 1,
+      color: { dark: '#000000', light: '#ffffff' },
+    });
 
   const handleCopyLink = async (dealer: Dealer) => {
     try {
@@ -104,16 +109,144 @@ export function DealersPage() {
     }
   };
 
-  const handleDownloadQr = (dealer: Dealer) => {
-    const link = document.createElement('a');
-    link.href = getQrImageUrl(dealer.id);
-    link.download = `dealer-${dealer.id}-qr.png`;
-    link.click();
+  // Resolution used to map physical cm sizes onto pixels for printing.
+  const PRINT_DPI = 300;
+  const cmToPx = (cm: number) => Math.round((cm / 2.54) * PRINT_DPI);
+
+  // PNG CRC-32 (needed to build a valid pHYs chunk)
+  const crc32 = (() => {
+    const table = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+      table[n] = c >>> 0;
+    }
+    return (bytes: Uint8Array) => {
+      let crc = 0xffffffff;
+      for (let i = 0; i < bytes.length; i++) crc = table[(crc ^ bytes[i]) & 0xff] ^ (crc >>> 8);
+      return (crc ^ 0xffffffff) >>> 0;
+    };
+  })();
+
+  // Inject a pHYs chunk so the PNG carries its DPI and prints at the exact cm size.
+  const setPngDpi = (bytes: Uint8Array, dpi: number) => {
+    const ppm = Math.round(dpi / 0.0254); // pixels per metre
+    const chunk = new Uint8Array(21); // 4 len + 4 type + 9 data + 4 crc
+    const dv = new DataView(chunk.buffer);
+    dv.setUint32(0, 9); // data length
+    chunk.set([0x70, 0x48, 0x59, 0x73], 4); // "pHYs"
+    dv.setUint32(8, ppm); // x ppm
+    dv.setUint32(12, ppm); // y ppm
+    chunk[16] = 1; // unit: metre
+    dv.setUint32(17, crc32(chunk.subarray(4, 17)));
+
+    // Insert right after the IHDR chunk (8 sig + 25 IHDR = offset 33)
+    const at = 33;
+    const out = new Uint8Array(bytes.length + chunk.length);
+    out.set(bytes.subarray(0, at), 0);
+    out.set(chunk, at);
+    out.set(bytes.subarray(at), at + chunk.length);
+    return out;
   };
 
-  const openQrModal = (dealer: Dealer) => {
+  // Render the QR + dealer name onto a canvas sized to exact physical dimensions.
+  const renderQrCanvas = async (dealer: Dealer, widthCm: number, heightCm: number) => {
+    const name = getName(dealer);
+    const targetW = cmToPx(widthCm);
+    const targetH = cmToPx(heightCm);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = targetW;
+    canvas.height = targetH;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return canvas;
+
+    // White background
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, targetW, targetH);
+
+    const padding = Math.round(Math.min(targetW, targetH) * 0.06);
+    const fontSize = Math.max(10, Math.round(targetH * 0.06));
+    const lineHeight = Math.round(fontSize * 1.25);
+
+    // Wrap the name into at most two lines that fit the width
+    ctx.font = `600 ${fontSize}px Arial, sans-serif`;
+    const maxTextWidth = targetW - padding * 2;
+    const words = name.split(/\s+/);
+    const allLines: string[] = [];
+    let current = '';
+    for (const word of words) {
+      const test = current ? `${current} ${word}` : word;
+      if (ctx.measureText(test).width > maxTextWidth && current) {
+        allLines.push(current);
+        current = word;
+      } else {
+        current = test;
+      }
+    }
+    if (current) allLines.push(current);
+    const lines = allLines.slice(0, 2);
+    const labelHeight = lines.length * lineHeight + Math.round(padding * 0.5);
+
+    // Largest centred QR square that fits the remaining space
+    const qrSize = Math.max(
+      0,
+      Math.min(targetW - padding * 2, targetH - padding * 2 - labelHeight),
+    );
+
+    const qrCanvas = document.createElement('canvas');
+    await QRCode.toCanvas(qrCanvas, getQrUrl(dealer.id), {
+      width: qrSize,
+      margin: 1,
+      color: { dark: '#000000', light: '#ffffff' },
+    });
+
+    const qrX = (targetW - qrSize) / 2;
+    const qrY = padding;
+    ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize);
+
+    // Dealer name under the QR (wrapped)
+    ctx.fillStyle = '#0f172a';
+    ctx.font = `600 ${fontSize}px Arial, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const textTop = qrY + qrSize + Math.round(padding * 0.5);
+    lines.forEach((line, i) => {
+      ctx.fillText(line, targetW / 2, textTop + i * lineHeight + lineHeight / 2);
+    });
+
+    return canvas;
+  };
+
+  const handleDownloadQr = async (
+    dealer: Dealer,
+    widthCm: number,
+    heightCm: number,
+    sizeKey: string,
+  ) => {
+    const canvas = await renderQrCanvas(dealer, widthCm, heightCm);
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      const bytes = new Uint8Array(await blob.arrayBuffer());
+      const withDpi = setPngDpi(bytes, PRINT_DPI);
+      const url = URL.createObjectURL(new Blob([withDpi], { type: 'image/png' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `dealer-${dealer.id}-qr-${sizeKey}.png`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }, 'image/png');
+  };
+
+  const openQrModal = async (dealer: Dealer) => {
     setSelectedDealer(dealer);
+    setQrDataUrl('');
     setShowQrModal(true);
+    try {
+      setQrDataUrl(await generateQrDataUrl(dealer.id));
+    } catch {
+      // leave blank if generation fails
+    }
   };
 
   const openModal = (dealer?: Dealer) => {
@@ -349,12 +482,17 @@ export function DealersPage() {
               </button>
             </div>
             <div className="p-6 flex flex-col items-center gap-4">
-              <div className="bg-white p-4 rounded-xl">
-                <img
-                  src={getQrImageUrl(selectedDealer.id)}
-                  alt="QR Code"
-                  className="w-64 h-64"
-                />
+              <div className="bg-white p-4 rounded-xl flex flex-col items-center gap-2">
+                {qrDataUrl ? (
+                  <img src={qrDataUrl} alt="QR Code" className="w-64 h-64" />
+                ) : (
+                  <div className="w-64 h-64 flex items-center justify-center">
+                    <Loader2 className="animate-spin text-slate-400" size={32} />
+                  </div>
+                )}
+                <span className="text-slate-900 font-semibold text-center text-sm max-w-64 break-words">
+                  {getName(selectedDealer)}
+                </span>
               </div>
               <div className="w-full">
                 <label className="block text-xs text-slate-400 mb-1">{t('dealers.qrLink')}</label>
@@ -373,13 +511,22 @@ export function DealersPage() {
                   </button>
                 </div>
               </div>
-              <button
-                onClick={() => handleDownloadQr(selectedDealer)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors w-full justify-center"
-              >
-                <Download size={16} />
-                {t('dealers.downloadQr')}
-              </button>
+              <div className="w-full flex flex-col gap-2">
+                <button
+                  onClick={() => handleDownloadQr(selectedDealer, 7.5, 6.7, 'large')}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors w-full justify-center"
+                >
+                  <Download size={16} />
+                  {t('dealers.downloadQrLarge')}
+                </button>
+                <button
+                  onClick={() => handleDownloadQr(selectedDealer, 2.15, 1.9, 'small')}
+                  className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors w-full justify-center"
+                >
+                  <Download size={16} />
+                  {t('dealers.downloadQrSmall')}
+                </button>
+              </div>
             </div>
           </div>
         </div>

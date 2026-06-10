@@ -44,7 +44,7 @@ interface MediaPickerProps {
 
 const getMediaUrl = (item: MediaItem) => {
   const url = item.fileUrl || item.file_url || '';
-  const apiUrl = import.meta.env.VITE_CMS_API_URL || '';
+  const apiUrl = (import.meta.env.VITE_CMS_API_URL || '').replace(/\/api\/?$/, '');
   return url.startsWith('http') ? url : `${apiUrl}${url}`;
 };
 

@@ -1,64 +1,64 @@
 /**
- * Authentication and User types for Customer Corner
+ * Authentication & Customer Zone types.
+ *
+ * Backed by the Coolgate `website` module (proxied through our API at
+ * `/api/customer/*`). Auth is userno + password → bearer token.
  */
 
-export type LineStatus = 'active' | 'suspended' | 'expired';
+export type OnlineStatus = 'online' | 'offline';
 
-export interface UserData {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email?: string;
-  city?: string;
-  streetName?: string;
-  houseNumber?: string;
-  zone?: string;
-  lineStatus: LineStatus;
-  serviceSpeed?: string;
-  referenceNumber?: string;
+/** The session held by the SPA after login. */
+export interface AuthSession {
+  token: string;
+  tokenExpiresAt: string; // ISO timestamp
+  userno: string;
+  username: string;
+  forcePasswordChange: boolean;
 }
 
-export interface AuthState {
-  isAuthenticated: boolean;
-  user: UserData | null;
-  phoneNumber: string | null;
+/** Subscriber profile from `users/details`. */
+export interface UserDetails {
+  userNo: string;
+  contractId: string | number;
+  fullName: string;
+  mobile: string;
+  serviceType: string;
+  status: OnlineStatus;
+  totalExtendDays: number;
+  paidTill: string | null; // Y-m-d or null
 }
 
-export interface SendOTPRequest {
-  phone_number: string;
-  language: string;
+/** One usage window from `users/sessions`. */
+export interface UsageWindow {
+  downloadBytes: number;
+  uploadBytes: number;
+  downloadGb: number;
+  uploadGb: number;
 }
 
-export interface SendOTPResponse {
+export interface UsageData {
+  lastWeek: UsageWindow;
+  lastMonth: UsageWindow;
+  last3Months: UsageWindow;
+}
+
+export interface CheckUserResult {
+  valid: boolean;
+  enabled: boolean;
+}
+
+export interface ExtendResult {
+  username: string;
+  expiration: string;
+}
+
+/** Our API envelope: { success, data, error?: { code, message } }. */
+export interface ApiEnvelope<T> {
   success: boolean;
-  message: string;
-  data?: {
-    phone_number: string;
-    otp?: string; // For testing only
-  };
-}
-
-export interface VerifyOTPRequest {
-  phone_number: string;
-  otp: string;
-}
-
-export interface VerifyOTPResponse {
-  success: boolean;
-  message: string;
-  data?: {
-    user: UserData;
-  };
-}
-
-export interface ReactivateLineRequest {
-  phone_number: string;
-}
-
-export interface ReactivateLineResponse {
-  success: boolean;
-  message: string;
-  data?: {
-    newStatus: LineStatus;
+  data?: T;
+  message?: string;
+  error?: {
+    code: string;
+    message: string;
   };
 }

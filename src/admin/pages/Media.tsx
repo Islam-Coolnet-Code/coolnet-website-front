@@ -87,7 +87,7 @@ export function MediaPage() {
   };
 
   const getMediaUrl = (item: any) => {
-    const apiUrl = import.meta.env.VITE_CMS_API_URL || '';
+    const apiUrl = (import.meta.env.VITE_CMS_API_URL || '').replace(/\/api\/?$/, '');
     const url = item.fileUrl || item.url;
     return url?.startsWith('http') ? url : `${apiUrl}${url}`;
   };

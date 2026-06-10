@@ -224,7 +224,7 @@ export const Footer: React.FC = () => {
               <div className="relative">
                 <select
                   value={language}
-                  onChange={(e) => setLanguage(e.target.value as 'en' | 'ar' | 'he')}
+                  onChange={(e) => setLanguage(e.target.value as 'en' | 'ar')}
                   className={`w-full bg-coolnet-purple-dark text-white px-4 py-2 rounded-lg appearance-none cursor-pointer hover:bg-coolnet-purple-light transition-colors focus:outline-none focus:ring-2 focus:ring-coolnet-orange ${font}`}
                   dir={isRTL ? 'rtl' : 'ltr'}
                 >

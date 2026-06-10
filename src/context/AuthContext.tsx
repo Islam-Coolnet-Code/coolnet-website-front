@@ -1,182 +1,90 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
-import type { UserData, AuthState } from '@/types/authTypes';
-import { setCookie, getCookie, deleteCookie } from '@/utils/cookieUtils';
+import type { AuthSession } from '@/types/authTypes';
+import { tokenStore } from '@/services/auth/tokenStore';
 
-const AUTH_SESSION_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
-const AUTH_COOKIE_NAME = 'coolnet_auth_session';
-const AUTH_STORAGE_KEY = 'coolnet_auth_data';
+const AUTH_STORAGE_KEY = 'coolnet_customer_session';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: UserData | null;
-  phoneNumber: string | null;
-  login: (phoneNumber: string, userData: UserData) => void;
+  session: AuthSession | null;
+  /** True until the first-login forced password change is completed. */
+  needsPasswordChange: boolean;
+  login: (session: AuthSession) => void;
+  /** Replace the session after the token rotates (e.g. change-password). */
+  setSession: (session: AuthSession) => void;
   logout: () => void;
-  updateUser: (userData: Partial<UserData>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function loadSession(): AuthSession | null {
+  try {
+    const raw = sessionStorage.getItem(AUTH_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as AuthSession;
+    // Expire if the token is past its expiry.
+    if (parsed.tokenExpiresAt && Date.parse(parsed.tokenExpiresAt) <= Date.now()) {
+      sessionStorage.removeItem(AUTH_STORAGE_KEY);
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [authState, setAuthState] = useState<AuthState>({
-    isAuthenticated: false,
-    user: null,
-    phoneNumber: null,
+  const [session, setSessionState] = useState<AuthSession | null>(() => {
+    const s = loadSession();
+    tokenStore.set(s?.token ?? null);
+    return s;
   });
 
-  // Check for existing session on mount
-  useEffect(() => {
-    const checkExistingSession = () => {
-      try {
-        const cookieExists = getCookie(AUTH_COOKIE_NAME) === 'true';
-        const storedData = sessionStorage.getItem(AUTH_STORAGE_KEY);
-
-        if (cookieExists && storedData) {
-          const parsedData = JSON.parse(storedData) as {
-            user: UserData;
-            phoneNumber: string;
-            timestamp: number;
-          };
-
-          // Check if session has expired
-          const elapsed = Date.now() - parsedData.timestamp;
-          if (elapsed < AUTH_SESSION_DURATION) {
-            setAuthState({
-              isAuthenticated: true,
-              user: parsedData.user,
-              phoneNumber: parsedData.phoneNumber,
-            });
-          } else {
-            // Session expired, clear data
-            clearAuthData();
-          }
-        }
-      } catch (error) {
-        console.warn('Failed to restore auth session:', error);
-        clearAuthData();
-      }
-    };
-
-    checkExistingSession();
-  }, []);
-
-  // Auto-logout timer
-  useEffect(() => {
-    if (!authState.isAuthenticated) return;
-
-    const storedData = sessionStorage.getItem(AUTH_STORAGE_KEY);
-    if (!storedData) return;
-
+  const persist = useCallback((next: AuthSession | null) => {
+    setSessionState(next);
+    tokenStore.set(next?.token ?? null);
     try {
-      const parsedData = JSON.parse(storedData) as { timestamp: number };
-      const elapsed = Date.now() - parsedData.timestamp;
-      const remaining = AUTH_SESSION_DURATION - elapsed;
-
-      if (remaining <= 0) {
-        clearAuthData();
-        setAuthState({
-          isAuthenticated: false,
-          user: null,
-          phoneNumber: null,
-        });
-        return;
+      if (next) {
+        sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(next));
+      } else {
+        sessionStorage.removeItem(AUTH_STORAGE_KEY);
       }
-
-      const timeoutId = setTimeout(() => {
-        clearAuthData();
-        setAuthState({
-          isAuthenticated: false,
-          user: null,
-          phoneNumber: null,
-        });
-      }, remaining);
-
-      return () => clearTimeout(timeoutId);
-    } catch {
-      // Ignore parse errors
-    }
-  }, [authState.isAuthenticated]);
-
-  const clearAuthData = () => {
-    try {
-      deleteCookie(AUTH_COOKIE_NAME);
-      sessionStorage.removeItem(AUTH_STORAGE_KEY);
     } catch (error) {
-      console.warn('Failed to clear auth data:', error);
-    }
-  };
-
-  const login = useCallback((phoneNumber: string, userData: UserData) => {
-    try {
-      const sessionData = {
-        user: userData,
-        phoneNumber,
-        timestamp: Date.now(),
-      };
-
-      // Store in sessionStorage
-      sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(sessionData));
-
-      // Set cookie for session validation
-      setCookie(AUTH_COOKIE_NAME, 'true', {
-        maxAge: AUTH_SESSION_DURATION / 1000,
-        path: '/',
-        sameSite: 'lax',
-      });
-
-      setAuthState({
-        isAuthenticated: true,
-        user: userData,
-        phoneNumber,
-      });
-    } catch (error) {
-      console.error('Failed to store auth session:', error);
+      console.warn('Failed to persist auth session:', error);
     }
   }, []);
 
-  const logout = useCallback(() => {
-    clearAuthData();
-    setAuthState({
-      isAuthenticated: false,
-      user: null,
-      phoneNumber: null,
-    });
-  }, []);
+  const login = useCallback((next: AuthSession) => persist(next), [persist]);
+  const setSession = useCallback((next: AuthSession) => persist(next), [persist]);
+  const logout = useCallback(() => persist(null), [persist]);
 
-  const updateUser = useCallback((userData: Partial<UserData>) => {
-    setAuthState((prev) => {
-      if (!prev.user) return prev;
+  // Auto-logout when the token expires.
+  useEffect(() => {
+    if (!session?.tokenExpiresAt) return;
+    const remaining = Date.parse(session.tokenExpiresAt) - Date.now();
+    if (remaining <= 0) {
+      logout();
+      return;
+    }
+    const id = setTimeout(logout, remaining);
+    return () => clearTimeout(id);
+  }, [session?.tokenExpiresAt, logout]);
 
-      const updatedUser = { ...prev.user, ...userData };
-
-      // Update stored data
-      try {
-        const storedData = sessionStorage.getItem(AUTH_STORAGE_KEY);
-        if (storedData) {
-          const parsedData = JSON.parse(storedData);
-          parsedData.user = updatedUser;
-          sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(parsedData));
-        }
-      } catch (error) {
-        console.warn('Failed to update stored user data:', error);
-      }
-
-      return {
-        ...prev,
-        user: updatedUser,
-      };
-    });
-  }, []);
+  // Logout when the API reports the token is no longer valid.
+  useEffect(() => {
+    tokenStore.setUnauthorizedHandler(() => persist(null));
+    return () => tokenStore.setUnauthorizedHandler(null);
+  }, [persist]);
 
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated: authState.isAuthenticated,
-        user: authState.user,
-        phoneNumber: authState.phoneNumber,
+        isAuthenticated: !!session,
+        session,
+        needsPasswordChange: !!session?.forcePasswordChange,
         login,
+        setSession,
         logout,
-        updateUser,
       }}
     >
       {children}

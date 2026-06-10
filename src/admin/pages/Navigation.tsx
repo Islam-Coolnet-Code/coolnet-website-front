@@ -313,7 +313,7 @@ export function NavigationPage() {
 
       {filteredItems.length === 0 && (
         <div className="text-center py-12 text-slate-400">
-          No navigation items for {locationLabels[activeTab]}. Click "Add Item" to create one.
+          No navigation items for {language === 'ar' ? locationLabelsAr[activeTab] : locationLabelsEn[activeTab]}. Click "Add Item" to create one.
         </div>
       )}
 

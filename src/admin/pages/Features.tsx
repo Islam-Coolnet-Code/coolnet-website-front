@@ -48,7 +48,8 @@ export function FeaturesPage() {
   const { apiKey } = useAuth();
   const { t } = useAdminLanguage();
 
-  const [mediaIds, setMediaIds] = useState<number[]>([]);
+  const [mainMediaId, setMainMediaId] = useState<number | null>(null);
+  const [galleryMediaIds, setGalleryMediaIds] = useState<number[]>([]);
 
   const [formData, setFormData] = useState({
     icon: 'Zap',
@@ -82,13 +83,15 @@ export function FeaturesPage() {
     }
   };
 
-  const loadFeatureMedia = async (featureId: number) => {
+  const loadGalleryMedia = async (featureId: number, excludeId: number | null) => {
     try {
       const res = await adminApi.getContentMedia('features', featureId);
-      const ids = (res.data || []).map((m: any) => m.media_id || m.id);
-      setMediaIds(ids);
+      const ids = (res.data || [])
+        .map((m: any) => m.media_id || m.id)
+        .filter((id: number) => id !== excludeId);
+      setGalleryMediaIds(ids);
     } catch {
-      setMediaIds([]);
+      setGalleryMediaIds([]);
     }
   };
 
@@ -107,10 +110,13 @@ export function FeaturesPage() {
         sortOrder: feature.sortOrder || 0,
         isActive: feature.isActive !== false,
       });
-      loadFeatureMedia(feature.id);
+      const main = feature.mediaId ?? null;
+      setMainMediaId(main);
+      loadGalleryMedia(feature.id, main);
     } else {
       setEditingFeature(null);
-      setMediaIds([]);
+      setMainMediaId(null);
+      setGalleryMediaIds([]);
       setFormData({
         icon: 'Zap',
         titleEn: '',
@@ -139,15 +145,18 @@ export function FeaturesPage() {
     try {
       const data = {
         icon: formData.icon,
+        title: { en: formData.titleEn, ar: formData.titleAr, he: formData.titleHe },
         titleEn: formData.titleEn,
         titleAr: formData.titleAr,
         titleHe: formData.titleHe,
+        description: { en: formData.descriptionEn, ar: formData.descriptionAr, he: formData.descriptionHe },
         descriptionEn: formData.descriptionEn,
         descriptionAr: formData.descriptionAr,
         descriptionHe: formData.descriptionHe,
         bgColor: formData.bgColor,
         sortOrder: formData.sortOrder,
         isActive: formData.isActive,
+        mediaId: mainMediaId,
       };
 
       let featureId: number;
@@ -159,9 +168,12 @@ export function FeaturesPage() {
         featureId = res.data?.id || res.id;
       }
 
-      // Save media associations
       if (featureId) {
-        await adminApi.setContentMedia('features', featureId, mediaIds.map((id, i) => ({ mediaId: id, mediaRole: 'gallery', sortOrder: i })));
+        await adminApi.setContentMedia(
+          'features',
+          featureId,
+          galleryMediaIds.map((id, i) => ({ mediaId: id, mediaRole: 'gallery', sortOrder: i }))
+        );
       }
 
       closeModal();
@@ -330,9 +342,16 @@ export function FeaturesPage() {
               </div>
 
               <MediaPicker
-                label="Media (Images / Videos)"
-                value={mediaIds}
-                onChange={(ids) => setMediaIds(ids)}
+                label="Main Image (shown on homepage)"
+                value={mainMediaId !== null ? [mainMediaId] : []}
+                onChange={(ids) => setMainMediaId(ids[0] ?? null)}
+                accept="image"
+              />
+
+              <MediaPicker
+                label="Gallery (optional, additional media)"
+                value={galleryMediaIds}
+                onChange={(ids) => setGalleryMediaIds(ids.filter((id) => id !== mainMediaId))}
                 multiple
               />
 

@@ -1,133 +1,121 @@
 import axios from 'axios';
+import { tokenStore } from './tokenStore';
 import type {
-  SendOTPResponse,
-  VerifyOTPResponse,
-  ReactivateLineResponse,
-  UserData
+  ApiEnvelope,
+  AuthSession,
+  UserDetails,
+  UsageData,
+  CheckUserResult,
+  ExtendResult,
 } from '@/types/authTypes';
 
-// Base API configuration
-const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+/**
+ * Customer Zone API client.
+ *
+ * Talks to our own backend (`/api/customer/*`), which proxies the Coolgate
+ * `website` module and injects the app-level signature/operator secrets server-side.
+ * The browser only ever holds the per-customer bearer token.
+ */
+const API_BASE_URL = import.meta.env.VITE_CMS_API_URL || '/api';
 
-// Create Axios instance with default configuration
-const authApiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  timeout: 10000,
+const customerApi = axios.create({
+  baseURL: `${API_BASE_URL}/customer`,
+  headers: { 'Content-Type': 'application/json' },
+  timeout: 15000,
 });
 
-// Request interceptor
-authApiClient.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error) => {
-    console.error('Request error:', error);
-    return Promise.reject(error);
+// Attach bearer token on every request when present.
+customerApi.interceptors.request.use((config) => {
+  const token = tokenStore.get();
+  if (token) {
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+  return config;
+});
 
-// Response interceptor
-authApiClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    console.error('Auth API request failed:', error.response?.data || error.message);
-    return Promise.reject(error);
+/** Error carrying the backend `code` so callers can branch (NOT_EXPIRED, etc.). */
+export class CustomerApiError extends Error {
+  code: string;
+  status?: number;
+  constructor(message: string, code: string, status?: number) {
+    super(message);
+    this.name = 'CustomerApiError';
+    this.code = code;
+    this.status = status;
   }
-);
+}
 
-// Generic API request handler
-async function makeAuthRequest<T>(
-  endpoint: string,
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-  data?: Record<string, unknown>,
-  params?: Record<string, unknown>
-): Promise<T> {
-  try {
-    const response = await authApiClient.request({
-      url: endpoint,
-      method,
-      data,
-      params,
-    });
+// Map any failure to a CustomerApiError; fire the unauthorized handler on 401.
+customerApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error?.response?.status as number | undefined;
+    const envelope = error?.response?.data as ApiEnvelope<unknown> | undefined;
+    const code = envelope?.error?.code || 'NETWORK_ERROR';
+    const message =
+      envelope?.error?.message ||
+      (error?.request && !error?.response
+        ? 'Network error: no response from server'
+        : error?.message || 'Request failed');
 
-    return response.data as T;
-  } catch (error: unknown) {
-    if (error && typeof error === 'object' && 'response' in error) {
-      const axiosError = error as { response?: { data?: { message?: string }; status?: number }; request?: unknown };
-      if (axiosError.response) {
-        throw new Error(
-          axiosError.response.data?.message || `HTTP error! status: ${axiosError.response.status}`
-        );
-      } else if (axiosError.request) {
-        throw new Error('Network error: No response from server');
-      }
+    if (status === 401 || code === 'UNAUTHORIZED') {
+      tokenStore.notifyUnauthorized();
     }
-    throw new Error(error instanceof Error ? error.message : 'Request configuration error');
+    return Promise.reject(new CustomerApiError(message, code, status));
   }
+);
+
+function unwrap<T>(body: ApiEnvelope<T>): T {
+  if (!body?.success || body.data === undefined) {
+    throw new CustomerApiError(
+      body?.error?.message || 'Unexpected response',
+      body?.error?.code || 'UNEXPECTED_RESPONSE'
+    );
+  }
+  return body.data;
 }
 
-/**
- * Send OTP to customer phone number for login
- * POST /api/customer/send-otp
- */
-export async function sendLoginOTP(
-  phoneNumber: string,
-  language: string
-): Promise<SendOTPResponse> {
-  const data = {
-    phone_number: phoneNumber,
-    language: language
-  };
-
-  return makeAuthRequest<SendOTPResponse>('/api/customer/send-otp', 'POST', data);
+/** POST /api/customer/auth/login */
+export async function loginUser(userno: string, password: string): Promise<AuthSession> {
+  const res = await customerApi.post<ApiEnvelope<AuthSession>>('/auth/login', { userno, password });
+  return unwrap(res.data);
 }
 
-/**
- * Verify OTP and get user data
- * GET /api/customer/verify-otp
- */
-export async function verifyLoginOTP(
-  phoneNumber: string,
-  otp: string
-): Promise<VerifyOTPResponse> {
-  return makeAuthRequest<VerifyOTPResponse>(
-    '/api/customer/verify-otp',
-    'GET',
-    undefined,
-    { phone_number: phoneNumber, otp: otp }
+/** POST /api/customer/auth/change-password (requires token). */
+export async function changePassword(
+  newPassword: string,
+  oldPassword?: string
+): Promise<{ token: string; tokenExpiresAt: string }> {
+  const body: Record<string, string> = { new_password: newPassword };
+  if (oldPassword !== undefined) body.old_password = oldPassword;
+  const res = await customerApi.post<ApiEnvelope<{ token: string; tokenExpiresAt: string }>>(
+    '/auth/change-password',
+    body
   );
+  return unwrap(res.data);
 }
 
-/**
- * Get user details by phone number
- * GET /api/customer/details
- */
-export async function getUserDetails(
-  phoneNumber: string
-): Promise<{ success: boolean; data: { user: UserData } }> {
-  return makeAuthRequest<{ success: boolean; data: { user: UserData } }>(
-    '/api/customer/details',
-    'GET',
-    undefined,
-    { phone_number: phoneNumber }
-  );
+/** POST /api/customer/users/check (public). */
+export async function checkUser(userno: string): Promise<CheckUserResult> {
+  const res = await customerApi.post<ApiEnvelope<CheckUserResult>>('/users/check', { userno });
+  return unwrap(res.data);
 }
 
-/**
- * Reactivate suspended or expired line
- * POST /api/customer/reactivate
- */
-export async function reactivateLine(
-  phoneNumber: string
-): Promise<ReactivateLineResponse> {
-  const data = {
-    phone_number: phoneNumber
-  };
+/** POST /api/customer/users/details (requires token). */
+export async function getUserDetails(): Promise<UserDetails> {
+  const res = await customerApi.post<ApiEnvelope<UserDetails>>('/users/details', {});
+  return unwrap(res.data);
+}
 
-  return makeAuthRequest<ReactivateLineResponse>('/api/customer/reactivate', 'POST', data);
+/** POST /api/customer/users/sessions (requires token). */
+export async function getUserSessions(): Promise<UsageData> {
+  const res = await customerApi.post<ApiEnvelope<UsageData>>('/users/sessions', {});
+  return unwrap(res.data);
+}
+
+/** POST /api/customer/users/extend (requires token). */
+export async function extendExpiration(): Promise<ExtendResult> {
+  const res = await customerApi.post<ApiEnvelope<ExtendResult>>('/users/extend', {});
+  return unwrap(res.data);
 }

@@ -6,6 +6,7 @@ import { AlertCircle, Save, X, RefreshCw } from 'lucide-react';
 
 export function SettingsPage() {
   const [settings, setSettings] = useState<any>({});
+  const [socialLinks, setSocialLinks] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
@@ -43,7 +44,11 @@ export function SettingsPage() {
   const loadSettings = async () => {
     setIsLoading(true);
     try {
-      const response = await adminApi.getSettings();
+      const [response, socialRes] = await Promise.all([
+        adminApi.getSettings(),
+        adminApi.getSocialLinks(),
+      ]);
+      setSocialLinks(socialRes.data || []);
       const settingsArray = response.data || [];
 
       // Convert array of settings to object keyed by settingKey
@@ -111,6 +116,12 @@ export function SettingsPage() {
       ].filter(s => s.valueEn !== undefined); // Include all values including empty strings
 
       await adminApi.updateSettings({ settings: settingsArray });
+
+      // Save social links
+      for (const link of socialLinks) {
+        await adminApi.updateSocialLink(link.id, { url: link.url, isActive: link.isActive });
+      }
+
       setSuccess(t('settings.savedSuccess'));
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
@@ -320,58 +331,44 @@ export function SettingsPage() {
           </div>
         </div>
 
-        {/* Social Media */}
+        {/* Social Media Links */}
         <div className="bg-slate-800 rounded-xl p-6">
           <h2 className="text-lg font-semibold text-white mb-4">{t('settings.socialMedia')}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">
-                {t('settings.facebookUrl')}
-              </label>
-              <input
-                type="url"
-                value={formData.facebookUrl}
-                onChange={(e) => setFormData({ ...formData, facebookUrl: e.target.value })}
-                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://facebook.com/..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">
-                {t('settings.twitterUrl')}
-              </label>
-              <input
-                type="url"
-                value={formData.twitterUrl}
-                onChange={(e) => setFormData({ ...formData, twitterUrl: e.target.value })}
-                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://twitter.com/..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">
-                {t('settings.instagramUrl')}
-              </label>
-              <input
-                type="url"
-                value={formData.instagramUrl}
-                onChange={(e) => setFormData({ ...formData, instagramUrl: e.target.value })}
-                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://instagram.com/..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">
-                {t('settings.linkedinUrl')}
-              </label>
-              <input
-                type="url"
-                value={formData.linkedinUrl}
-                onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
-                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://linkedin.com/..."
-              />
-            </div>
+          <div className="space-y-4">
+            {socialLinks.map((link, index) => (
+              <div key={link.id} className="flex items-center gap-4">
+                <div className="w-24 text-sm text-slate-400 capitalize font-medium flex-shrink-0">
+                  {link.platform}
+                </div>
+                <input
+                  type="url"
+                  value={link.url}
+                  onChange={(e) => {
+                    const updated = [...socialLinks];
+                    updated[index] = { ...link, url: e.target.value };
+                    setSocialLinks(updated);
+                  }}
+                  className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder={`https://${link.platform}.com/...`}
+                />
+                <label className="flex items-center gap-2 text-slate-300 text-sm flex-shrink-0">
+                  <input
+                    type="checkbox"
+                    checked={!!link.isActive}
+                    onChange={(e) => {
+                      const updated = [...socialLinks];
+                      updated[index] = { ...link, isActive: e.target.checked };
+                      setSocialLinks(updated);
+                    }}
+                    className="rounded"
+                  />
+                  {t('common.active')}
+                </label>
+              </div>
+            ))}
+            {socialLinks.length === 0 && (
+              <p className="text-slate-400 text-sm">No social links configured.</p>
+            )}
           </div>
         </div>
 

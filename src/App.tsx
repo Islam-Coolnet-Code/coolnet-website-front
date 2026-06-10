@@ -18,17 +18,20 @@ import ErrorBoundary from "./components/ErrorBoundary";
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const NewLine = lazy(() => import("./pages/order/NewLine"));
+const NeighborsCampaign = lazy(() => import("./pages/order/NeighborsCampaign"));
 const HomServices = lazy(() => import("@/pages/home-services/HomServices"));
 const Dealers = lazy(() => import("./pages/dealers/Dealers"));
 const SpeedTest = lazy(() => import("./pages/SpeedTest"));
 const Qrcodepromotion = lazy(() => import("./pages/qrcodepromotion/Qrcodepromotion"));
 const Login = lazy(() => import("./pages/CustomerCorner/Login"));
+const ChangePassword = lazy(() => import("./pages/CustomerCorner/ChangePassword"));
 const Dashboard = lazy(() => import("./pages/CustomerCorner/Dashboard"));
 const AllPlans = lazy(() => import("./pages/AllPlans"));
 const AllNews = lazy(() => import("./pages/AllNews"));
 const PostDetail = lazy(() => import("./pages/PostDetail"));
 const AllServices = lazy(() => import("./pages/AllServices"));
 const ActivateService = lazy(() => import("./pages/ActivateService"));
+const Support = lazy(() => import("./pages/Support"));
 
 // Admin panel
 const AdminRoutes = lazy(() => import("./admin").then(m => ({ default: m.AdminRoutes })));
@@ -80,6 +83,7 @@ const App = () => (
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/new-line" element={<NewLine />} />
+                    <Route path="/neighbors-campaign" element={<NeighborsCampaign />} />
                     <Route path="/dealers" element={<Dealers />} />
                     <Route path="/site/get-dealers" element={<Dealers />} />
                     <Route path="/home-services" element={<HomServices />} />
@@ -88,12 +92,21 @@ const App = () => (
                     <Route path="/news" element={<AllNews />} />
                     <Route path="/news/:slug" element={<PostDetail />} />
                     <Route path="/services" element={<AllServices />} />
+                    <Route path="/support" element={<Support />} />
                     <Route path="/activate-service" element={<ActivateService />} />
                     <Route path="/activate-service/:referenceNumber" element={<ActivateService />} />
                     <Route path="/qrpromotion" element={<Qrcodepromotion />} />
                     <Route path="/qrpromotion/:referrer" element={<Qrcodepromotion />} />
                     {/* Customer Corner Routes */}
                     <Route path="/customer-corner" element={<Login />} />
+                    <Route
+                      path="/customer-corner/change-password"
+                      element={
+                        <ProtectedRoute allowPasswordChange>
+                          <ChangePassword />
+                        </ProtectedRoute>
+                      }
+                    />
                     <Route
                       path="/customer-corner/dashboard"
                       element={

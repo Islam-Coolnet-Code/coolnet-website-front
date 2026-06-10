@@ -1,6 +1,7 @@
 // File: src/components/Header/parts/MobileMenu.tsx
 import React, { useState } from 'react';
-import { X, Phone, ChevronRight, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, Phone, ChevronRight, ChevronDown, User } from 'lucide-react';
 import { NavItem } from './shared/navConfig';
 
 import type { DropdownItem } from '@/types/nav-types';
@@ -26,7 +27,13 @@ interface MobileMenuProps {
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ t, language, setLanguage, isHomePage, font, isRTL, onDropdownClick, handleNavClick, activeSection, onToggleMenu, setIsMenuOpen, isMenuOpen, navItems, contactPhone }) => {
   const [expandedMobileDropdown, setExpandedMobileDropdown] = useState<string | null>(null);
-  
+  const navigate = useNavigate();
+
+  const handleCustomerZoneClick = () => {
+    setIsMenuOpen(false);
+    setTimeout(() => navigate('/customer-corner'), 300);
+  };
+
   return (
     <div className={`
         xl:hidden fixed inset-0 bg-white z-[100] transform transition-transform duration-300 ease-in-out
@@ -207,6 +214,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ t, language, setLanguage, isHom
 
           {/* Menu Footer */}
           <div className="border-t border-gray-100 p-4 space-y-3">
+            {/* Customer Zone */}
+            <button
+              onClick={handleCustomerZoneClick}
+              className={`w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-coolnet-purple text-white font-medium active:scale-95 transition-transform ${font}`}
+            >
+              <User className="h-5 w-5" />
+              <span className={isRTL ? 'font-jazeera text-lg' : ''}>{t('navigation.customerZone')}</span>
+            </button>
+
             {/* Language Selector - Mobile Optimized */}
             <div className="space-y-2">
               <div className="grid grid-cols-3 gap-2">
@@ -227,15 +243,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ t, language, setLanguage, isHom
                     } ${font}`}
                 >
                   <span className="font-medium">العربية</span>
-                </button>
-                <button
-                  onClick={() => setLanguage('he')}
-                  className={`p-3 rounded-lg border-2 transition-all ${language === 'he'
-                    ? 'border-coolnet-purple bg-coolnet-purple/10 text-coolnet-purple'
-                    : 'border-gray-200 hover:border-gray-300'
-                    } ${font}`}
-                >
-                  <span className="font-medium">עברית</span>
                 </button>
               </div>
             </div>

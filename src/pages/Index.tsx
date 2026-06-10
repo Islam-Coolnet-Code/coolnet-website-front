@@ -14,7 +14,6 @@ import { useHomepageSections } from '@/services/cms/hooks';
 
 const sectionComponents: Record<string, React.FC> = {
   'hero': HeroSection,
-  'speed-test': SpeedTestSection,
   'plans': PlansSection,
   'features': FeaturesSection,
   'posts': PostsSection,

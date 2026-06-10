@@ -19,6 +19,9 @@ import { HomepageLayoutPage } from './pages/HomepageLayout';
 import { NavigationPage } from './pages/Navigation';
 import { DealersPage } from './pages/Dealers';
 import { CitiesPage } from './pages/Cities';
+import { HeroSlidesPage } from './pages/HeroSlides';
+import { PlanAddonsPage } from './pages/PlanAddons';
+import { RoutersPage } from './pages/Routers';
 
 export function AdminRoutes() {
   return (
@@ -42,6 +45,9 @@ export function AdminRoutes() {
                     <Route path="partners" element={<PartnersPage />} />
                     <Route path="features" element={<FeaturesPage />} />
                     <Route path="testimonials" element={<TestimonialsPage />} />
+                    <Route path="hero-slides" element={<HeroSlidesPage />} />
+                    <Route path="plan-addons" element={<PlanAddonsPage />} />
+                    <Route path="routers" element={<RoutersPage />} />
                     <Route path="homepage-layout" element={<HomepageLayoutPage />} />
                     <Route path="navigation" element={<NavigationPage />} />
                   <Route path="dealers" element={<DealersPage />} />

@@ -70,19 +70,6 @@ const HeaderMobile: React.FC<HeaderMobileProps> = ({
                 <Phone size={18} />
               </a>
 
-              {/* Client Area Button */}
-              <button
-                className="flex items-center justify-center w-12 h-12 rounded-full backdrop-blur-sm shadow-lg active:scale-95 transition-all duration-500"
-                style={{
-                  backgroundColor: `rgba(255, 255, 255, 0.2)`,
-                  color: 'white'
-                }}
-                onClick={() => navigate('/customer-corner')}
-                aria-label={t('navigation.clientArea')}
-              >
-                <User size={18} />
-              </button>
-
               {/* Menu Button */}
               <button
                 onClick={onToggleMenu}

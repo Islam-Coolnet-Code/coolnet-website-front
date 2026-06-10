@@ -24,7 +24,7 @@ export function PlansPage() {
 
   const [formData, setFormData] = useState({
     code: '',
-    category: 'home',
+    category: 'personal',
     title_en: '',
     title_ar: '',
     title_he: '',
@@ -58,7 +58,7 @@ export function PlansPage() {
       setEditingPlan(plan);
       setFormData({
         code: plan.code || '',
-        category: plan.category || 'home',
+        category: plan.category || 'personal',
         title_en: plan.title?.en || '',
         title_ar: plan.title?.ar || '',
         title_he: plan.title?.he || '',
@@ -71,7 +71,7 @@ export function PlansPage() {
       setEditingPlan(null);
       setFormData({
         code: '',
-        category: 'home',
+        category: 'personal',
         title_en: '',
         title_ar: '',
         title_he: '',
@@ -189,7 +189,7 @@ export function PlansPage() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <span className="text-xs font-medium text-blue-400 uppercase">
-                    {plan.category}
+                    {plan.category === 'personal' ? t('plans.home') : t('plans.business')}
                   </span>
                   <h3 className="text-lg font-semibold text-white mt-1">
                     {plan.title?.en || plan.title}
@@ -272,7 +272,7 @@ export function PlansPage() {
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="home">{t('plans.home')}</option>
+                    <option value="personal">{t('plans.home')}</option>
                     <option value="business">{t('plans.business')}</option>
                   </select>
                 </div>

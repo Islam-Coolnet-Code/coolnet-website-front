@@ -27,6 +27,11 @@
     font-style: normal;
     font-display: swap;
   }
+
+  /* Apply Cairo font globally for Arabic/RTL */
+  [dir="rtl"] {
+    font-family: "Cairo", "Al-Jazeera-Arabic", Arial, sans-serif;
+  }
 }
 
 @layer utilities {
@@ -191,7 +196,7 @@
 
   /* Font utility classes */
   .font-jazeera {
-    font-family: "Al-Jazeera-Arabic", Arial, sans-serif;
+    font-family: "Cairo", "Al-Jazeera-Arabic", Arial, sans-serif;
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -268,11 +273,11 @@ body::-webkit-scrollbar {
     --popover-foreground: 222.2 84% 4.9%;
 
     --primary: 209 100% 53%;
-    /* Jet Fiber Blue */
+    /* Coolnet Blue */
     --primary-foreground: 38% 38% 288;
 
     --secondary: 32 98% 53%;
-    /* Jet Fiber Orange */
+    /* Coolnet Orange */
     --secondary-foreground: 0 0% 98%;
 
     --muted: 210 40% 96.1%;
@@ -302,11 +307,11 @@ body::-webkit-scrollbar {
     --popover-foreground: 210 40% 98%;
 
     --primary: 209 100% 53%;
-    /* Jet Fiber Blue */
+    /* Coolnet Blue */
     --primary-foreground: 38% 38% 288;
 
     --secondary: 32 98% 53%;
-    /* Jet Fiber Orange */
+    /* Coolnet Orange */
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;

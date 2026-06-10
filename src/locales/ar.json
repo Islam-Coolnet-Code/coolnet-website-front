@@ -1,8 +1,8 @@
 {
   "seo": {
-    "homeTitle": "الصفحة الرئيسية",
-    "homeDescription": "كولنت - إنترنت الألياف الضوئية فائق السرعة. سرعات عالية مع دعم على مدار الساعة.",
-    "homeKeywords": "إنترنت ألياف ضوئية, إنترنت سريع, كولنت, مزود إنترنت"
+    "homeTitle": "إنترنت ألياف ضوئية فائق السرعة في فلسطين",
+    "homeDescription": "كولنت تقدم إنترنت ألياف ضوئية بسرعات تصل إلى 1000 ميجابت في فلسطين. اتصال موثوق، دعم على مدار الساعة، باقات تنافسية. اشترك الآن!",
+    "homeKeywords": "كولنت, إنترنت فلسطين, ألياف ضوئية, إنترنت سريع, واي فاي, باقات إنترنت, إنترنت غير محدود"
   },
   "appDownload": {
     "download": {
@@ -36,6 +36,7 @@
     "business": "تجاري",
     "activateService": "تفعيل الخدمة",
     "clientArea": "زاوية المشترك",
+    "customerZone": "زاوية المشترك",
     "clientAreaTooltip": "قيد التطوير - قادم قريباً !",
     "language": "اللغة",
     "download": "تحميل التطبيق",
@@ -105,6 +106,7 @@
     "startingAt": "ابتداء من",
     "personal": "الخدمات المنزلية",
     "uploadSpeed": "سرعة الرفع",
+    "business": "الخدمات التجارية",
     "retail": "الخدمات التجارية",
     "downloadSpeed": "سرعة التنزيل",
     "month": "/شهر",
@@ -124,7 +126,7 @@
     "Personal": {
       "services": {
         "home": "سرعات الفايبر المنزلية",
-        "jet": "السرعات الفردية جيت",
+        "jet": "سرعات كولنت المشتركة",
         "vdsl": "سرعات التجمعات السكنية vdsl"
       },
       "Basic": {
@@ -413,7 +415,7 @@
   "footer": {
     "copyright": "© 2025 كوول نت. جميع الحقوق محفوظة.",
     "quicklinks": "الروابط السريعة",
-    "companyDescription": "توفر كوول نت حلول الإنترنت السريع عبر الألياف الضوئية للمنازل والأعمال في جميع أنحاء القدس الشرقية.",
+    "companyDescription": "توفر كوول نت حلول الإنترنت السريع عبر الألياف الضوئية للمنازل والأعمال في جميع أنحاء الضفة الغربية.",
     "connectingCommunities": "ربط المجتمعات",
     "contactInfo": "معلومات الاتصال",
     "support": "دعم فني وتقني",
@@ -462,8 +464,8 @@
       "city": "المدينة",
       "selectCity": "اختر المدينة",
       "zone": "المنطقة",
-      "state": "الولاية",
-      "selectState": "اختر الولاية",
+      "state": "المنطقة",
+      "selectState": "اختر المنطقة",
       "selectZone": "اختر منطقتك",
       "street": "اسم الشارع",
       "streetPlaceholder": "يرجى إدخال اسم الشارع",
@@ -620,6 +622,17 @@
         "month": "/شهر",
         "oneTime": "مرة واحدة"
       }
+    },
+    "neighborsCampaign": {
+      "title": "حملة الجيران",
+      "subtitle": "قم بتعبئة البيانات لاتمام الطلب",
+      "subscriptionNumber": "رقم اشتراكك",
+      "subscriptionNumberPlaceholder": "رقم الاشتراك الخاص بمشترك كوول نت الحالي. ",
+      "subscriptionNumberHelp": "رقم الاشتراك الخاص بمشترك كوول نت الحالي.",
+      "errors": {
+        "subscriptionRequired": "رقم الاشتراك مطلوب",
+        "subscriptionFormat": "يجب أن يحتوي رقم الاشتراك على أرقام فقط"
+      }
     }
   },
   "speedTestTitle": "اختبار سرعة الإنترنت",
@@ -631,17 +644,17 @@
   "runAgain": "اختبار مجدداً",
   "dealers": {
     "title": "مواقع الدفع",
-    "subtitle": "ابحث عن متجر قريب منك لدفع الفواتير نقدًا",
-    "availableStores": "المتاجر المتاحة",
+    "subtitle": "اعثر على الوكيل الاقرب اليك ",
+    "availableStores": "الوكلاء",
     "viewLocation": "عرض الموقع",
-    "viewShopImage": "عرض المتجر",
+    "viewShopImage": "عرض الوكيل",
     "hideShopImage": "إخفاء الصورة",
     "getDirections": "احصل على الاتجاهات",
     "call": "اتصل",
     "workingHours": "ساعات العمل",
-    "shopDetails": "تفاصيل المتجر",
-    "selectStore": "اختر متجرًا من القائمة لعرض موقعه على الخريطة",
-    "findNearestStore": "العثور على أقرب متجر",
+    "shopDetails": "تفاصيل الوكيل",
+    "selectStore": "اختر وكيل من القائمة لعرض موقعه على الخريطة",
+    "findNearestStore": "العثور على أقرب وكيل",
     "gettingLocation": "جاري تحديد الموقع...",
     "locationFound": "تم تحديد الموقع",
     "yourLocation": "موقعك",
@@ -854,28 +867,66 @@
   },
   "customerCorner": {
     "login": {
-      "title": "تسجيل دخول العميل",
-      "subtitle": "أدخل رقم هاتفك للوصول إلى حسابك",
-      "phonePlaceholder": "05X-XXX-XXXX",
-      "continue": "متابعة",
-      "verifying": "جاري التحقق...",
-      "error": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      "title": "زاوية المشترك",
+      "subtitle": "سجّل الدخول برقم المشترك وكلمة المرور",
+      "userno": "رقم المشترك",
+      "usernoPlaceholder": "مثال: 34768",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جاري الدخول...",
+      "welcome": "مرحباً",
+      "required": "يرجى إدخال رقم المشترك وكلمة المرور",
+      "invalidCredentials": "رقم المشترك أو كلمة المرور غير صحيحة",
+      "userNotFound": "رقم المشترك غير موجود",
+      "userDisabled": "هذا الحساب معطّل",
+      "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "securityNotice": "معلوماتك آمنة ومحمية لدينا."
+    },
+    "changePassword": {
+      "title": "تغيير كلمة المرور",
+      "forcedNotice": "يجب تغيير كلمة المرور عند أول تسجيل دخول.",
+      "rules": "6 أحرف على الأقل، ومختلفة عن رقم المشترك.",
+      "oldPassword": "كلمة المرور الحالية",
+      "newPassword": "كلمة المرور الجديدة",
+      "confirm": "تأكيد كلمة المرور",
+      "submit": "حفظ",
+      "saving": "جاري الحفظ...",
+      "success": "تم تغيير كلمة المرور",
+      "successDesc": "تم تحديث كلمة المرور بنجاح.",
+      "tooShort": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+      "sameAsUserno": "يجب أن تختلف كلمة المرور عن رقم المشترك",
+      "mismatch": "كلمتا المرور غير متطابقتين",
+      "oldRequired": "يرجى إدخال كلمة المرور الحالية",
+      "wrongOld": "كلمة المرور الحالية غير صحيحة",
+      "error": "فشل تغيير كلمة المرور"
     },
     "dashboard": {
-      "title": "حسابي",
-      "personalInfo": "المعلومات الشخصية",
+      "welcome": "مرحباً",
+      "fullName": "الاسم الكامل",
+      "subscriberNo": "رقم المشترك",
+      "mobile": "رقم الجوال",
       "lineStatus": "حالة الخط",
-      "reactivate": "إعادة تفعيل الخط",
-      "reactivateConfirm": "هل أنت متأكد من أنك تريد إعادة تفعيل خطك؟",
-      "reactivateSuccess": "تم إعادة تفعيل الخط",
-      "reactivateSuccessDesc": "تم إعادة تفعيل خطك بنجاح.",
-      "reactivateError": "فشل إعادة التفعيل",
+      "online": "متصل",
+      "offline": "غير متصل",
+      "serviceType": "نوع الخدمة",
+      "paidTill": "مدفوع حتى",
+      "totalExtendDays": "إجمالي أيام التمديد",
+      "extend": "تمديد يوم واحد",
+      "extendConfirm": "تمديد صلاحية خطك يوماً واحداً؟",
+      "extendSuccess": "تم تمديد الخط",
+      "extendError": "فشل التمديد",
+      "notExpired": "خطك لا يزال فعّالاً — لا حاجة للتمديد.",
+      "loadError": "فشل تحميل بيانات حسابك.",
       "logout": "تسجيل الخروج"
     },
-    "lineStatus": {
-      "active": "نشط",
-      "suspended": "معلق",
-      "expired": "منتهي الصلاحية"
+    "usage": {
+      "title": "الاستهلاك",
+      "download": "تنزيل",
+      "upload": "رفع",
+      "lastWeek": "آخر أسبوع",
+      "lastMonth": "آخر شهر",
+      "last3Months": "آخر 3 أشهر"
     }
   },
   "posts": {
@@ -944,7 +995,28 @@
   },
   "common": {
     "close": "إغلاق",
-    "clear": "مسح"
+    "clear": "مسح",
+    "noData": "لا توجد بيانات"
+  },
+  "support": {
+    "title": "الدعم الفني",
+    "subtitle": "نحن هنا لمساعدتك. تواصل معنا في أي وقت",
+    "callUs": "اتصل بنا",
+    "emailUs": "راسلنا",
+    "workingHours": "ساعات العمل",
+    "sunThu": "24/7",
+    "friSat": "متاحون على مدار الساعة",
+    "formTitle": "أرسل لنا رسالة",
+    "name": "الاسم الكامل",
+    "namePlaceholder": "أدخل اسمك",
+    "phone": "رقم الهاتف",
+    "message": "الرسالة",
+    "messagePlaceholder": "اكتب رسالتك هنا...",
+    "attachment": "إرفاق ملف (اختياري)",
+    "uploadHint": "اضغط لرفع صورة أو ملف",
+    "submit": "إرسال",
+    "thankYou": "شكراً لك!",
+    "weWillContact": "سنتواصل معك في أقرب وقت ممكن"
   },
   "notFound": {
     "title": "404",

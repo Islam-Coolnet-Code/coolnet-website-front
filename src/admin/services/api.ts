@@ -446,6 +446,81 @@ class AdminApiService {
     });
   }
 
+  // Social Links
+  async getSocialLinks() {
+    return this.request<any>('/api/social-links');
+  }
+
+  async updateSocialLink(id: number, data: any) {
+    return this.request<any>(`/api/admin/social-links/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async createSocialLink(data: any) {
+    return this.request<any>('/api/admin/social-links', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteSocialLink(id: number) {
+    return this.request<any>(`/api/admin/social-links/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Plan Addons
+  async getPlanAddons() {
+    return this.request<any>('/api/plan-addons');
+  }
+
+  async createPlanAddon(data: any) {
+    return this.request<any>('/api/admin/plan-addons', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updatePlanAddon(id: number, data: any) {
+    return this.request<any>(`/api/admin/plan-addons/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deletePlanAddon(id: number) {
+    return this.request<any>(`/api/admin/plan-addons/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Routers
+  async getRouters() {
+    return this.request<any>('/api/routers');
+  }
+
+  async createRouter(data: any) {
+    return this.request<any>('/api/admin/routers', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateRouter(id: number, data: any) {
+    return this.request<any>(`/api/admin/routers/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteRouter(id: number) {
+    return this.request<any>(`/api/admin/routers/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Content Media
   async getContentMedia(contentType: string, contentId: number, role?: string) {
     const query = role ? `?role=${role}` : '';

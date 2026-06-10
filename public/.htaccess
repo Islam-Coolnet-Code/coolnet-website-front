@@ -1,0 +1,48 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # ============================================
+  # 1) Proxy: API and uploads -> webapi.coolnet.ps via PHP
+  # ============================================
+  RewriteRule ^api/(.*)$ /api-proxy.php?_path=/api/$1 [L,QSA]
+  RewriteRule ^uploads/(.*)$ /api-proxy.php?_path=/uploads/$1 [L,QSA]
+
+  # ============================================
+  # 2) Legacy Joomla URL 301 redirects
+  # ============================================
+
+  # News -> /news
+  RewriteRule ^index\.php/News/ /news? [R=301,L]
+
+  # Residential / business / broadband -> /plans
+  RewriteRule ^index\.php/coolnet/residential /plans? [R=301,L]
+  RewriteRule ^index\.php/coolnet/business /plans? [R=301,L]
+  RewriteRule ^index\.php/Broadband/ /plans? [R=301,L]
+  RewriteRule ^coolnet/residential /plans? [R=301,L]
+
+  # Solutions / agencies -> /services
+  RewriteRule ^index\.php/coolnet/solutions /services? [R=301,L]
+  RewriteRule ^index\.php/Solutions-Services/ /services? [R=301,L]
+
+  # Contact / FAQ -> /support
+  RewriteRule ^index\.php/Contact-Coolnet/ /support? [R=301,L]
+  RewriteRule ^faq/?$ /support? [R=301,L]
+
+  # Old mobile / entry -> /
+  RewriteRule ^(m|mobile|entry)/?$ /? [R=301,L]
+
+  # Bare /index.php (no extra path) -> /
+  RewriteRule ^index\.php/?$ /? [R=301,L]
+
+  # Any remaining /index.php/... -> / (catch-all)
+  RewriteRule ^index\.php/ /? [R=301,L]
+
+  # ============================================
+  # 3) SPA routing
+  # ============================================
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

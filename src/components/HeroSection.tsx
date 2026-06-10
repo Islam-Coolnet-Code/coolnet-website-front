@@ -30,6 +30,10 @@ export const HeroSection: React.FC = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Carousel state
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
   // Fetch hero slides and site settings from CMS
   const { data: heroSlides, isLoading } = useHeroSlides();
   const { data: siteSettings } = useSiteSettings();
@@ -48,8 +52,31 @@ export const HeroSection: React.FC = () => {
     return `${count}+`;
   })() : null;
 
-  // Get the first active hero slide for text content
-  const heroSlide = heroSlides?.[0];
+  // All active slides, and the one currently displayed in the carousel
+  const slides = heroSlides ?? [];
+  const slideCount = slides.length;
+  const safeIndex = slideCount > 0 ? Math.min(currentSlide, slideCount - 1) : 0;
+  const heroSlide = slides[safeIndex];
+
+  // Carousel navigation
+  const goToSlide = useCallback(
+    (index: number) => {
+      if (slideCount === 0) return;
+      setCurrentSlide(((index % slideCount) + slideCount) % slideCount);
+    },
+    [slideCount],
+  );
+  const nextSlide = useCallback(() => goToSlide(safeIndex + 1), [goToSlide, safeIndex]);
+  const prevSlide = useCallback(() => goToSlide(safeIndex - 1), [goToSlide, safeIndex]);
+
+  // Auto-advance every 6s (paused on hover or while the lightbox is open)
+  useEffect(() => {
+    if (slideCount <= 1 || isPaused || lightboxOpen) return;
+    const id = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slideCount);
+    }, 6000);
+    return () => clearInterval(id);
+  }, [slideCount, isPaused, lightboxOpen]);
 
   // Text content from CMS only (locale strings as last resort — no hardcoded English)
   const badge = heroSlide ? getLocalizedText(heroSlide.badge, language) : t('hero.badge');
@@ -183,12 +210,16 @@ export const HeroSection: React.FC = () => {
   }
 
   return (
-    <section className="relative min-h-[90vh] bg-white overflow-hidden">
+    <section
+      className="relative min-h-[90vh] bg-white overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-coolnet-purple/5 via-transparent to-coolnet-orange/5 pointer-events-none"></div>
 
       <div className="container mx-auto px-4 py-12 md:py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div key={safeIndex} className="grid lg:grid-cols-2 gap-12 items-center animate-fadeIn">
 
           {/* Left: Content */}
           <div className={`space-y-8 ${isRTL ? 'lg:order-2 text-right' : 'lg:order-1 text-left'}`}>
@@ -264,7 +295,7 @@ export const HeroSection: React.FC = () => {
           {/* Right: Image Grid — only if CMS provides images */}
           {heroImages.length > 0 && (
           <div className={`relative ${isRTL ? 'lg:order-1' : 'lg:order-2'}`}>
-            <div className={`grid ${getGridClass()} gap-4 h-[500px] md:h-[600px]`}>
+            <div className={`grid ${getGridClass()} gap-4 ${imageCount === 1 ? '' : 'h-[500px] md:h-[600px]'}`}>
               {heroImages.map((image, index) => (
                 <div
                   key={index}
@@ -274,7 +305,7 @@ export const HeroSection: React.FC = () => {
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                    className={`w-full object-contain group-hover:scale-105 transition-transform duration-500 ${imageCount === 1 ? 'h-auto max-h-[70vh]' : 'h-full'}`}
                   />
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-coolnet-purple/20 via-transparent to-coolnet-orange/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -309,6 +340,43 @@ export const HeroSection: React.FC = () => {
 
         </div>
       </div>
+
+      {/* Carousel controls — only when there is more than one slide */}
+      {slideCount > 1 && (
+        <>
+          {/* Previous / Next arrows */}
+          <button
+            onClick={prevSlide}
+            aria-label="Previous slide"
+            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 bg-white/80 hover:bg-white text-coolnet-purple rounded-full shadow-lg border border-gray-200 transition-colors backdrop-blur-sm"
+          >
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+          <button
+            onClick={nextSlide}
+            aria-label="Next slide"
+            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 bg-white/80 hover:bg-white text-coolnet-purple rounded-full shadow-lg border border-gray-200 transition-colors backdrop-blur-sm"
+          >
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+
+          {/* Dot indicators */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  index === safeIndex
+                    ? 'w-8 bg-coolnet-orange'
+                    : 'w-2.5 bg-coolnet-purple/30 hover:bg-coolnet-purple/50'
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Lightbox Overlay */}
       {lightboxOpen && (

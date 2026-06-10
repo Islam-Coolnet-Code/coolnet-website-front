@@ -21,6 +21,9 @@ import {
   Languages,
   Store,
   Building2,
+  Layers,
+  PuzzleIcon,
+  Wifi,
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -38,12 +41,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     { name: t('nav.dashboard'), href: '/admin', icon: LayoutDashboard },
     { name: t('nav.orders'), href: '/admin/orders', icon: ShoppingCart },
     { name: t('nav.plans'), href: '/admin/plans', icon: Package },
+    { name: t('nav.planAddons'), href: '/admin/plan-addons', icon: PuzzleIcon },
+    { name: t('nav.routers'), href: '/admin/routers', icon: Wifi },
     { name: t('nav.posts'), href: '/admin/posts', icon: FileText },
     { name: t('nav.zones'), href: '/admin/zones', icon: MapPin },
     { name: t('nav.media'), href: '/admin/media', icon: Image },
     { name: t('nav.partners'), href: '/admin/partners', icon: Users },
     { name: t('nav.features'), href: '/admin/features', icon: Sparkles },
     { name: t('nav.testimonials'), href: '/admin/testimonials', icon: MessageSquareQuote },
+    { name: t('nav.heroSlides'), href: '/admin/hero-slides', icon: Layers },
     { name: t('nav.homepageLayout'), href: '/admin/homepage-layout', icon: LayoutGrid },
     { name: t('nav.navigation'), href: '/admin/navigation', icon: Navigation },
     { name: t('nav.dealers'), href: '/admin/dealers', icon: Store },
