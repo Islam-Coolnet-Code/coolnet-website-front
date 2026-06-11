@@ -8,16 +8,15 @@ import { loginUser, CustomerApiError } from '@/services/auth/api';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, User, Lock, Shield, Eye, EyeOff } from 'lucide-react';
+import { Loader2, User, Lock, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Login: React.FC = () => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { login } = useAuth();
   const navigate = useNavigate();
   const { font } = useFont();
   const { toast } = useToast();
-  const isRTL = language === 'ar';
 
   const [userno, setUserno] = useState('');
   const [password, setPassword] = useState('');
@@ -41,21 +40,28 @@ const Login: React.FC = () => {
 
       if (session.forcePasswordChange) {
         navigate('/customer-corner/change-password', { replace: true });
-      } else {
-        toast({
-          title: t('customerCorner.login.welcome'),
-          description: session.username,
-        });
-        navigate('/customer-corner/dashboard', { replace: true });
+        return;
       }
+
+      toast({
+        title: t('customerCorner.toast.signedInTitle'),
+        description: t('customerCorner.toast.signedInBody'),
+      });
+      navigate('/customer-corner/dashboard', { replace: true });
     } catch (err) {
       const code = err instanceof CustomerApiError ? err.code : '';
       if (code === 'NOT_FOUND') {
         setError(t('customerCorner.login.userNotFound'));
       } else if (code === 'UNAUTHORIZED' || code === 'INVALID_CREDENTIALS') {
         setError(t('customerCorner.login.invalidCredentials'));
+      } else if (
+        code === 'INVALID_API_KEY' ||
+        code === 'UPSTREAM_UNAVAILABLE' ||
+        code === 'UPSTREAM_ERROR'
+      ) {
+        setError(t('customerCorner.login.serviceUnavailable'));
       } else {
-        setError(err instanceof Error ? err.message : t('customerCorner.login.error'));
+        setError(t('customerCorner.login.error'));
       }
     } finally {
       setLoading(false);
@@ -63,14 +69,15 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-coolnet-purple/5 via-gray-50 to-gray-50">
       <CustomerCornerHeader />
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="max-w-md mx-auto" dir={isRTL ? 'rtl' : 'ltr'}>
-          <Card className="shadow-xl border-0">
-            <CardHeader className="text-center pb-2">
-              <div className="w-16 h-16 bg-coolnet-purple/10 rounded-full flex items-center justify-center mx-auto mb-4">
+      <main className="container mx-auto px-4 py-10 sm:py-16">
+        <div className="max-w-md mx-auto">
+          <Card className="shadow-xl border-0 overflow-hidden">
+            <div className="h-1.5 bg-gradient-to-r from-coolnet-purple to-coolnet-orange" />
+            <CardHeader className="text-center pb-2 pt-8">
+              <div className="w-16 h-16 bg-coolnet-purple/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Lock className="w-8 h-8 text-coolnet-purple" />
               </div>
               <CardTitle className={`text-2xl text-gray-900 ${font}`}>
@@ -81,7 +88,7 @@ const Login: React.FC = () => {
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="pt-4">
+            <CardContent className="pt-4 pb-8">
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Subscriber number */}
                 <div className="space-y-2">
@@ -89,15 +96,14 @@ const Login: React.FC = () => {
                     {t('customerCorner.login.userno')}
                   </label>
                   <div className="relative">
-                    <User className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 ${isRTL ? 'right-3' : 'left-3'}`} />
+                    <User className="absolute top-1/2 -translate-y-1/2 start-3 w-5 h-5 text-gray-400 pointer-events-none" />
                     <Input
                       type="text"
                       inputMode="numeric"
                       value={userno}
                       onChange={(e) => { setUserno(e.target.value); setError(''); }}
                       placeholder={t('customerCorner.login.usernoPlaceholder')}
-                      className={`h-12 border-gray-300 focus:border-coolnet-purple focus:ring-coolnet-purple
-                                ${isRTL ? 'pr-12 text-right' : 'pl-12'} ${error ? 'border-red-500' : ''}`}
+                      className={`h-12 ps-11 border-gray-300 focus-visible:ring-coolnet-purple ${error ? 'border-red-400' : ''}`}
                       dir="ltr"
                       disabled={loading}
                       autoComplete="username"
@@ -111,14 +117,13 @@ const Login: React.FC = () => {
                     {t('customerCorner.login.password')}
                   </label>
                   <div className="relative">
-                    <Lock className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 ${isRTL ? 'right-3' : 'left-3'}`} />
+                    <Lock className="absolute top-1/2 -translate-y-1/2 start-3 w-5 h-5 text-gray-400 pointer-events-none" />
                     <Input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => { setPassword(e.target.value); setError(''); }}
                       placeholder={t('customerCorner.login.passwordPlaceholder')}
-                      className={`h-12 border-gray-300 focus:border-coolnet-purple focus:ring-coolnet-purple
-                                ${isRTL ? 'pr-12 pl-12 text-right' : 'pl-12 pr-12'} ${error ? 'border-red-500' : ''}`}
+                      className={`h-12 ps-11 pe-11 border-gray-300 focus-visible:ring-coolnet-purple ${error ? 'border-red-400' : ''}`}
                       dir="ltr"
                       disabled={loading}
                       autoComplete="current-password"
@@ -126,21 +131,25 @@ const Login: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword((v) => !v)}
-                      className={`absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 ${isRTL ? 'left-3' : 'right-3'}`}
+                      className="absolute top-1/2 -translate-y-1/2 end-3 text-gray-400 hover:text-gray-600"
                       tabIndex={-1}
-                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      aria-label={showPassword ? t('customerCorner.login.hidePassword') : t('customerCorner.login.showPassword')}
                     >
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
                 </div>
 
-                {error && <p className="text-red-500 text-sm">{error}</p>}
+                {error && (
+                  <p className={`text-red-600 text-sm bg-red-50 border border-red-100 rounded-lg px-3 py-2 ${font}`}>
+                    {error}
+                  </p>
+                )}
 
                 <Button
                   type="submit"
                   disabled={loading || !userno.trim() || !password}
-                  className={`w-full h-12 bg-coolnet-purple hover:bg-coolnet-purple-dark text-white font-medium transition-all duration-200 ${font}`}
+                  className={`w-full h-12 bg-coolnet-purple hover:bg-coolnet-purple-dark text-white font-medium ${font}`}
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -153,9 +162,8 @@ const Login: React.FC = () => {
                 </Button>
               </form>
 
-              {/* Security notice */}
-              <div className={`mt-6 pt-6 border-t border-gray-100 flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <Shield className="w-5 h-5 text-green-600 flex-shrink-0" />
+              <div className="mt-6 pt-5 border-t border-gray-100 flex items-center gap-3">
+                <ShieldCheck className="w-5 h-5 text-green-600 shrink-0" />
                 <p className={`text-xs text-gray-500 ${font}`}>
                   {t('customerCorner.login.securityNotice')}
                 </p>

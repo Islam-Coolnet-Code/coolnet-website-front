@@ -21,29 +21,28 @@ interface ExtendDialogProps {
 }
 
 const ExtendDialog: React.FC<ExtendDialogProps> = ({ open, onOpenChange, onConfirm, loading }) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { font } = useFont();
-  const isRTL = language === 'ar';
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent dir={isRTL ? 'rtl' : 'ltr'}>
+      <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className={font}>
+          <AlertDialogTitle className={`text-start ${font}`}>
             {t('customerCorner.dashboard.extend')}
           </AlertDialogTitle>
-          <AlertDialogDescription className={font}>
+          <AlertDialogDescription className={`text-start ${font}`}>
             {t('customerCorner.dashboard.extendConfirm')}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter className={isRTL ? 'flex-row-reverse gap-2' : ''}>
+        <AlertDialogFooter>
           <AlertDialogCancel className={font} disabled={loading}>
             {t('common.close')}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={(e) => { e.preventDefault(); onConfirm(); }}
             disabled={loading}
-            className={`bg-coolnet-orange hover:bg-coolnet-orange/90 ${font}`}
+            className={`bg-coolnet-orange hover:bg-coolnet-orange-dark ${font}`}
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : t('customerCorner.dashboard.extend')}
           </AlertDialogAction>

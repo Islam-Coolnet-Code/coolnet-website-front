@@ -117,9 +117,9 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
     }
   }, [formData.city]);
 
-  // Filter zones by selected city
+  // Filter zones by selected city — empty until a city is chosen.
   const filteredZones = useMemo(() => {
-    if (selectedCityId === null) return allZones;
+    if (selectedCityId === null) return [];
     return allZones.filter(zone => zone.cityId === selectedCityId);
   }, [allZones, selectedCityId]);
 
@@ -308,7 +308,7 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
             id="state"
             value={filteredZones.find(z => z.name.ar === formData.state)?.id?.toString() ?? ''}
             onChange={handleZoneChange}
-            disabled={zonesLoading}
+            disabled={zonesLoading || selectedCityId === null}
             className={getFieldClasses('state', `w-full bg-white/90 text-black ${isRTL ? 'text-right' : 'text-left'} rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-coolnet-orange disabled:opacity-50`)}
           >
             <option value="">
@@ -320,6 +320,10 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
                   (language === 'ar' ? 'خطأ في تحميل المناطق' :
                     language === 'he' ? 'שגיאה בטעינת אזורים' :
                       'Error loading zones') :
+                selectedCityId === null ?
+                  (language === 'ar' ? 'اختر المدينة أولاً' :
+                    language === 'he' ? 'בחר עיר תחילה' :
+                      'Select a city first') :
                   t('order.newLine.selectState')
               }
             </option>

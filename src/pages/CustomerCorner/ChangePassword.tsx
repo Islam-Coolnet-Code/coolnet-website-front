@@ -12,12 +12,11 @@ import { Loader2, KeyRound, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const ChangePassword: React.FC = () => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { session, setSession } = useAuth();
   const navigate = useNavigate();
   const { font } = useFont();
   const { toast } = useToast();
-  const isRTL = language === 'ar';
 
   const forced = !!session?.forcePasswordChange;
 
@@ -50,7 +49,6 @@ const ChangePassword: React.FC = () => {
 
     setLoading(true);
     try {
-      // On the forced first-login change, old_password is not required.
       const result = await changePassword(newPassword, forced ? undefined : oldPassword);
 
       if (session) {
@@ -63,8 +61,8 @@ const ChangePassword: React.FC = () => {
       }
 
       toast({
-        title: t('customerCorner.changePassword.success'),
-        description: t('customerCorner.changePassword.successDesc'),
+        title: t('customerCorner.toast.passwordChangedTitle'),
+        description: t('customerCorner.toast.passwordChangedBody'),
       });
       navigate('/customer-corner/dashboard', { replace: true });
     } catch (err) {
@@ -72,22 +70,43 @@ const ChangePassword: React.FC = () => {
       if (code === 'UNAUTHORIZED' || code === 'INVALID_CREDENTIALS') {
         setError(t('customerCorner.changePassword.wrongOld'));
       } else {
-        setError(err instanceof Error ? err.message : t('customerCorner.changePassword.error'));
+        setError(t('customerCorner.changePassword.error'));
       }
     } finally {
       setLoading(false);
     }
   };
 
+  const field = (
+    label: string,
+    value: string,
+    onChange: (v: string) => void,
+    autoComplete: string
+  ) => (
+    <div className="space-y-2">
+      <label className={`text-sm font-medium text-gray-700 ${font}`}>{label}</label>
+      <Input
+        type="password"
+        value={value}
+        onChange={(e) => { onChange(e.target.value); setError(''); }}
+        className="h-12 border-gray-300 focus-visible:ring-coolnet-purple"
+        dir="ltr"
+        disabled={loading}
+        autoComplete={autoComplete}
+      />
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-coolnet-purple/5 via-gray-50 to-gray-50">
       <CustomerCornerHeader showLogout />
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="max-w-md mx-auto" dir={isRTL ? 'rtl' : 'ltr'}>
-          <Card className="shadow-xl border-0">
-            <CardHeader className="text-center pb-2">
-              <div className="w-16 h-16 bg-coolnet-purple/10 rounded-full flex items-center justify-center mx-auto mb-4">
+      <main className="container mx-auto px-4 py-10 sm:py-16">
+        <div className="max-w-md mx-auto">
+          <Card className="shadow-xl border-0 overflow-hidden">
+            <div className="h-1.5 bg-gradient-to-r from-coolnet-purple to-coolnet-orange" />
+            <CardHeader className="text-center pb-2 pt-8">
+              <div className="w-16 h-16 bg-coolnet-purple/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <KeyRound className="w-8 h-8 text-coolnet-purple" />
               </div>
               <CardTitle className={`text-2xl text-gray-900 ${font}`}>
@@ -98,65 +117,26 @@ const ChangePassword: React.FC = () => {
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="pt-4">
+            <CardContent className="pt-4 pb-8">
               {forced && (
-                <div className={`mb-5 flex items-start gap-3 rounded-lg bg-amber-50 border border-amber-200 p-3 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
-                  <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                  <p className={`text-sm text-amber-800 ${font}`}>
+                <div className="mb-5 flex items-start gap-3 rounded-xl bg-amber-50 border border-amber-200 p-3">
+                  <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                  <p className={`text-sm text-amber-800 text-start ${font}`}>
                     {t('customerCorner.changePassword.forcedNotice')}
                   </p>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {!forced && (
-                  <div className="space-y-2">
-                    <label className={`text-sm font-medium text-gray-700 ${font}`}>
-                      {t('customerCorner.changePassword.oldPassword')}
-                    </label>
-                    <Input
-                      type="password"
-                      value={oldPassword}
-                      onChange={(e) => { setOldPassword(e.target.value); setError(''); }}
-                      className="h-12 border-gray-300 focus:border-coolnet-purple focus:ring-coolnet-purple"
-                      dir="ltr"
-                      disabled={loading}
-                      autoComplete="current-password"
-                    />
-                  </div>
+                {!forced && field(t('customerCorner.changePassword.oldPassword'), oldPassword, setOldPassword, 'current-password')}
+                {field(t('customerCorner.changePassword.newPassword'), newPassword, setNewPassword, 'new-password')}
+                {field(t('customerCorner.changePassword.confirm'), confirm, setConfirm, 'new-password')}
+
+                {error && (
+                  <p className={`text-red-600 text-sm bg-red-50 border border-red-100 rounded-lg px-3 py-2 ${font}`}>
+                    {error}
+                  </p>
                 )}
-
-                <div className="space-y-2">
-                  <label className={`text-sm font-medium text-gray-700 ${font}`}>
-                    {t('customerCorner.changePassword.newPassword')}
-                  </label>
-                  <Input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => { setNewPassword(e.target.value); setError(''); }}
-                    className="h-12 border-gray-300 focus:border-coolnet-purple focus:ring-coolnet-purple"
-                    dir="ltr"
-                    disabled={loading}
-                    autoComplete="new-password"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className={`text-sm font-medium text-gray-700 ${font}`}>
-                    {t('customerCorner.changePassword.confirm')}
-                  </label>
-                  <Input
-                    type="password"
-                    value={confirm}
-                    onChange={(e) => { setConfirm(e.target.value); setError(''); }}
-                    className="h-12 border-gray-300 focus:border-coolnet-purple focus:ring-coolnet-purple"
-                    dir="ltr"
-                    disabled={loading}
-                    autoComplete="new-password"
-                  />
-                </div>
-
-                {error && <p className="text-red-500 text-sm">{error}</p>}
 
                 <Button
                   type="submit"

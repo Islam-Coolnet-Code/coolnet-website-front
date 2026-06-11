@@ -3,6 +3,29 @@ import type { AuthSession } from '@/types/authTypes';
 import { tokenStore } from '@/services/auth/tokenStore';
 
 const AUTH_STORAGE_KEY = 'coolnet_customer_session';
+// setTimeout fires immediately for delays beyond ~24.8 days (2^31-1 ms); cap to that.
+const MAX_TIMEOUT_MS = 2_147_483_647;
+
+/**
+ * Parse Coolgate's token_expires_at into epoch ms, tolerating non-ISO formats.
+ * Returns null when it can't be parsed (in which case we DON'T auto-logout —
+ * the API's own 401 handling remains the safety net).
+ */
+function parseExpiry(value: string | number | undefined | null): number | null {
+  if (value === null || value === undefined || value === '') return null;
+  // Numeric (or numeric-string) → Unix epoch. Coolgate uses seconds.
+  if (typeof value === 'number' || /^\d+$/.test(String(value).trim())) {
+    const n = Number(value);
+    if (Number.isNaN(n)) return null;
+    return n < 1e12 ? n * 1000 : n; // seconds → ms (guard if already ms)
+  }
+  let ms = Date.parse(value);
+  if (Number.isNaN(ms)) {
+    // MySQL "YYYY-MM-DD HH:MM:SS" → make it ISO-ish.
+    ms = Date.parse(String(value).replace(' ', 'T'));
+  }
+  return Number.isNaN(ms) ? null : ms;
+}
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -22,8 +45,9 @@ function loadSession(): AuthSession | null {
     const raw = sessionStorage.getItem(AUTH_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as AuthSession;
-    // Expire if the token is past its expiry.
-    if (parsed.tokenExpiresAt && Date.parse(parsed.tokenExpiresAt) <= Date.now()) {
+    // Expire only if we can parse the expiry AND it's in the past.
+    const exp = parseExpiry(parsed.tokenExpiresAt);
+    if (exp !== null && exp <= Date.now()) {
       sessionStorage.removeItem(AUTH_STORAGE_KEY);
       return null;
     }
@@ -58,15 +82,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const setSession = useCallback((next: AuthSession) => persist(next), [persist]);
   const logout = useCallback(() => persist(null), [persist]);
 
-  // Auto-logout when the token expires.
+  // Auto-logout when the token expires. If the expiry can't be parsed we skip
+  // the timer entirely (a NaN delay would make setTimeout fire immediately and
+  // log the user straight back out); the API's 401 handling covers that case.
   useEffect(() => {
-    if (!session?.tokenExpiresAt) return;
-    const remaining = Date.parse(session.tokenExpiresAt) - Date.now();
+    const exp = parseExpiry(session?.tokenExpiresAt);
+    if (exp === null) return;
+    const remaining = exp - Date.now();
     if (remaining <= 0) {
       logout();
       return;
     }
-    const id = setTimeout(logout, remaining);
+    const id = setTimeout(logout, Math.min(remaining, MAX_TIMEOUT_MS));
     return () => clearTimeout(id);
   }, [session?.tokenExpiresAt, logout]);
 

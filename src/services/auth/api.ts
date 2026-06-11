@@ -24,12 +24,17 @@ const customerApi = axios.create({
   timeout: 15000,
 });
 
-// Attach bearer token on every request when present.
+// Attach the customer token on every request when present.
+// We send BOTH headers on purpose: `Authorization` is the standard, but some
+// reverse-proxy edges (e.g. the coolnet.ps front layer) strip `Authorization`
+// while passing custom headers through — so `token` is the resilient fallback.
+// The backend's requireCustomerToken middleware accepts either.
 customerApi.interceptors.request.use((config) => {
   const token = tokenStore.get();
   if (token) {
     config.headers = config.headers ?? {};
     config.headers.Authorization = `Bearer ${token}`;
+    config.headers.token = token;
   }
   return config;
 });

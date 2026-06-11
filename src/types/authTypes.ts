@@ -24,6 +24,8 @@ export interface UserDetails {
   mobile: string;
   serviceType: string;
   status: OnlineStatus;
+  expiration: string | null; // datetime, or null
+  expired: boolean; // authoritative expiry flag from upstream
   totalExtendDays: number;
   paidTill: string | null; // Y-m-d or null
 }

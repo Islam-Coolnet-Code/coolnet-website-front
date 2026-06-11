@@ -59,8 +59,14 @@ const PageLoader = () => (
 const ConditionalHeader = () => {
   const location = useLocation();
 
-  // Hide header for QR promotion routes, customer corner routes, and admin routes
-  if (location.pathname.startsWith('/qrpromotion') || location.pathname.startsWith('/customer-corner') || location.pathname.startsWith('/admin')) {
+  // Hide header for QR promotion routes, customer corner routes, the (now
+  // customer-zone) neighbors campaign, and admin routes — they use their own header.
+  if (
+    location.pathname.startsWith('/qrpromotion') ||
+    location.pathname.startsWith('/customer-corner') ||
+    location.pathname.startsWith('/neighbors-campaign') ||
+    location.pathname.startsWith('/admin')
+  ) {
     return null;
   }
 
@@ -83,7 +89,14 @@ const App = () => (
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/new-line" element={<NewLine />} />
-                    <Route path="/neighbors-campaign" element={<NeighborsCampaign />} />
+                    <Route
+                      path="/neighbors-campaign"
+                      element={
+                        <ProtectedRoute>
+                          <NeighborsCampaign />
+                        </ProtectedRoute>
+                      }
+                    />
                     <Route path="/dealers" element={<Dealers />} />
                     <Route path="/site/get-dealers" element={<Dealers />} />
                     <Route path="/home-services" element={<HomServices />} />

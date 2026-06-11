@@ -457,6 +457,7 @@
       "selectAddress": "Select your address",
       "city": "City",
       "selectCity": "Select a city",
+      "loading": "Loading...",
       "zone": "Zone",
       "state": "State",
       "selectState": "Select a state",
@@ -624,6 +625,8 @@
       "subscriptionNumber": "Your Subscription Number",
       "subscriptionNumberPlaceholder": "Enter the referrer subscription number",
       "subscriptionNumberHelp": "The subscription (customer) number of the existing Coolnet customer making this referral.",
+      "readOnlyHelp": "This is your subscriber number — used as the referrer for this request.",
+      "selectCityFirst": "Select a city first",
       "errors": {
         "subscriptionRequired": "Subscription number is required",
         "subscriptionFormat": "Subscription number must contain only digits"
@@ -915,6 +918,10 @@
     }
   },
   "customerCorner": {
+    "header": {
+      "home": "Home",
+      "logout": "Logout"
+    },
     "login": {
       "title": "Customer Zone",
       "subtitle": "Sign in with your subscriber number and password",
@@ -922,27 +929,27 @@
       "usernoPlaceholder": "e.g. 34768",
       "password": "Password",
       "passwordPlaceholder": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
       "signIn": "Sign In",
       "signingIn": "Signing in...",
-      "welcome": "Welcome",
       "required": "Please enter your subscriber number and password",
       "invalidCredentials": "Subscriber number or password is incorrect",
       "userNotFound": "Subscriber number not found",
       "userDisabled": "This account is disabled",
-      "error": "An error occurred. Please try again.",
+      "serviceUnavailable": "The service is temporarily unavailable. Please try again later.",
+      "error": "Something went wrong. Please try again.",
       "securityNotice": "Your information is secure and protected with us."
     },
     "changePassword": {
       "title": "Change Password",
-      "forcedNotice": "You must change your password on first login.",
+      "forcedNotice": "For your security, please set a new password before continuing.",
       "rules": "At least 6 characters, and different from your subscriber number.",
       "oldPassword": "Current Password",
       "newPassword": "New Password",
       "confirm": "Confirm Password",
       "submit": "Save",
       "saving": "Saving...",
-      "success": "Password Changed",
-      "successDesc": "Your password has been updated successfully.",
       "tooShort": "Password must be at least 6 characters",
       "sameAsUserno": "Password must differ from your subscriber number",
       "mismatch": "Passwords do not match",
@@ -951,7 +958,7 @@
       "error": "Failed to change password"
     },
     "dashboard": {
-      "welcome": "Welcome",
+      "welcome": "Welcome back",
       "fullName": "Full Name",
       "subscriberNo": "Subscriber Number",
       "mobile": "Mobile",
@@ -962,20 +969,33 @@
       "paidTill": "Paid Till",
       "totalExtendDays": "Total Extend Days",
       "extend": "Extend 1 Day",
-      "extendConfirm": "Extend your line expiration by one day?",
-      "extendSuccess": "Line extended",
-      "extendError": "Extension failed",
-      "notExpired": "Your line is still active — no extension needed.",
-      "loadError": "Failed to load your account details.",
-      "logout": "Logout"
+      "extendConfirm": "Extend your line for one more day?",
+      "referNeighbor": "Refer a Neighbor",
+      "referNeighborDesc": "Invite a neighbor and request a new line on their behalf.",
+      "referNeighborCta": "Start referral",
+      "loadError": "We couldn't load your account details."
     },
     "usage": {
-      "title": "Usage",
+      "title": "Data Usage",
       "download": "Download",
       "upload": "Upload",
       "lastWeek": "Last Week",
       "lastMonth": "Last Month",
       "last3Months": "Last 3 Months"
+    },
+    "toast": {
+      "signedInTitle": "Signed in",
+      "signedInBody": "Welcome to your Customer Zone.",
+      "passwordChangedTitle": "Password updated",
+      "passwordChangedBody": "Your new password is now active.",
+      "extendedTitle": "Line extended",
+      "extendedBody": "Your subscription is now valid until {date}.",
+      "stillActiveTitle": "No extension needed",
+      "stillActiveBody": "Your line is still active.",
+      "extendLimitTitle": "Extension limit reached",
+      "extendLimitBody": "You've used all available extensions. Please renew your subscription to stay connected.",
+      "extendFailedTitle": "Couldn't extend the line",
+      "extendFailedBody": "Please try again in a moment."
     }
   },
   "posts": {
