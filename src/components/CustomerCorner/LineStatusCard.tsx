@@ -44,6 +44,10 @@ const LineStatusCard: React.FC<LineStatusCardProps> = ({ details, onExtendClick,
             </span>
           </div>
 
+          <p className={`text-sm text-coolnet-purple flex-1 min-w-[12rem] ${font}`}>
+            {t('customerCorner.dashboard.lineStatusNote')}
+          </p>
+
           {expired && (
             <Button
               onClick={onExtendClick}

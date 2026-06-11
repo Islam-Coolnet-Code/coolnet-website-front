@@ -2,7 +2,8 @@
   "name": "Coolnet - Ultra-Fast Fiber Internet",
   "short_name": "Coolnet",
   "description": "Ultra-fast fiber internet provider in Palestine. Speeds up to 1000 Mbps with 24/7 support.",
-  "start_url": "/",
+  "start_url": "/customer-corner",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#4a2d6e",
   "theme_color": "#4a2d6e",
@@ -17,16 +18,28 @@
       "type": "image/x-icon"
     },
     {
-      "src": "/favicon.ico",
+      "src": "/pwa-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/favicon.ico",
+      "src": "/pwa-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/pwa-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

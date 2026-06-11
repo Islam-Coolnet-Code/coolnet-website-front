@@ -4,7 +4,7 @@
     "homeDescription": "Coolnet delivers blazing-fast fiber internet up to 1000 Mbps across Palestine. Reliable connectivity, 24/7 support, competitive plans. Get connected today!",
     "homeKeywords": "coolnet, fiber internet palestine, high speed internet, broadband, wifi, internet plans, unlimited internet, fiber optic"
   },
-  "appDownload": {  
+  "appDownload": {
     "download": {
       "title": "Download Our App Now",
       "subtitle": "Enjoy a seamless experience managing your internet services with our smart app.",
@@ -46,7 +46,11 @@
     "iosStep3": "Tap 'Add' to install the app",
     "androidStep1": "Tap the menu button (⋮) in Chrome",
     "androidStep2": "Tap 'Add to Home screen'",
-    "androidStep3": "Tap 'Add' to install the app"
+    "androidStep3": "Tap 'Add' to install the app",
+    "desktopStep1": "Click the install icon ⊕ in the browser's address bar",
+    "desktopStep2": "Or open the browser menu (⋮) and choose 'Install Coolnet'",
+    "desktopStep3": "Click 'Install' to add the site to your device",
+    "installPrompt": "Install the Coolnet app on your device"
   },
   "languageModal": {
     "title": "Select Language",
@@ -73,7 +77,6 @@
     "resendTimeoutMessage": "You can try again in",
     "resending": "Resending...",
     "navigationBlocked": "Please complete OTP verification before proceeding to other steps."
-
   },
   "hero": {
     "badge": "Lightning Fast Fiber Internet",
@@ -374,25 +377,140 @@
     "noServices": "No services available at the moment"
   },
   "dealers": {
-    "errorLoad": "Failed to load dealer data. Please try again.",
-    "geoNotSupported": "Location services are not supported by your browser.",
-    "geoError": "Unable to retrieve your location.",
-    "geoPermissionDenied": "Location access was denied. Please enable it in your settings.",
-    "geoPositionUnavailable": "Location information is unavailable.",
-    "geoTimeout": "Location request timed out.",
-    "loading": "Loading dealers data...",
-    "retry": "Retry",
-    "noDealers": "No dealers available at the moment.",
-    "tryAgainLater": "Please try again later.",
-    "findNearest": "Find Nearest Store",
-    "findingLocation": "Finding your location...",
-    "locationFound": "Location found!",
-    "sortedByDistance": "Sorted by distance",
-    "closestToYou": "Closest to you"
+    "title": "Payment Locations",
+    "subtitle": "Find a store near you to make cash payments",
+    "availableStores": "Available Stores",
+    "viewLocation": "View Location",
+    "viewShopImage": "View Shop",
+    "hideShopImage": "Hide Image",
+    "getDirections": "Get Directions",
+    "call": "Call",
+    "workingHours": "Working Hours",
+    "shopDetails": "Shop Details",
+    "selectStore": "Select a store from the list to view its location on the map",
+    "findNearestStore": "Find Nearest Store",
+    "gettingLocation": "Getting location...",
+    "locationFound": "Location found",
+    "yourLocation": "Your Location",
+    "nearestToYou": "Nearest to you",
+    "sortedByDistance": "sorted by distance",
+    "away": "away",
+    "fromYourLocation": "from your location",
+    "geolocationNotSupported": "Geolocation is not supported by your browser",
+    "unableToRetrieveLocation": "Unable to retrieve your location",
+    "locationRequestDenied": "Location request denied",
+    "locationInformationUnavailable": "Location information unavailable",
+    "locationRequestTimedOut": "Location request timed out",
+    "becomeDealer": "Become a Dealer",
+    "contactDealer": "Contact Dealer",
+    "searchPlaceholder": "Search by name or location...",
+    "noResults": "No dealers found matching your search.",
+    "dealerCard": {
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "details": "Details",
+      "workingHours": "Working Hours",
+      "services": "Services",
+      "installations": "Installations",
+      "technicalSupport": "Technical Support",
+      "newConnections": "New Connections"
+    },
+    "becomeDealerSection": {
+      "title": "Become a  Coolnet Dealer",
+      "description": "Join our network of authorized dealers and help bring high-speed fiber internet to East Jerusalem.",
+      "benefits": {
+        "title": "Dealer Benefits",
+        "commission": "Competitive commissions",
+        "training": "Comprehensive training",
+        "support": "Marketing support",
+        "territory": "Exclusive territories"
+      },
+      "ctaText": "Apply Now",
+      "contactUs": "Contact us to learn more about becoming a dealer"
+    }
   },
   "customerCorner": {
+    "header": {
+      "home": "Home",
+      "logout": "Logout"
+    },
     "login": {
+      "title": "Customer Zone",
+      "subtitle": "Sign in with your subscriber number and password",
+      "userno": "Subscriber Number",
+      "usernoPlaceholder": "e.g. 34768",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "required": "Please enter your subscriber number and password",
+      "invalidCredentials": "Subscriber number or password is incorrect",
+      "userNotFound": "Subscriber number not found",
+      "userDisabled": "This account is disabled",
+      "serviceUnavailable": "The service is temporarily unavailable. Please try again later.",
+      "error": "Something went wrong. Please try again.",
       "securityNotice": "Your information is secure and protected with us."
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "forcedNotice": "For your security, please set a new password before continuing.",
+      "rules": "At least 6 characters, and different from your subscriber number.",
+      "oldPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirm": "Confirm Password",
+      "submit": "Save",
+      "saving": "Saving...",
+      "tooShort": "Password must be at least 6 characters",
+      "sameAsUserno": "Password must differ from your subscriber number",
+      "mismatch": "Passwords do not match",
+      "oldRequired": "Please enter your current password",
+      "wrongOld": "Your current password is incorrect",
+      "error": "Failed to change password",
+      "match": "Passwords match"
+    },
+    "dashboard": {
+      "welcome": "Welcome back",
+      "fullName": "Full Name",
+      "subscriberNo": "Subscriber Number",
+      "mobile": "Mobile",
+      "lineStatus": "Line Status",
+      "online": "Online",
+      "offline": "Offline",
+      "lineStatusNote": "If your line is disconnected due to an invoice, you can activate the line and postpone the payment through this page.",
+      "serviceType": "Service Type",
+      "paidTill": "Paid Till",
+      "totalExtendDays": "Total Extend Days",
+      "extend": "Extend 1 Day",
+      "extendConfirm": "Extend your line for one more day?",
+      "referNeighbor": "Refer a Neighbor",
+      "referNeighborDesc": "Invite a neighbor and request a new line on their behalf.",
+      "referNeighborCta": "Start referral",
+      "loadError": "We couldn't load your account details."
+    },
+    "usage": {
+      "title": "Data Usage",
+      "download": "Download",
+      "upload": "Upload",
+      "lastWeek": "Last Week",
+      "lastMonth": "Last Month",
+      "last3Months": "Last 3 Months"
+    },
+    "toast": {
+      "signedInTitle": "Signed in",
+      "signedInBody": "Welcome to your Customer Zone.",
+      "passwordChangedTitle": "Password updated",
+      "passwordChangedBody": "Your new password is now active.",
+      "extendedTitle": "Line extended",
+      "extendedBody": "Your subscription is now valid until {date}.",
+      "stillActiveTitle": "No extension needed",
+      "stillActiveBody": "Your line is still active.",
+      "extendLimitTitle": "Extension limit reached",
+      "extendLimitBody": "You've used all available extensions. Please renew your subscription to stay connected.",
+      "extendFailedTitle": "Couldn't extend the line",
+      "extendFailedBody": "Please try again in a moment."
     }
   },
   "contact": {
@@ -511,12 +629,11 @@
         "networkError": "Network error",
         "otpSendFailed": "Personal info saved, but OTP sending failed. You can try again.",
         "houseNumberFormat": "House number must contain only numbers"
-        },
+      },
       "verification": {
         "required": "Verification Required",
         "phoneOrIdChanged": "You have changed your phone number or ID. Please complete the verification process before proceeding."
       },
-
       "success": {
         "title": "Order Submitted Successfully!",
         "message": "Your order has been submitted successfully. You will be redirected to activate your service.",
@@ -587,12 +704,6 @@
       "apFilterPrice": "₪10/month",
       "planName": "Plan Name",
       "router": {
-        "selectRouter": "Select a Router",
-        "removeSelection": "Remove Selection",
-        "rentFor": "Rent for",
-        "buyFor": "Buy for",
-        "selected": "Selected Router",
-        "name": "Router Name",
         "5": {
           "description": "Quantity: 1 PCS. The Nova EX12 is an AX3000 Whole Home Mesh Wi-Fi 6 System. It delivers solid Wi-Fi coverage for up to 7,000 ft². Includes four independent wireless amplifiers. Features beamforming technology for better performance."
         },
@@ -601,7 +712,13 @@
         },
         "7": {
           "description": "Quantity: 3 PCS. Best coverage and performance for large homes or offices. Powerful specs and high-speed dual-band. Ideal for multi-floor buildings."
-        }
+        },
+        "selectRouter": "Select a Router",
+        "removeSelection": "Remove Selection",
+        "rentFor": "Rent for",
+        "buyFor": "Buy for",
+        "selected": "Selected Router",
+        "name": "Router Name"
       },
       "orderSummary": {
         "title": "Order Summary",
@@ -640,60 +757,6 @@
   "jitter": "Jitter",
   "startTest": "Start Speed Test",
   "runAgain": "Test Again",
-  "dealers": {
-    "title": "Payment Locations",
-    "subtitle": "Find a store near you to make cash payments",
-    "availableStores": "Available Stores",
-    "viewLocation": "View Location",
-    "viewShopImage": "View Shop",
-    "hideShopImage": "Hide Image",
-    "getDirections": "Get Directions",
-    "call": "Call",
-    "workingHours": "Working Hours",
-    "shopDetails": "Shop Details",
-    "selectStore": "Select a store from the list to view its location on the map",
-    "findNearestStore": "Find Nearest Store",
-    "gettingLocation": "Getting location...",
-    "locationFound": "Location found",
-    "yourLocation": "Your Location",
-    "nearestToYou": "Nearest to you",
-    "sortedByDistance": "sorted by distance",
-    "away": "away",
-    "fromYourLocation": "from your location",
-    "geolocationNotSupported": "Geolocation is not supported by your browser",
-    "unableToRetrieveLocation": "Unable to retrieve your location",
-    "locationRequestDenied": "Location request denied",
-    "locationInformationUnavailable": "Location information unavailable",
-    "locationRequestTimedOut": "Location request timed out",
-    "becomeDealer": "Become a Dealer",
-    "contactDealer": "Contact Dealer",
-    "searchPlaceholder": "Search by name or location...",
-    "noResults": "No dealers found matching your search.",
-    "dealerCard": {
-      "phone": "Phone",
-      "email": "Email",
-      "address": "Address",
-      "details": "Details",
-      "workingHours": "Working Hours",
-      "services": "Services",
-      "installations": "Installations",
-      "technicalSupport": "Technical Support",
-      "newConnections": "New Connections"
-    },
-    "becomeDealerSection": {
-      "title": "Become a  Coolnet Dealer",
-      "description": "Join our network of authorized dealers and help bring high-speed fiber internet to East Jerusalem.",
-      "benefits": {
-        "title": "Dealer Benefits",
-        "commission": "Competitive commissions",
-        "training": "Comprehensive training",
-        "support": "Marketing support",
-        "territory": "Exclusive territories"
-      },
-      "ctaText": "Apply Now",
-      "contactUs": "Contact us to learn more about becoming a dealer"
-    }
-  },
   "business": {
     "heroTitle": "Premium fiber internet solutions designed specifically for businesses and commercial establishments in East Jerusalem",
     "whyChoose": "Why Choose Coolnet for Business",
@@ -915,87 +978,6 @@
     },
     "celebration": {
       "continueToRegister": "Continue to Register →"
-    }
-  },
-  "customerCorner": {
-    "header": {
-      "home": "Home",
-      "logout": "Logout"
-    },
-    "login": {
-      "title": "Customer Zone",
-      "subtitle": "Sign in with your subscriber number and password",
-      "userno": "Subscriber Number",
-      "usernoPlaceholder": "e.g. 34768",
-      "password": "Password",
-      "passwordPlaceholder": "Enter your password",
-      "showPassword": "Show password",
-      "hidePassword": "Hide password",
-      "signIn": "Sign In",
-      "signingIn": "Signing in...",
-      "required": "Please enter your subscriber number and password",
-      "invalidCredentials": "Subscriber number or password is incorrect",
-      "userNotFound": "Subscriber number not found",
-      "userDisabled": "This account is disabled",
-      "serviceUnavailable": "The service is temporarily unavailable. Please try again later.",
-      "error": "Something went wrong. Please try again.",
-      "securityNotice": "Your information is secure and protected with us."
-    },
-    "changePassword": {
-      "title": "Change Password",
-      "forcedNotice": "For your security, please set a new password before continuing.",
-      "rules": "At least 6 characters, and different from your subscriber number.",
-      "oldPassword": "Current Password",
-      "newPassword": "New Password",
-      "confirm": "Confirm Password",
-      "submit": "Save",
-      "saving": "Saving...",
-      "tooShort": "Password must be at least 6 characters",
-      "sameAsUserno": "Password must differ from your subscriber number",
-      "mismatch": "Passwords do not match",
-      "oldRequired": "Please enter your current password",
-      "wrongOld": "Your current password is incorrect",
-      "error": "Failed to change password"
-    },
-    "dashboard": {
-      "welcome": "Welcome back",
-      "fullName": "Full Name",
-      "subscriberNo": "Subscriber Number",
-      "mobile": "Mobile",
-      "lineStatus": "Line Status",
-      "online": "Online",
-      "offline": "Offline",
-      "serviceType": "Service Type",
-      "paidTill": "Paid Till",
-      "totalExtendDays": "Total Extend Days",
-      "extend": "Extend 1 Day",
-      "extendConfirm": "Extend your line for one more day?",
-      "referNeighbor": "Refer a Neighbor",
-      "referNeighborDesc": "Invite a neighbor and request a new line on their behalf.",
-      "referNeighborCta": "Start referral",
-      "loadError": "We couldn't load your account details."
-    },
-    "usage": {
-      "title": "Data Usage",
-      "download": "Download",
-      "upload": "Upload",
-      "lastWeek": "Last Week",
-      "lastMonth": "Last Month",
-      "last3Months": "Last 3 Months"
-    },
-    "toast": {
-      "signedInTitle": "Signed in",
-      "signedInBody": "Welcome to your Customer Zone.",
-      "passwordChangedTitle": "Password updated",
-      "passwordChangedBody": "Your new password is now active.",
-      "extendedTitle": "Line extended",
-      "extendedBody": "Your subscription is now valid until {date}.",
-      "stillActiveTitle": "No extension needed",
-      "stillActiveBody": "Your line is still active.",
-      "extendLimitTitle": "Extension limit reached",
-      "extendLimitBody": "You've used all available extensions. Please renew your subscription to stay connected.",
-      "extendFailedTitle": "Couldn't extend the line",
-      "extendFailedBody": "Please try again in a moment."
     }
   },
   "posts": {

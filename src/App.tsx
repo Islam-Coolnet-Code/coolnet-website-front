@@ -11,6 +11,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import Header from "@/components/Header/index";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ScrollToTop from "@/components/ui/scroll-to-top";
+import InstallAppFab from "@/components/InstallAppFab";
 import { Loader2 } from "lucide-react";
 import ErrorBoundary from "./components/ErrorBoundary";
 
@@ -85,6 +86,7 @@ const App = () => (
               <BrowserRouter>
                 <ConditionalHeader />
                 <ScrollToTop />
+                <InstallAppFab />
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
                     <Route path="/" element={<Index />} />

@@ -18,8 +18,12 @@ export function usePwaInstall(): UsePwaInstallReturn {
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
 
-  // Detect iOS
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+  // Detect iOS — note iPadOS 13+ Safari reports a desktop "Macintosh" UA, so we
+  // also treat a touch-capable MacIntel as iOS to show the right Safari steps.
+  const isIOS =
+    (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) &&
+    !(window as any).MSStream;
 
   // Detect mobile device
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);

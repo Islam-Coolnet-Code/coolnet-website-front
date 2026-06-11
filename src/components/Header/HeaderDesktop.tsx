@@ -163,6 +163,8 @@ const HeaderDesktop: React.FC<HeaderDesktopProps> = ({ t, navigate, isHomePage, 
                 </a>
               </div>
 
+              {/* Language switcher temporarily hidden — default language forced to Arabic */}
+              {false && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className={`backdrop-blur-sm bg-white/10 border-white/30 text-white hover:text-white hover:bg-coolnet-purple ${font}`}>
@@ -176,6 +178,7 @@ const HeaderDesktop: React.FC<HeaderDesktopProps> = ({ t, navigate, isHomePage, 
                   {/* <DropdownMenuItem onClick={() => setLanguage('he')} className={font}>עברית</DropdownMenuItem> */}
                 </DropdownMenuContent>
               </DropdownMenu>
+              )}
 
               <Button
                 className={`bg-coolnet-purple hover:bg-coolnet-purple/80 px-4 text-white ${font}`}

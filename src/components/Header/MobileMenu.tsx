@@ -223,7 +223,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ t, language, setLanguage, isHom
               <span className={isRTL ? 'font-jazeera text-lg' : ''}>{t('navigation.customerZone')}</span>
             </button>
 
-            {/* Language Selector - Mobile Optimized */}
+            {/* Language Selector - Mobile Optimized — temporarily hidden, default forced to Arabic */}
+            {false && (
             <div className="space-y-2">
               <div className="grid grid-cols-3 gap-2">
                 <button
@@ -246,6 +247,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ t, language, setLanguage, isHom
                 </button>
               </div>
             </div>
+            )}
           </div>
           
         </div>

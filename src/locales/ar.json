@@ -15,10 +15,10 @@
         "support": "دعم فني مباشر"
       },
       "store": {
-          "availableOn": "متاح على",
-          "appStore": "App Store",
-          "directDownload": "تحميل مباشر",
-          "android": "للأندرويد"
+        "availableOn": "متاح على",
+        "appStore": "App Store",
+        "directDownload": "تحميل مباشر",
+        "android": "للأندرويد"
       }
     }
   },
@@ -46,7 +46,11 @@
     "iosStep3": "اضغط 'إضافة' لتثبيت التطبيق",
     "androidStep1": "اضغط على زر القائمة (⋮) في Chrome",
     "androidStep2": "اضغط على 'إضافة إلى الشاشة الرئيسية'",
-    "androidStep3": "اضغط 'إضافة' لتثبيت التطبيق"
+    "androidStep3": "اضغط 'إضافة' لتثبيت التطبيق",
+    "desktopStep1": "اضغط على أيقونة التثبيت ⊕ في شريط العنوان بالمتصفح",
+    "desktopStep2": "أو افتح قائمة المتصفح (⋮) واختر 'تثبيت كوول نت'",
+    "desktopStep3": "اضغط 'تثبيت' لإضافة الموقع إلى جهازك",
+    "installPrompt": "ثبّت تطبيق كوول نت على جهازك"
   },
   "languageModal": {
     "title": "اختر اللغة",
@@ -380,25 +384,140 @@
     "noServices": "لا توجد خدمات متاحة حاليًا"
   },
   "dealers": {
-    "errorLoad": "فشل في تحميل بيانات الوكلاء. يرجى المحاولة مرة أخرى.",
-    "geoNotSupported": "خدمات الموقع غير مدعومة في متصفحك.",
-    "geoError": "تعذر الحصول على موقعك.",
-    "geoPermissionDenied": "تم رفض الوصول إلى الموقع. يرجى تفعيله في الإعدادات.",
-    "geoPositionUnavailable": "معلومات الموقع غير متوفرة.",
-    "geoTimeout": "انتهت مهلة طلب الموقع.",
-    "loading": "جاري تحميل بيانات الوكلاء...",
-    "retry": "إعادة المحاولة",
-    "noDealers": "لا يوجد وكلاء متاحون حاليًا.",
-    "tryAgainLater": "يرجى المحاولة مرة أخرى لاحقًا.",
-    "findNearest": "ابحث عن أقرب متجر",
-    "findingLocation": "جاري تحديد موقعك...",
-    "locationFound": "تم تحديد الموقع!",
+    "title": "مواقع الدفع",
+    "subtitle": "اعثر على الوكيل الاقرب اليك ",
+    "availableStores": "الوكلاء",
+    "viewLocation": "عرض الموقع",
+    "viewShopImage": "عرض الوكيل",
+    "hideShopImage": "إخفاء الصورة",
+    "getDirections": "احصل على الاتجاهات",
+    "call": "اتصل",
+    "workingHours": "ساعات العمل",
+    "shopDetails": "تفاصيل الوكيل",
+    "selectStore": "اختر وكيل من القائمة لعرض موقعه على الخريطة",
+    "findNearestStore": "العثور على أقرب وكيل",
+    "gettingLocation": "جاري تحديد الموقع...",
+    "locationFound": "تم تحديد الموقع",
+    "yourLocation": "موقعك",
+    "nearestToYou": "الأقرب إليك",
     "sortedByDistance": "مرتبة حسب المسافة",
-    "closestToYou": "الأقرب إليك"
+    "away": "بعيدًا",
+    "fromYourLocation": "من موقعك",
+    "geolocationNotSupported": "الموقع الجغرافي غير مدعوم في متصفحك",
+    "unableToRetrieveLocation": "تعذر الحصول على موقعك",
+    "locationRequestDenied": "تم رفض طلب الموقع",
+    "locationInformationUnavailable": "معلومات الموقع غير متاحة",
+    "locationRequestTimedOut": "انتهت مهلة طلب الموقع",
+    "becomeDealer": "كن وكيلاً",
+    "contactDealer": "اتصل بالوكيل",
+    "searchPlaceholder": "ابحث بالاسم أو الموقع...",
+    "noResults": "لم يتم العثور على وكلاء مطابقين لبحثك.",
+    "dealerCard": {
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "address": "العنوان",
+      "details": "التفاصيل",
+      "workingHours": "ساعات العمل",
+      "services": "الخدمات",
+      "installations": "التركيبات",
+      "technicalSupport": "الدعم الفني",
+      "newConnections": "اتصالات جديدة"
+    },
+    "becomeDealerSection": {
+      "title": "كن وكيلاً لكوول نت ",
+      "description": "انضم إلى شبكة وكلائنا المعتمدين وساعد في توفير الإنترنت السريع عبر الألياف الضوئية للقدس الشرقية.",
+      "benefits": {
+        "title": "مزايا الوكيل",
+        "commission": "عمولات تنافسية",
+        "training": "تدريب شامل",
+        "support": "دعم تسويقي",
+        "territory": "مناطق حصرية"
+      },
+      "ctaText": "قدم الآن",
+      "contactUs": "اتصل بنا لمعرفة المزيد حول كيفية أن تصبح وكيلاً"
+    }
   },
   "customerCorner": {
+    "header": {
+      "home": "الرئيسية",
+      "logout": "تسجيل الخروج"
+    },
     "login": {
-      "securityNotice": "معلوماتك محمية وآمنة معنا."
+      "title": "زاوية المشترك",
+      "subtitle": "سجّل الدخول برقم المشترك وكلمة المرور ، بحيث تكون كلمة المرور لاول مرة هي رقم الاشتراك",
+      "userno": "رقم المشترك",
+      "usernoPlaceholder": "مثال: 54321",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "showPassword": "إظهار كلمة المرور",
+      "hidePassword": "إخفاء كلمة المرور",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جاري الدخول...",
+      "required": "يرجى إدخال رقم المشترك وكلمة المرور",
+      "invalidCredentials": "رقم المشترك أو كلمة المرور غير صحيحة",
+      "userNotFound": "رقم المشترك غير موجود",
+      "userDisabled": "هذا الحساب معطّل",
+      "serviceUnavailable": "الخدمة غير متوفرة حالياً. يرجى المحاولة لاحقاً.",
+      "error": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      "securityNotice": "معلوماتك آمنة ومحمية لدينا."
+    },
+    "changePassword": {
+      "title": "تغيير كلمة المرور",
+      "forcedNotice": "لأمان حسابك، يرجى تعيين كلمة مرور جديدة قبل المتابعة.",
+      "rules": "6 أحرف على الأقل، ومختلفة عن رقم المشترك.",
+      "oldPassword": "كلمة المرور الحالية",
+      "newPassword": "تثبيت كلمة المرور الجديدة",
+      "confirm": "تأكيد كلمة المرور الجديدة",
+      "submit": "حفظ",
+      "saving": "جاري الحفظ...",
+      "tooShort": "يجب أن تكون كلمة المرور 6 أحرف او ارقام على الأقل",
+      "sameAsUserno": "يجب أن تختلف كلمة المرور عن رقم الاشتراك",
+      "mismatch": "كلمتا المرور غير متطابقتين",
+      "oldRequired": "يرجى إدخال كلمة المرور الحالية",
+      "wrongOld": "كلمة المرور الحالية غير صحيحة",
+      "error": "فشل تغيير كلمة المرور",
+      "match": "كلمتا المرور متطابقتان"
+    },
+    "dashboard": {
+      "welcome": "مرحباً بعودتك",
+      "fullName": "الاسم الكامل",
+      "subscriberNo": "رقم المشترك",
+      "mobile": "رقم الجوال",
+      "lineStatus": "حالة الاشتراك",
+      "online": "متصل",
+      "offline": "غير متصل",
+      "lineStatusNote": "في حال كان الخط مفصول بسبب فاتورة يمكنك تفعيل الخط وتأجيل الدفع من خلال هذه الصفحة",
+      "serviceType": "نوع الخدمة",
+      "paidTill": "مدفوع حتى",
+      "totalExtendDays": "إجمالي أيام تمديد الاشتراك",
+      "extend": "تفعيل الاشتراك",
+      "extendConfirm": "هل تريد بالتأكيد تفعيل الاشتراك؟",
+      "referNeighbor": "حملة جيران",
+      "referNeighborDesc": "خلي جارك يشبك معنا واحصل على شهر مجاني ",
+      "referNeighborCta": "عبي طلب لجارك",
+      "loadError": "تعذّر تحميل بيانات حسابك."
+    },
+    "usage": {
+      "title": "حجم الاستخدام",
+      "download": "تنزيل",
+      "upload": "رفع",
+      "lastWeek": "آخر أسبوع",
+      "lastMonth": "آخر شهر",
+      "last3Months": "آخر 3 أشهر"
+    },
+    "toast": {
+      "signedInTitle": "تم تسجيل الدخول",
+      "signedInBody": "مرحباً بك في زاوية المشترك.",
+      "passwordChangedTitle": "تم تحديث كلمة المرور",
+      "passwordChangedBody": "كلمة المرور الجديدة فعّالة الآن.",
+      "extendedTitle": "تم تفعيل الاشتراك",
+      "extendedBody": "اشتراكك صالح الآن حتى {date}.",
+      "stillActiveTitle": "لا حاجة للتمديد",
+      "stillActiveBody": "خطك لا يزال فعّالاً.",
+      "extendLimitTitle": "تم الوصول إلى حد التمديد",
+      "extendLimitBody": "لقد استخدمت كل مرات التفعيل المتاحة من خلال التطبيق. يرجى تجديد اشتراكك للبقاء متصلاً، او أجّل الدفع من خلال الاتصال على 1700123456.",
+      "extendFailedTitle": "تعذّر تفعيل الاشتراك، يرجى المحاولة مجدداً",
+      "extendFailedBody": "يرجى المحاولة بعد قليل."
     }
   },
   "contact": {
@@ -592,12 +711,6 @@
       "apFilterPrice": "10₪/شهر",
       "planName": "اسم الخطة",
       "router": {
-        "selectRouter": "اختر الراوتر",
-        "removeSelection": "إزالة الاختيار",
-        "rentFor": "استئجار ",
-        "buyFor": "شراء ",
-        "selected": "الجهاز المختار",
-        "name": " اسم الجهاز",
         "5": {
           "description": "الكمية: قطعة واحدة. Nova EX12 هو نظام Wi-Fi 6 شبكي AX3000 للمنزل بالكامل. يوفر تغطية Wi-Fi قوية تصل إلى 7000 قدم². يحتوي على أربعة مضخمات لاسلكية مستقلة. يتميز بتقنية beamforming لتحسين الأداء."
         },
@@ -606,7 +719,13 @@
         },
         "7": {
           "description": "الكمية: ثلاث قطع. أفضل تغطية وأداء للمنازل أو المكاتب الكبيرة. مواصفات قوية ونطاق مزدوج عالي السرعة. مثالي للمباني متعددة الطوابق."
-        }
+        },
+        "selectRouter": "اختر الراوتر",
+        "removeSelection": "إزالة الاختيار",
+        "rentFor": "استئجار ",
+        "buyFor": "شراء ",
+        "selected": "الجهاز المختار",
+        "name": " اسم الجهاز"
       },
       "orderSummary": {
         "title": "ملخص الطلب",
@@ -625,7 +744,7 @@
       }
     },
     "neighborsCampaign": {
-      "title": "حملة الجيران",
+      "title": "حملة جيران",
       "subtitle": "قم بتعبئة البيانات لاتمام الطلب",
       "subscriptionNumber": "رقم اشتراكك",
       "subscriptionNumberPlaceholder": "رقم الاشتراك الخاص بمشترك كوول نت الحالي. ",
@@ -645,60 +764,6 @@
   "jitter": "التقلب",
   "startTest": "بدء اختبار السرعة",
   "runAgain": "اختبار مجدداً",
-  "dealers": {
-    "title": "مواقع الدفع",
-    "subtitle": "اعثر على الوكيل الاقرب اليك ",
-    "availableStores": "الوكلاء",
-    "viewLocation": "عرض الموقع",
-    "viewShopImage": "عرض الوكيل",
-    "hideShopImage": "إخفاء الصورة",
-    "getDirections": "احصل على الاتجاهات",
-    "call": "اتصل",
-    "workingHours": "ساعات العمل",
-    "shopDetails": "تفاصيل الوكيل",
-    "selectStore": "اختر وكيل من القائمة لعرض موقعه على الخريطة",
-    "findNearestStore": "العثور على أقرب وكيل",
-    "gettingLocation": "جاري تحديد الموقع...",
-    "locationFound": "تم تحديد الموقع",
-    "yourLocation": "موقعك",
-    "nearestToYou": "الأقرب إليك",
-    "sortedByDistance": "مرتبة حسب المسافة",
-    "away": "بعيدًا",
-    "fromYourLocation": "من موقعك",
-    "geolocationNotSupported": "الموقع الجغرافي غير مدعوم في متصفحك",
-    "unableToRetrieveLocation": "تعذر الحصول على موقعك",
-    "locationRequestDenied": "تم رفض طلب الموقع",
-    "locationInformationUnavailable": "معلومات الموقع غير متاحة",
-    "locationRequestTimedOut": "انتهت مهلة طلب الموقع",
-    "becomeDealer": "كن وكيلاً",
-    "contactDealer": "اتصل بالوكيل",
-    "searchPlaceholder": "ابحث بالاسم أو الموقع...",
-    "noResults": "لم يتم العثور على وكلاء مطابقين لبحثك.",
-    "dealerCard": {
-      "phone": "الهاتف",
-      "email": "البريد الإلكتروني",
-      "address": "العنوان",
-      "details": "التفاصيل",
-      "workingHours": "ساعات العمل",
-      "services": "الخدمات",
-      "installations": "التركيبات",
-      "technicalSupport": "الدعم الفني",
-      "newConnections": "اتصالات جديدة"
-    },
-    "becomeDealerSection": {
-      "title": "كن وكيلاً لكوول نت ",   
-      "description": "انضم إلى شبكة وكلائنا المعتمدين وساعد في توفير الإنترنت السريع عبر الألياف الضوئية للقدس الشرقية.",
-      "benefits": {
-        "title": "مزايا الوكيل",
-        "commission": "عمولات تنافسية",
-        "training": "تدريب شامل",
-        "support": "دعم تسويقي",
-        "territory": "مناطق حصرية"
-      },
-      "ctaText": "قدم الآن",
-      "contactUs": "اتصل بنا لمعرفة المزيد حول كيفية أن تصبح وكيلاً"
-    }
-  },
   "business": {
     "heroTitle": "حلول إنترنت الألياف الضوئية المصممة خصيصاً للشركات والمؤسسات التجارية في القدس الشرقية",
     "whyChoose": "لماذا تختار كوول نت للأعمال",
@@ -866,87 +931,6 @@
       "subscriptionDayRequired": "يوم الاشتراك مطلوب",
       "termsRequired": "يجب الموافقة على الشروط والأحكام",
       "mustScrollToAcceptTerms": "يرجى التمرير إلى أسفل الشروط والأحكام أولاً"
-    }
-  },
-  "customerCorner": {
-    "header": {
-      "home": "الرئيسية",
-      "logout": "تسجيل الخروج"
-    },
-    "login": {
-      "title": "زاوية المشترك",
-      "subtitle": "سجّل الدخول برقم المشترك وكلمة المرور",
-      "userno": "رقم المشترك",
-      "usernoPlaceholder": "مثال: 54321",
-      "password": "كلمة المرور",
-      "passwordPlaceholder": "أدخل كلمة المرور",
-      "showPassword": "إظهار كلمة المرور",
-      "hidePassword": "إخفاء كلمة المرور",
-      "signIn": "تسجيل الدخول",
-      "signingIn": "جاري الدخول...",
-      "required": "يرجى إدخال رقم المشترك وكلمة المرور",
-      "invalidCredentials": "رقم المشترك أو كلمة المرور غير صحيحة",
-      "userNotFound": "رقم المشترك غير موجود",
-      "userDisabled": "هذا الحساب معطّل",
-      "serviceUnavailable": "الخدمة غير متوفرة حالياً. يرجى المحاولة لاحقاً.",
-      "error": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
-      "securityNotice": "معلوماتك آمنة ومحمية لدينا."
-    },
-    "changePassword": {
-      "title": "تغيير كلمة المرور",
-      "forcedNotice": "لأمان حسابك، يرجى تعيين كلمة مرور جديدة قبل المتابعة.",
-      "rules": "6 أحرف على الأقل، ومختلفة عن رقم المشترك.",
-      "oldPassword": "كلمة المرور الحالية",
-      "newPassword": "كلمة المرور الجديدة",
-      "confirm": "تأكيد كلمة المرور",
-      "submit": "حفظ",
-      "saving": "جاري الحفظ...",
-      "tooShort": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
-      "sameAsUserno": "يجب أن تختلف كلمة المرور عن رقم المشترك",
-      "mismatch": "كلمتا المرور غير متطابقتين",
-      "oldRequired": "يرجى إدخال كلمة المرور الحالية",
-      "wrongOld": "كلمة المرور الحالية غير صحيحة",
-      "error": "فشل تغيير كلمة المرور"
-    },
-    "dashboard": {
-      "welcome": "مرحباً بعودتك",
-      "fullName": "الاسم الكامل",
-      "subscriberNo": "رقم المشترك",
-      "mobile": "رقم الجوال",
-      "lineStatus": "حالة الاشتراك",
-      "online": "متصل",
-      "offline": "غير متصل",
-      "serviceType": "نوع الخدمة",
-      "paidTill": "مدفوع حتى",
-      "totalExtendDays": "إجمالي أيام تمديد الاشتراك",
-      "extend": "تفعيل الاشتراك",
-      "extendConfirm":  "هل تريد بالتأكيد تفعيل الاشتراك؟",
-      "referNeighbor": "حملة الجيران",
-      "referNeighborDesc": "قم بتعبئة الطلب الخاص بجارك لتربح اشهر مجانية.",
-      "referNeighborCta": "ابدأ تعبئة الطلب",
-      "loadError": "تعذّر تحميل بيانات حسابك."
-    },
-    "usage": {
-      "title": "استهلاك البيانات",
-      "download": "تنزيل",
-      "upload": "رفع",
-      "lastWeek": "آخر أسبوع",
-      "lastMonth": "آخر شهر",
-      "last3Months": "آخر 3 أشهر"
-    },
-    "toast": {
-      "signedInTitle": "تم تسجيل الدخول",
-      "signedInBody": "مرحباً بك في زاوية المشترك.",
-      "passwordChangedTitle": "تم تحديث كلمة المرور",
-      "passwordChangedBody": "كلمة المرور الجديدة فعّالة الآن.",
-      "extendedTitle": "تم تفعيل الاشتراك",
-      "extendedBody": "اشتراكك صالح الآن حتى {date}.",
-      "stillActiveTitle": "لا حاجة للتمديد",
-      "stillActiveBody": "خطك لا يزال فعّالاً.",
-      "extendLimitTitle": "تم الوصول إلى حد التمديد",
-      "extendLimitBody": "لقد استخدمت كل مرات التفعيل المتاحة من خلال التطبيق. يرجى تجديد اشتراكك للبقاء متصلاً، او أجّل الدفع من خلال الاتصال على 1700123456.",
-      "extendFailedTitle": "تعذّر تفعيل الاشتراك، يرجى المحاولة مجدداً",
-      "extendFailedBody": "يرجى المحاولة بعد قليل."
     }
   },
   "posts": {
