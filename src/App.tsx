@@ -27,6 +27,7 @@ const Qrcodepromotion = lazy(() => import("./pages/qrcodepromotion/Qrcodepromoti
 const Login = lazy(() => import("./pages/CustomerCorner/Login"));
 const ChangePassword = lazy(() => import("./pages/CustomerCorner/ChangePassword"));
 const Dashboard = lazy(() => import("./pages/CustomerCorner/Dashboard"));
+const YabusAuthorization = lazy(() => import("./pages/CustomerCorner/YabusAuthorization"));
 const AllPlans = lazy(() => import("./pages/AllPlans"));
 const AllNews = lazy(() => import("./pages/AllNews"));
 const PostDetail = lazy(() => import("./pages/PostDetail"));
@@ -127,6 +128,14 @@ const App = () => (
                       element={
                         <ProtectedRoute>
                           <Dashboard />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/customer-corner/yabus-authorization"
+                      element={
+                        <ProtectedRoute>
+                          <YabusAuthorization />
                         </ProtectedRoute>
                       }
                     />

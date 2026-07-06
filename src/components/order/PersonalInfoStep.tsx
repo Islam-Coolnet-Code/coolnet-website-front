@@ -28,6 +28,7 @@ interface PersonalInfoStepProps {
   formData: {
     fullName: string;
     mobile: string;
+    identityNumber?: string;
     city: string;
     state: string;
     address: string;
@@ -251,6 +252,35 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
           {validationErrors.mobile && (
             <p className="text-red-400 text-sm mt-1">
               {validationErrors.mobile}
+            </p>
+          )}
+        </div>
+
+        {/* Identity Number */}
+        <div className="space-y-2 md:col-span-2">
+          <Label className="text-white" htmlFor="identityNumber">
+            {t('order.newLine.identity')}
+            <RequiredAsterisk />
+          </Label>
+          <Input
+            id="identityNumber"
+            type="text"
+            inputMode="numeric"
+            maxLength={9}
+            value={formData.identityNumber ?? ''}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Identity numbers are digits only (max 9)
+              if (value === '' || /^\d*$/.test(value)) {
+                onFormDataChange(e);
+              }
+            }}
+            placeholder={t('order.newLine.identityPlaceholder')}
+            className={getFieldClasses('identityNumber', `bg-white/90 text-gray-900 border-white/20 focus:ring-coolnet-orange focus:border-coolnet-orange placeholder:text-gray-500 ${isRTL ? 'text-right' : 'text-left'}`)}
+          />
+          {validationErrors.identityNumber && (
+            <p className="text-red-400 text-sm mt-1">
+              {validationErrors.identityNumber}
             </p>
           )}
         </div>

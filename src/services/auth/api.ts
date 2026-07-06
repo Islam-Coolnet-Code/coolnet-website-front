@@ -7,6 +7,8 @@ import type {
   UsageData,
   CheckUserResult,
   ExtendResult,
+  YabusAuthorizationInput,
+  YabusAuthorizationResult,
 } from '@/types/authTypes';
 
 /**
@@ -122,5 +124,30 @@ export async function getUserSessions(): Promise<UsageData> {
 /** POST /api/customer/users/extend (requires token). */
 export async function extendExpiration(): Promise<ExtendResult> {
   const res = await customerApi.post<ApiEnvelope<ExtendResult>>('/users/extend', {});
+  return unwrap(res.data);
+}
+
+/**
+ * POST /api/customer/yabus-authorization (requires token, multipart).
+ * Submits a salary-deduction (Yabus) authorization with its three documents.
+ */
+export async function submitYabusAuthorization(
+  input: YabusAuthorizationInput
+): Promise<YabusAuthorizationResult> {
+  const form = new FormData();
+  form.append('userno', input.userno);
+  form.append('idNumberSalary', input.idNumberSalary);
+  form.append('idNumberCoolnet', input.idNumberCoolnet);
+  form.append('salarySlip', input.salarySlip);
+  form.append('idImage', input.idImage);
+  form.append('idAnnex', input.idAnnex);
+
+  const res = await customerApi.post<ApiEnvelope<YabusAuthorizationResult>>(
+    '/yabus-authorization',
+    form,
+    // Unset the instance's default JSON content-type so the browser sets the
+    // correct multipart/form-data boundary itself.
+    { headers: { 'Content-Type': undefined } }
+  );
   return unwrap(res.data);
 }

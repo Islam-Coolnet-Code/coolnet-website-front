@@ -54,6 +54,27 @@ export interface ExtendResult {
   expiration: string;
 }
 
+/** Payload for a Yabus (salary-deduction) authorization submission. */
+export interface YabusAuthorizationInput {
+  /** Subscription number (5 digits) — the logged-in subscriber's userno. */
+  userno: string;
+  /** ID number per the salary slip / Yabus app. */
+  idNumberSalary: string;
+  /** ID number of the subscription owner on record at Coolnet. */
+  idNumberCoolnet: string;
+  /** Attached salary slip. */
+  salarySlip: File;
+  /** Attached ID image. */
+  idImage: File;
+  /** Attached ID annex showing a first-degree relative of the subscriber. */
+  idAnnex: File;
+}
+
+export interface YabusAuthorizationResult {
+  id: number;
+  status: string;
+}
+
 /** Our API envelope: { success, data, error?: { code, message } }. */
 export interface ApiEnvelope<T> {
   success: boolean;

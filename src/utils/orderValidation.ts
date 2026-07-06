@@ -31,6 +31,41 @@ const validateIsraeliPhone = (phone: string): boolean => {
     return false;
 };
 
+// Palestinian / Israeli identity number validation.
+//
+// Both the Palestinian Authority ID (Hawiyya) and the Israeli ID (Teudat Zehut)
+// are 9-digit numbers that share the same check-digit scheme — the Palestinian
+// registry was derived from the Israeli population registry, so the same
+// algorithm validates both. The algorithm is a Luhn variant:
+//   1. Pad the number with leading zeros to 9 digits.
+//   2. Walk the digits left-to-right, multiplying by 1, 2, 1, 2, ... in turn.
+//   3. If a product is two digits (> 9), reduce it to its digit sum (i.e. -9).
+//   4. The number is valid when the total sum is a multiple of 10.
+export const validateIdentityNumber = (id: string): boolean => {
+    // Keep digits only (tolerate spaces/dashes the user may type)
+    const cleanId = id.replace(/\D/g, '');
+
+    // Must be 1–9 digits; shorter values are left-padded to 9 below
+    if (cleanId.length === 0 || cleanId.length > 9) {
+        return false;
+    }
+
+    const padded = cleanId.padStart(9, '0');
+
+    let sum = 0;
+    for (let i = 0; i < 9; i++) {
+        let digit = Number(padded[i]);
+        // Even index (0-based) → weight 1, odd index → weight 2
+        digit *= (i % 2) + 1;
+        if (digit > 9) {
+            digit -= 9;
+        }
+        sum += digit;
+    }
+
+    return sum % 10 === 0;
+};
+
 // New validation functions that return field-specific errors
 export const validatePersonalInfoFields = (formData: FormData, t: (key: string) => string): ValidationResult => {
     const errors: ValidationErrors = {};

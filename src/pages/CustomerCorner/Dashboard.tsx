@@ -11,7 +11,7 @@ import UsageCard from '@/components/CustomerCorner/UsageCard';
 import ExtendDialog from '@/components/CustomerCorner/ExtendDialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, Phone, Hash, Loader2, AlertCircle, Users, ArrowRight } from 'lucide-react';
+import { User, Phone, Hash, Loader2, AlertCircle, Users, ArrowRight, FileSignature } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { formatDate, shouldShowUsage, maskMobile } from '@/utils/customerZone';
 
@@ -162,6 +162,29 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2 shrink-0 bg-coolnet-orange rounded-xl px-4 py-2">
                   <span className={`font-semibold text-sm hidden sm:inline ${font}`}>{t('customerCorner.dashboard.referNeighborCta')}</span>
+                  <ArrowRight className="w-4 h-4 rtl:rotate-180 transition-transform group-hover:translate-x-0.5" />
+                </div>
+              </div>
+            </button>
+
+            {/* Yabus (salary-deduction) authorization CTA */}
+            <button
+              type="button"
+              onClick={() => navigate('/customer-corner/yabus-authorization')}
+              className="md:col-span-2 text-start group rounded-2xl overflow-hidden border border-coolnet-purple/15 shadow-sm bg-white transition-shadow hover:shadow-lg"
+            >
+              <div className="flex items-center justify-between gap-4 p-5">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 rounded-2xl bg-coolnet-purple/10 flex items-center justify-center shrink-0">
+                    <FileSignature className="w-6 h-6 text-coolnet-purple" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className={`font-bold text-lg text-gray-900 ${font}`}>{t('customerCorner.yabus.cardTitle')}</p>
+                    <p className={`text-gray-500 text-sm truncate ${font}`}>{t('customerCorner.yabus.cardDesc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0 bg-coolnet-purple text-white rounded-xl px-4 py-2">
+                  <span className={`font-semibold text-sm hidden sm:inline ${font}`}>{t('customerCorner.yabus.cardCta')}</span>
                   <ArrowRight className="w-4 h-4 rtl:rotate-180 transition-transform group-hover:translate-x-0.5" />
                 </div>
               </div>

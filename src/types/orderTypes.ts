@@ -12,6 +12,7 @@ export const TOTAL_STEPS = 6;
 export interface FormData {
   fullName: string;
   mobile: string;
+  identityNumber?: string;
   city: string;
   state: string;
   address: string;
