@@ -138,6 +138,7 @@ export async function submitYabusAuthorization(
   form.append('userno', input.userno);
   form.append('idNumberSalary', input.idNumberSalary);
   form.append('idNumberCoolnet', input.idNumberCoolnet);
+  form.append('relationship', input.relationship);
   form.append('salarySlip', input.salarySlip);
   form.append('idImage', input.idImage);
   form.append('idAnnex', input.idAnnex);

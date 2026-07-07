@@ -62,6 +62,8 @@ export interface YabusAuthorizationInput {
   idNumberSalary: string;
   /** ID number of the subscription owner on record at Coolnet. */
   idNumberCoolnet: string;
+  /** Payer's relationship to the subscription owner (self / first-degree relative). */
+  relationship: string;
   /** Attached salary slip. */
   salarySlip: File;
   /** Attached ID image. */

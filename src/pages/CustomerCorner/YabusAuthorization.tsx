@@ -20,19 +20,38 @@ import {
   FileText,
   X,
   Check,
+  Users,
+  Info,
+  ChevronDown,
 } from 'lucide-react';
 import englishLogo from '@/assets/logos/english.png';
 import arabicLogo from '@/assets/logos/arabic.png';
+import yaboosLogo from '@/assets/yaboos.png';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'application/pdf'];
 const ACCEPT_ATTR = 'image/jpeg,image/png,image/webp,image/heic,application/pdf,.pdf';
+
+// Payer's relationship to the subscription owner (self + first-degree relatives).
+// Codes are stable; the visible labels come from i18n (customerCorner.yabus.relationships.*).
+const RELATIONSHIPS = [
+  'self',
+  'father',
+  'son',
+  'daughter',
+  'husband',
+  'wife',
+  'brother',
+  'sister',
+  'mother',
+] as const;
 
 type FileKey = 'salarySlip' | 'idImage' | 'idAnnex';
 
 interface FieldErrors {
   idNumberSalary?: string;
   idNumberCoolnet?: string;
+  relationship?: string;
   salarySlip?: string;
   idImage?: string;
   idAnnex?: string;
@@ -49,6 +68,7 @@ const YabusAuthorization: React.FC = () => {
 
   const [idNumberSalary, setIdNumberSalary] = useState('');
   const [idNumberCoolnet, setIdNumberCoolnet] = useState('');
+  const [relationship, setRelationship] = useState('');
   const [files, setFiles] = useState<Record<FileKey, File | null>>({
     salarySlip: null,
     idImage: null,
@@ -96,6 +116,8 @@ const YabusAuthorization: React.FC = () => {
       next.idNumberCoolnet = t('customerCorner.yabus.errors.idFormat');
     }
 
+    if (!relationship) next.relationship = t('customerCorner.yabus.errors.required');
+
     if (!files.salarySlip) next.salarySlip = t('customerCorner.yabus.errors.fileRequired');
     if (!files.idImage) next.idImage = t('customerCorner.yabus.errors.fileRequired');
     if (!files.idAnnex) next.idAnnex = t('customerCorner.yabus.errors.fileRequired');
@@ -121,6 +143,7 @@ const YabusAuthorization: React.FC = () => {
         userno,
         idNumberSalary: idNumberSalary.trim(),
         idNumberCoolnet: idNumberCoolnet.trim(),
+        relationship,
         salarySlip: files.salarySlip as File,
         idImage: files.idImage as File,
         idAnnex: files.idAnnex as File,
@@ -165,7 +188,15 @@ const YabusAuthorization: React.FC = () => {
                 alt="Coolnet"
                 className="h-11 sm:h-12 mx-auto object-contain"
               />
-              <div className="mt-5 inline-flex items-center justify-center gap-2">
+              {/* Yabous (Yaboos) partner logo */}
+              <div className="mt-5 mx-auto w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-lg ring-4 ring-white/20 flex items-center justify-center p-2">
+                <img
+                  src={yaboosLogo}
+                  alt="Yabous Finance"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="mt-4 inline-flex items-center justify-center gap-2">
                 <FileSignature className="w-5 h-5 text-coolnet-orange" />
                 <h1 className={`text-xl sm:text-2xl font-bold text-white ${font}`}>
                   {t('customerCorner.yabus.title')}
@@ -177,6 +208,14 @@ const YabusAuthorization: React.FC = () => {
             </div>
 
             <CardContent className="pt-6 pb-8">
+              {/* Eligibility notice */}
+              <div className="mb-6 flex items-start gap-3 rounded-xl bg-coolnet-purple/5 border border-coolnet-purple/15 p-4">
+                <Info className="w-5 h-5 text-coolnet-purple shrink-0 mt-0.5" />
+                <p className={`text-sm text-gray-600 leading-relaxed text-start ${font}`}>
+                  {t('customerCorner.yabus.notice')}
+                </p>
+              </div>
+
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Subscription number — prefilled from the session, read-only */}
                 <div className="space-y-2">
@@ -220,6 +259,40 @@ const YabusAuthorization: React.FC = () => {
                   error={errors.idNumberCoolnet}
                   font={font}
                 />
+
+                {/* Relationship to the subscription owner */}
+                <div className="space-y-2">
+                  <label className={`text-sm font-medium text-gray-700 ${font}`}>
+                    {t('customerCorner.yabus.relationship')}
+                    <RequiredAsterisk />
+                  </label>
+                  <div className="relative">
+                    <Users className="absolute top-1/2 -translate-y-1/2 start-3 w-5 h-5 text-gray-400 pointer-events-none" />
+                    <select
+                      value={relationship}
+                      onChange={(e) => {
+                        setRelationship(e.target.value);
+                        setErrors((p) => ({ ...p, relationship: undefined }));
+                      }}
+                      className={`h-12 w-full ps-11 pe-10 appearance-none rounded-md border bg-white text-sm text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coolnet-purple ${font} ${
+                        errors.relationship ? 'border-red-400' : 'border-gray-300'
+                      } ${relationship ? '' : 'text-gray-400'}`}
+                    >
+                      <option value="" disabled>
+                        {t('customerCorner.yabus.relationshipPlaceholder')}
+                      </option>
+                      {RELATIONSHIPS.map((code) => (
+                        <option key={code} value={code} className="text-gray-900">
+                          {t(`customerCorner.yabus.relationships.${code}`)}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute top-1/2 -translate-y-1/2 end-3 w-5 h-5 text-gray-400 pointer-events-none" />
+                  </div>
+                  {errors.relationship && (
+                    <p className={`text-red-600 text-sm ${font}`}>{errors.relationship}</p>
+                  )}
+                </div>
 
                 <div className="pt-1 border-t border-gray-100" />
 
