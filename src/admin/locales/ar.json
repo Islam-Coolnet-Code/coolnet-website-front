@@ -44,6 +44,8 @@
     "subtitle": "أدخل مفتاح API للمتابعة",
     "apiKey": "مفتاح API",
     "enterApiKey": "أدخل مفتاح API الخاص بك",
+    "showApiKey": "إظهار مفتاح API",
+    "hideApiKey": "إخفاء مفتاح API",
     "login": "تسجيل الدخول",
     "loggingIn": "جاري التحقق...",
     "invalidKey": "مفتاح API غير صالح. يرجى التحقق والمحاولة مرة أخرى.",

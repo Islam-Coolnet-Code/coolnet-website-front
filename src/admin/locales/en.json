@@ -44,6 +44,8 @@
     "subtitle": "Enter your API key to continue",
     "apiKey": "API Key",
     "enterApiKey": "Enter your API key",
+    "showApiKey": "Show API key",
+    "hideApiKey": "Hide API key",
     "login": "Login",
     "loggingIn": "Authenticating...",
     "invalidKey": "Invalid API key. Please check and try again.",

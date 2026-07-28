@@ -64,7 +64,7 @@ export function LoginPage() {
               {t('login.apiKey')}
             </label>
             <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+              <div className="absolute start-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
                 <Lock size={18} />
               </div>
               <input
@@ -72,14 +72,17 @@ export function LoginPage() {
                 id="apiKey"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                className="w-full bg-slate-700 border border-slate-600 rounded-lg pl-10 pr-10 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg ps-10 pe-10 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder={t('login.enterApiKey')}
+                dir="ltr"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowKey(!showKey)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                tabIndex={-1}
+                aria-label={showKey ? t('login.hideApiKey') : t('login.showApiKey')}
               >
                 {showKey ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>

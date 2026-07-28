@@ -92,6 +92,31 @@ export default {
 						darker: '#cc3d10',
 					}
 				},
+				// Translucent tints of the brand colors.
+				// The `coolnet.*` values are CSS vars (themeable at runtime), so Tailwind's
+				// `/opacity` modifier cannot apply to them — these color-mix scales stand in
+				// for `coolnet-purple/10` etc. while still following the runtime theme.
+				'coolnet-purple-tint': {
+					5: 'color-mix(in srgb, var(--coolnet-purple, #4a2d6e) 5%, transparent)',
+					10: 'color-mix(in srgb, var(--coolnet-purple, #4a2d6e) 10%, transparent)',
+					15: 'color-mix(in srgb, var(--coolnet-purple, #4a2d6e) 15%, transparent)',
+					20: 'color-mix(in srgb, var(--coolnet-purple, #4a2d6e) 20%, transparent)',
+					25: 'color-mix(in srgb, var(--coolnet-purple, #4a2d6e) 25%, transparent)',
+					30: 'color-mix(in srgb, var(--coolnet-purple, #4a2d6e) 30%, transparent)',
+					50: 'color-mix(in srgb, var(--coolnet-purple, #4a2d6e) 50%, transparent)',
+					80: 'color-mix(in srgb, var(--coolnet-purple, #4a2d6e) 80%, transparent)',
+				},
+				'coolnet-purple-light-tint': {
+					30: 'color-mix(in srgb, var(--coolnet-purple-light, #7c4dff) 30%, transparent)',
+				},
+				'coolnet-orange-tint': {
+					10: 'color-mix(in srgb, var(--coolnet-orange, #ff6b35) 10%, transparent)',
+					15: 'color-mix(in srgb, var(--coolnet-orange, #ff6b35) 15%, transparent)',
+					20: 'color-mix(in srgb, var(--coolnet-orange, #ff6b35) 20%, transparent)',
+					25: 'color-mix(in srgb, var(--coolnet-orange, #ff6b35) 25%, transparent)',
+					30: 'color-mix(in srgb, var(--coolnet-orange, #ff6b35) 30%, transparent)',
+					40: 'color-mix(in srgb, var(--coolnet-orange, #ff6b35) 40%, transparent)',
+				},
 				// Legacy support - map old jetFiber to new coolnet colors
 				jetFiber: {
 					orange: '#ff6b35',

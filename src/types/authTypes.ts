@@ -58,6 +58,8 @@ export interface ExtendResult {
 export interface YabusAuthorizationInput {
   /** Subscription number (5 digits) — the logged-in subscriber's userno. */
   userno: string;
+  /** Name of the Yabus (Yaboos) app account owner. */
+  yaboosUserName: string;
   /** ID number per the salary slip / Yabus app. */
   idNumberSalary: string;
   /** ID number of the subscription owner on record at Coolnet. */
@@ -66,15 +68,40 @@ export interface YabusAuthorizationInput {
   relationship: string;
   /** Attached salary slip. */
   salarySlip: File;
-  /** Attached ID image. */
+  /** Attached ID image (payer, per salary slip). */
   idImage: File;
   /** Attached ID annex showing a first-degree relative of the subscriber. */
   idAnnex: File;
+  /** Attached ID image of the Coolnet subscription owner. */
+  coolnetIdImage: File;
+  /** Attached ID annex of the Coolnet subscription owner. */
+  coolnetIdAnnex: File;
 }
 
 export interface YabusAuthorizationResult {
   id: number;
   status: string;
+}
+
+export type YabusRequestStatus = 'pending' | 'reviewed' | 'approved' | 'rejected';
+
+/** One of the logged-in subscriber's own Yabus requests. */
+export interface YabusAuthorizationRecord {
+  id: number;
+  userno: string;
+  yaboosUserName: string | null;
+  idNumberSalary: string;
+  idNumberCoolnet: string;
+  relationship: string | null;
+  status: YabusRequestStatus;
+  reviewNote: string | null;
+  createdAt: string;
+  updatedAt: string;
+  salarySlipUrl: string | null;
+  idImageUrl: string | null;
+  idAnnexUrl: string | null;
+  coolnetIdImageUrl: string | null;
+  coolnetIdAnnexUrl: string | null;
 }
 
 /** Our API envelope: { success, data, error?: { code, message } }. */

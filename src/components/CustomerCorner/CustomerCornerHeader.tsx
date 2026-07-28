@@ -26,15 +26,19 @@ const CustomerCornerHeader: React.FC<CustomerCornerHeaderProps> = ({ showLogout 
 
   return (
     <header className="bg-gradient-to-r from-coolnet-purple to-coolnet-purple-dark shadow-md sticky top-0 z-40">
-      <div className="container mx-auto px-4 py-3">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex items-center justify-between gap-3">
-          {/* Logo — stays within the customer zone */}
+          {/* Logo + zone label — stays within the customer zone */}
           <button
             onClick={() => navigate(showLogout ? '/customer-corner/dashboard' : '/customer-corner')}
-            className="shrink-0"
+            className="flex items-center gap-3 shrink-0"
             aria-label="Customer Zone"
           >
-            <img src={isRTL ? arabicLogo : englishLogo} alt="Coolnet" className="h-12 sm:h-14" />
+            <img src={isRTL ? arabicLogo : englishLogo} alt="Coolnet" className="h-11 sm:h-12" />
+            <span className="hidden sm:block h-8 w-px bg-white/20" />
+            <span className={`hidden sm:inline text-white/90 font-semibold ${font}`}>
+              {t('customerCorner.login.title')}
+            </span>
           </button>
 
           {/* Actions */}

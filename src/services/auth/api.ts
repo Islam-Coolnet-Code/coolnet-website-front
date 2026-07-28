@@ -9,6 +9,7 @@ import type {
   ExtendResult,
   YabusAuthorizationInput,
   YabusAuthorizationResult,
+  YabusAuthorizationRecord,
 } from '@/types/authTypes';
 
 /**
@@ -25,6 +26,13 @@ const customerApi = axios.create({
   headers: { 'Content-Type': 'application/json' },
   timeout: 15000,
 });
+
+/**
+ * Document uploads carry up to five files of up to 10MB each. The 15s default
+ * aborts them mid-transfer on a mobile/ADSL uplink, which surfaced to the
+ * customer as an unexplained "try again later".
+ */
+const UPLOAD_TIMEOUT_MS = 180000;
 
 // Attach the customer token on every request when present.
 // We send BOTH headers on purpose: `Authorization` is the standard, but some
@@ -59,7 +67,15 @@ customerApi.interceptors.response.use(
   (error) => {
     const status = error?.response?.status as number | undefined;
     const envelope = error?.response?.data as ApiEnvelope<unknown> | undefined;
-    const code = envelope?.error?.code || 'NETWORK_ERROR';
+    // A 413 comes from the reverse proxy as an HTML page, so there is no
+    // envelope to read the code from — recognise it by status.
+    const fallbackCode =
+      status === 413
+        ? 'FILE_TOO_LARGE'
+        : error?.code === 'ECONNABORTED'
+          ? 'TIMEOUT'
+          : 'NETWORK_ERROR';
+    const code = envelope?.error?.code || fallbackCode;
     const message =
       envelope?.error?.message ||
       (error?.request && !error?.response
@@ -136,19 +152,74 @@ export async function submitYabusAuthorization(
 ): Promise<YabusAuthorizationResult> {
   const form = new FormData();
   form.append('userno', input.userno);
+  form.append('yaboosUserName', input.yaboosUserName);
   form.append('idNumberSalary', input.idNumberSalary);
   form.append('idNumberCoolnet', input.idNumberCoolnet);
   form.append('relationship', input.relationship);
   form.append('salarySlip', input.salarySlip);
   form.append('idImage', input.idImage);
   form.append('idAnnex', input.idAnnex);
+  form.append('coolnetIdImage', input.coolnetIdImage);
+  form.append('coolnetIdAnnex', input.coolnetIdAnnex);
 
   const res = await customerApi.post<ApiEnvelope<YabusAuthorizationResult>>(
     '/yabus-authorization',
     form,
     // Unset the instance's default JSON content-type so the browser sets the
     // correct multipart/form-data boundary itself.
-    { headers: { 'Content-Type': undefined } }
+    { headers: { 'Content-Type': undefined }, timeout: UPLOAD_TIMEOUT_MS }
+  );
+  return unwrap(res.data);
+}
+
+/**
+ * POST /api/customer/yabus-authorization/mine (requires token).
+ * Returns the logged-in subscriber's own Yabus requests (scoped server-side).
+ */
+export async function getMyYabusAuthorizations(): Promise<YabusAuthorizationRecord[]> {
+  const res = await customerApi.post<ApiEnvelope<{ authorizations: YabusAuthorizationRecord[] }>>(
+    '/yabus-authorization/mine',
+    {}
+  );
+  return unwrap(res.data).authorizations;
+}
+
+/**
+ * POST /api/customer/yabus-authorization/:id (requires token, multipart).
+ * Edits the subscriber's own request (only while not approved). Files are
+ * optional — a file is sent only when the customer picked a replacement.
+ */
+export async function updateYabusAuthorization(
+  id: number,
+  input: {
+    yaboosUserName: string;
+    idNumberSalary: string;
+    idNumberCoolnet: string;
+    relationship: string;
+    salarySlip?: File | null;
+    idImage?: File | null;
+    idAnnex?: File | null;
+    coolnetIdImage?: File | null;
+    coolnetIdAnnex?: File | null;
+  }
+): Promise<YabusAuthorizationResult> {
+  const form = new FormData();
+  form.append('yaboosUserName', input.yaboosUserName);
+  form.append('idNumberSalary', input.idNumberSalary);
+  form.append('idNumberCoolnet', input.idNumberCoolnet);
+  form.append('relationship', input.relationship);
+  if (input.salarySlip) form.append('salarySlip', input.salarySlip);
+  if (input.idImage) form.append('idImage', input.idImage);
+  if (input.idAnnex) form.append('idAnnex', input.idAnnex);
+  if (input.coolnetIdImage) form.append('coolnetIdImage', input.coolnetIdImage);
+  if (input.coolnetIdAnnex) form.append('coolnetIdAnnex', input.coolnetIdAnnex);
+
+  // POST, not PUT: the coolnet.ps proxy in front of the API strips the body from
+  // PUT requests (multer then sees no multipart and the update is a no-op).
+  const res = await customerApi.post<ApiEnvelope<YabusAuthorizationResult>>(
+    `/yabus-authorization/${id}`,
+    form,
+    { headers: { 'Content-Type': undefined }, timeout: UPLOAD_TIMEOUT_MS }
   );
   return unwrap(res.data);
 }

@@ -29,6 +29,10 @@ FROM nginx:alpine AS production
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Each proxied request consumes two slots (client + upstream), so the stock 1024
+# per worker is reached sooner than it looks under a traffic burst.
+RUN sed -i 's/worker_connections  *[0-9]\+;/worker_connections 4096;/' /etc/nginx/nginx.conf
+
 # Copy built files from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
