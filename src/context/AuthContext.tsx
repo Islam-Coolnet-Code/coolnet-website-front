@@ -30,8 +30,6 @@ function parseExpiry(value: string | number | undefined | null): number | null {
 interface AuthContextType {
   isAuthenticated: boolean;
   session: AuthSession | null;
-  /** True until the first-login forced password change is completed. */
-  needsPasswordChange: boolean;
   login: (session: AuthSession) => void;
   /** Replace the session after the token rotates (e.g. change-password). */
   setSession: (session: AuthSession) => void;
@@ -108,7 +106,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       value={{
         isAuthenticated: !!session,
         session,
-        needsPasswordChange: !!session?.forcePasswordChange,
         login,
         setSession,
         logout,

@@ -4,11 +4,18 @@ import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '@/context/LanguageContext';
 import { useAuth } from '@/context/AuthContext';
 import { useFont } from '@/hooks/use-font';
-import { getUserDetails, getUserSessions, extendExpiration, CustomerApiError } from '@/services/auth/api';
+import {
+  getUserDetails,
+  getUserSessions,
+  extendExpiration,
+  createExtendRequest,
+  CustomerApiError,
+} from '@/services/auth/api';
 import CustomerCornerHeader from '@/components/CustomerCorner/CustomerCornerHeader';
 import LineStatusCard from '@/components/CustomerCorner/LineStatusCard';
 import UsageCard from '@/components/CustomerCorner/UsageCard';
 import ExtendDialog from '@/components/CustomerCorner/ExtendDialog';
+import ExtendRequestDialog from '@/components/CustomerCorner/ExtendRequestDialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { User, Phone, Hash, Loader2, AlertCircle, Users, ArrowRight, Info } from 'lucide-react';
@@ -25,11 +32,19 @@ const Dashboard: React.FC = () => {
 
   const [showExtendDialog, setShowExtendDialog] = useState(false);
   const [extending, setExtending] = useState(false);
+  const [showRequestDialog, setShowRequestDialog] = useState(false);
+  const [requesting, setRequesting] = useState(false);
 
   const detailsQuery = useQuery({
     queryKey: ['customer', 'details', session?.userno],
     queryFn: getUserDetails,
     enabled: !!session,
+    // A decision lands within a few hours, so a customer sitting on this page
+    // waiting for one shouldn't have to reload to learn it was approved. Polls
+    // only while a request is open — every other customer keeps the app-wide
+    // 5-minute cache.
+    refetchInterval: (query) =>
+      query.state.data?.extendRequest?.status === 'pending' ? 60_000 : false,
   });
 
   const sessionsQuery = useQuery({
@@ -61,11 +76,18 @@ const Dashboard: React.FC = () => {
         await detailsQuery.refetch();
         setShowExtendDialog(false);
       } else if (code === 'EXTEND_LIMIT_REACHED') {
+        // Out of self-service extensions. Offer the one-time request only to
+        // accounts upstream says are eligible (the 12..20 extend-day window);
+        // everyone else keeps the renew-or-call message.
         toast({
           title: t('customerCorner.toast.extendLimitTitle'),
           description: t('customerCorner.toast.extendLimitBody'),
         });
         setShowExtendDialog(false);
+        const refreshed = await detailsQuery.refetch();
+        if (refreshed.data?.canRequestExtend) {
+          setShowRequestDialog(true);
+        }
       } else {
         toast({
           title: t('customerCorner.toast.extendFailedTitle'),
@@ -78,10 +100,94 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  /**
+   * File the one-time activation request. Nothing changes on the line here —
+   * Coolgate staff decide, and the dashboard then shows the request's state.
+   */
+  const handleRequestExtend = async (reason: string) => {
+    setRequesting(true);
+    try {
+      await createExtendRequest(reason);
+      toast({
+        title: t('customerCorner.toast.requestSentTitle'),
+        description: `${t('customerCorner.toast.requestSentBody')} ${t('customerCorner.dashboard.requestProcessingTime')}`,
+      });
+      await detailsQuery.refetch();
+      setShowRequestDialog(false);
+    } catch (err) {
+      const code = err instanceof CustomerApiError ? err.code : '';
+      if (code === 'REQUEST_PENDING') {
+        toast({
+          title: t('customerCorner.toast.requestPendingTitle'),
+          description: `${t('customerCorner.toast.requestPendingBody')} ${t('customerCorner.dashboard.requestProcessingTime')}`,
+        });
+        await detailsQuery.refetch();
+        setShowRequestDialog(false);
+      } else if (code === 'REQUEST_ALREADY_USED') {
+        toast({
+          title: t('customerCorner.toast.requestUsedTitle'),
+          description: t('customerCorner.toast.requestUsedBody'),
+        });
+        await detailsQuery.refetch();
+        setShowRequestDialog(false);
+      } else if (code === 'REQUEST_COOLDOWN') {
+        toast({
+          title: t('customerCorner.toast.requestCooldownTitle'),
+          description: t('customerCorner.toast.requestCooldownBody'),
+        });
+        await detailsQuery.refetch();
+        setShowRequestDialog(false);
+      } else if (code === 'REQUEST_NOT_ELIGIBLE') {
+        toast({
+          title: t('customerCorner.toast.requestNotEligibleTitle'),
+          description: t('customerCorner.toast.requestNotEligibleBody'),
+        });
+        await detailsQuery.refetch();
+        setShowRequestDialog(false);
+      } else if (code === 'NOT_EXPIRED') {
+        toast({
+          title: t('customerCorner.toast.stillActiveTitle'),
+          description: t('customerCorner.toast.stillActiveBody'),
+        });
+        await detailsQuery.refetch();
+        setShowRequestDialog(false);
+      } else if (code === 'EXTEND_AVAILABLE') {
+        // Stale view: they still have self-service days. Send them back to the
+        // extend flow rather than making them find it again.
+        await detailsQuery.refetch();
+        setShowRequestDialog(false);
+        setShowExtendDialog(true);
+      } else {
+        toast({
+          title: t('customerCorner.toast.requestFailedTitle'),
+          description: t('customerCorner.toast.requestFailedBody'),
+          variant: 'destructive',
+        });
+      }
+    } finally {
+      setRequesting(false);
+    }
+  };
+
   const details = detailsQuery.data;
   const usage = sessionsQuery.data;
   const showUsage = !!usage && shouldShowUsage(usage.lastWeek.downloadGb);
-  const online = details?.status === 'online';
+  // An expired line is never presented as online — upstream can still report a
+  // lingering `online` session after expiry (see LineStatusCard), which is also
+  // where the same three-state badge tones come from.
+  const expired = details?.expired === true;
+  const online = !expired && details?.status === 'online';
+  const statusLabel = expired
+    ? t('customerCorner.dashboard.expiredStatus')
+    : online
+      ? t('customerCorner.dashboard.online')
+      : t('customerCorner.dashboard.offline');
+  // Tones are tuned for the purple hero, not the white cards.
+  const statusTone = expired
+    ? { badge: 'bg-red-400/30 text-red-50', dot: 'bg-red-300' }
+    : online
+      ? { badge: 'bg-emerald-400/25 text-emerald-50', dot: 'bg-emerald-300 animate-pulse' }
+      : { badge: 'bg-white/15 text-white/80', dot: 'bg-white/50' };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -106,9 +212,9 @@ const Dashboard: React.FC = () => {
                   <span className={`inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium ${font}`}>
                     <Hash className="w-3.5 h-3.5" /> <span dir="ltr">{details.userNo}</span>
                   </span>
-                  <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${online ? 'bg-emerald-400/25 text-emerald-50' : 'bg-white/15 text-white/80'} ${font}`}>
-                    <span className={`w-2 h-2 rounded-full ${online ? 'bg-emerald-300 animate-pulse' : 'bg-white/50'}`} />
-                    {online ? t('customerCorner.dashboard.online') : t('customerCorner.dashboard.offline')}
+                  <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${statusTone.badge} ${font}`}>
+                    <span className={`w-2 h-2 rounded-full ${statusTone.dot}`} />
+                    {statusLabel}
                   </span>
                 </div>
               )}
@@ -146,38 +252,6 @@ const Dashboard: React.FC = () => {
         {/* Content */}
         {details && (
           <div className="space-y-6">
-            {/* Yaboos authorization — prominent full-width banner */}
-            <button
-              type="button"
-              onClick={() => navigate('/customer-corner/yabus-authorization')}
-              className="w-full text-start group rounded-2xl overflow-hidden border border-coolnet-purple/15 shadow-sm bg-white transition-shadow hover:shadow-lg"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 lg:p-6">
-                <div className="flex items-center gap-4 min-w-0">
-                  <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-white border border-coolnet-purple/10 shadow-sm flex items-center justify-center shrink-0 p-1.5">
-                    <img src={yaboosLogo} alt="Yabous Finance" className="w-full h-full object-contain" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className={`font-bold text-lg lg:text-xl text-gray-900 ${font}`}>{t('customerCorner.yabus.cardTitle')}</p>
-                    <p className={`text-gray-500 text-sm ${font}`}>{t('customerCorner.yabus.cardDesc')}</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-center gap-2 shrink-0 bg-coolnet-purple text-white rounded-xl px-5 py-2.5 group-hover:bg-coolnet-purple-dark transition-colors">
-                  <span className={`font-semibold text-sm ${font}`}>{t('customerCorner.yabus.cardCta')}</span>
-                  <ArrowRight className="w-4 h-4 rtl:rotate-180 transition-transform group-hover:translate-x-0.5" />
-                </div>
-              </div>
-              {/* Eligibility notice */}
-              <div className="px-5 pb-5 lg:px-6">
-                <div className="flex items-start gap-2 rounded-xl bg-coolnet-purple/5 border border-coolnet-purple/10 p-3">
-                  <Info className="w-4 h-4 text-coolnet-purple shrink-0 mt-0.5" />
-                  <p className={`text-xs sm:text-sm text-gray-600 leading-relaxed ${font}`}>
-                    {t('customerCorner.yabus.notice')}
-                  </p>
-                </div>
-              </div>
-            </button>
-
             {/* Two-column workspace */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Main column */}
@@ -185,7 +259,9 @@ const Dashboard: React.FC = () => {
                 <LineStatusCard
                   details={details}
                   onExtendClick={() => setShowExtendDialog(true)}
+                  onRequestExtendClick={() => setShowRequestDialog(true)}
                   extending={extending}
+                  requesting={requesting}
                 />
 
                 {sessionsQuery.isLoading && (
@@ -233,6 +309,38 @@ const Dashboard: React.FC = () => {
                 </button>
               </div>
             </div>
+
+            {/* Yaboos authorization — prominent full-width banner */}
+            <button
+              type="button"
+              onClick={() => navigate('/customer-corner/yabus-authorization')}
+              className="w-full text-start group rounded-2xl overflow-hidden border border-coolnet-purple/15 shadow-sm bg-white transition-shadow hover:shadow-lg"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 lg:p-6">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-white border border-coolnet-purple/10 shadow-sm flex items-center justify-center shrink-0 p-1.5">
+                    <img src={yaboosLogo} alt="Yabous Finance" className="w-full h-full object-contain" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className={`font-bold text-lg lg:text-xl text-gray-900 ${font}`}>{t('customerCorner.yabus.cardTitle')}</p>
+                    <p className={`text-gray-500 text-sm ${font}`}>{t('customerCorner.yabus.cardDesc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-2 shrink-0 bg-coolnet-purple text-white rounded-xl px-5 py-2.5 group-hover:bg-coolnet-purple-dark transition-colors">
+                  <span className={`font-semibold text-sm ${font}`}>{t('customerCorner.yabus.cardCta')}</span>
+                  <ArrowRight className="w-4 h-4 rtl:rotate-180 transition-transform group-hover:translate-x-0.5" />
+                </div>
+              </div>
+              {/* Eligibility notice */}
+              <div className="px-5 pb-5 lg:px-6">
+                <div className="flex items-start gap-2 rounded-xl bg-coolnet-purple/5 border border-coolnet-purple/10 p-3">
+                  <Info className="w-4 h-4 text-coolnet-purple shrink-0 mt-0.5" />
+                  <p className={`text-xs sm:text-sm text-gray-600 leading-relaxed ${font}`}>
+                    {t('customerCorner.yabus.notice')}
+                  </p>
+                </div>
+              </div>
+            </button>
           </div>
         )}
       </main>
@@ -242,6 +350,13 @@ const Dashboard: React.FC = () => {
         onOpenChange={setShowExtendDialog}
         onConfirm={handleExtend}
         loading={extending}
+      />
+
+      <ExtendRequestDialog
+        open={showRequestDialog}
+        onOpenChange={setShowRequestDialog}
+        onConfirm={handleRequestExtend}
+        loading={requesting}
       />
     </div>
   );

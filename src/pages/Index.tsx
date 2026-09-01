@@ -8,6 +8,7 @@ import PostsSection from '@/components/PostsSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import PartnersSection from '@/components/PartnersSection';
 import Footer from '@/components/Footer';
+import InstallAppSection from '@/components/InstallAppSection';
 import { useFont } from '@/hooks/use-font';
 import { useSEO } from '@/hooks/use-seo';
 import { useHomepageSections } from '@/services/cms/hooks';
@@ -47,6 +48,12 @@ const Index: React.FC = () => {
           if (!Component) return null;
           return <Component key={key} />;
         })}
+
+        {/* Mobile-only "add Coolnet to your home screen" invitation. Rendered
+            outside the CMS section map on purpose: it is a device capability,
+            not editorial content, so it should not depend on someone having
+            enabled a section in the admin panel. */}
+        <InstallAppSection />
       </main>
       <Footer />
     </div>

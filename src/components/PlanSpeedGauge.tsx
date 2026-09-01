@@ -376,7 +376,7 @@ const PlanSpeedGauge: React.FC<PlanSpeedGaugeProps> = ({
   const coolnetOrangeLight = COOLNET_COLORS.orange.light;
 
   return (
-    <div className="flex items-center justify-center gap-8 min-w-[300px]">
+    <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 w-full sm:min-w-[300px]">
       {showOnlyDownload ? (
         // Single download gauge centered with same width as dual gauges
         <div className="flex items-center justify-center w-full">

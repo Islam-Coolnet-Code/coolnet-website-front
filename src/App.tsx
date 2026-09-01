@@ -58,6 +58,14 @@ const PageLoader = () => (
   </div>
 );
 
+// Customer corner is reachable from the canonical prefix and the "/cc" shorthand.
+const CUSTOMER_CORNER_PREFIXES = ['/customer-corner', '/cc'];
+
+const isCustomerCornerPath = (pathname: string) =>
+  CUSTOMER_CORNER_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  );
+
 const ConditionalHeader = () => {
   const location = useLocation();
 
@@ -65,7 +73,7 @@ const ConditionalHeader = () => {
   // customer-zone) neighbors campaign, and admin routes — they use their own header.
   if (
     location.pathname.startsWith('/qrpromotion') ||
-    location.pathname.startsWith('/customer-corner') ||
+    isCustomerCornerPath(location.pathname) ||
     location.pathname.startsWith('/neighbors-campaign') ||
     location.pathname.startsWith('/admin')
   ) {
@@ -74,6 +82,36 @@ const ConditionalHeader = () => {
 
   return <Header />;
 };
+
+// Rendered once per accepted prefix so "/cc/..." serves the same pages as
+// "/customer-corner/...".
+const customerCornerRoutes = [
+  { path: '', element: <Login /> },
+  {
+    path: '/change-password',
+    element: (
+      <ProtectedRoute>
+        <ChangePassword />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/dashboard',
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/yabus-authorization',
+    element: (
+      <ProtectedRoute>
+        <YabusAuthorization />
+      </ProtectedRoute>
+    ),
+  },
+];
 
 const App = () => (
   <ErrorBoundary>
@@ -113,32 +151,16 @@ const App = () => (
                     <Route path="/activate-service/:referenceNumber" element={<ActivateService />} />
                     <Route path="/qrpromotion" element={<Qrcodepromotion />} />
                     <Route path="/qrpromotion/:referrer" element={<Qrcodepromotion />} />
-                    {/* Customer Corner Routes */}
-                    <Route path="/customer-corner" element={<Login />} />
-                    <Route
-                      path="/customer-corner/change-password"
-                      element={
-                        <ProtectedRoute allowPasswordChange>
-                          <ChangePassword />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/customer-corner/dashboard"
-                      element={
-                        <ProtectedRoute>
-                          <Dashboard />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/customer-corner/yabus-authorization"
-                      element={
-                        <ProtectedRoute>
-                          <YabusAuthorization />
-                        </ProtectedRoute>
-                      }
-                    />
+                    {/* Customer Corner Routes (also served under /cc) */}
+                    {CUSTOMER_CORNER_PREFIXES.flatMap((prefix) =>
+                      customerCornerRoutes.map((route) => (
+                        <Route
+                          key={`${prefix}${route.path}`}
+                          path={`${prefix}${route.path}`}
+                          element={route.element}
+                        />
+                      ))
+                    )}
                     {/* Admin Panel */}
                     <Route path="/admin/*" element={<AdminRoutes />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

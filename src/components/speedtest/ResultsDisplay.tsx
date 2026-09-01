@@ -26,6 +26,18 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
 }) => {
   const { t } = useLanguage();
 
+  // Reactive so the gauge resizes on rotate/resize, not just on first render
+  const [isNarrow, setIsNarrow] = React.useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 640
+  );
+  React.useEffect(() => {
+    const mql = window.matchMedia('(max-width: 639px)');
+    const onChange = () => setIsNarrow(mql.matches);
+    onChange();
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Gauge display with mobile responsiveness */}
@@ -36,7 +48,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
           unit="Mbps"
           testType={testType}
           animate={true}
-          size={window.innerWidth < 640 ? "md" : "lg"}
+          size={isNarrow ? "md" : "lg"}
         />
       </div>
       

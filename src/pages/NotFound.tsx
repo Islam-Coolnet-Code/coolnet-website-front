@@ -16,7 +16,7 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-coolnet-purple">
       <div className="text-center">
-        <h1 className="text-6xl font-bold mb-4 text-white">{t('notFound.title')}</h1>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl break-words font-bold mb-4 text-white">{t('notFound.title')}</h1>
         <p className="text-xl text-white/80 mb-6">{t('notFound.message')}</p>
         <a href="/" className="inline-block bg-coolnet-orange hover:bg-coolnet-orange-dark text-white font-bold px-6 py-3 rounded-full transition-all">
           {t('notFound.returnHome')}

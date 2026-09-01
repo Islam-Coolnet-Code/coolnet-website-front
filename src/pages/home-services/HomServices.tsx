@@ -56,9 +56,9 @@ const HomeServices = () => {
           <div className="relative container mx-auto px-4">
             <div className="relative container mx-auto px-4 mb-8">
               <div className="text-center max-w-4xl mx-auto">
-                <div className="flex items-center space-x-4 text-center justify-center">
+                <div className="flex items-center gap-4 text-center justify-center">
                   <h1
-                    className={`text-6xl ${
+                    className={`text-3xl sm:text-5xl lg:text-6xl break-words ${
                       isRTL ? "font-black" : "font-bold"
                     } text-gray-900 ${font}`}
                   >
@@ -72,16 +72,16 @@ const HomeServices = () => {
 
             <div className="relative container mx-auto px-4 mb-6 mt-24">
               <div className="text-center max-w-4xl mx-auto">
-                <div className="flex items-center space-x-4 text-center justify-center">
-                  <div className="w-12 h-px bg-gradient-to-r from-transparent to-coolnet-orange"></div>
+                <div className="flex items-center gap-4 text-center justify-center">
+                  <div className="hidden sm:block w-12 h-px shrink-0 bg-gradient-to-r from-transparent to-coolnet-orange"></div>
                   <h1
-                    className={`text-4xl ${
+                    className={`text-2xl sm:text-3xl lg:text-4xl break-words ${
                       isRTL ? "font-black" : "font-bold"
                     } text-gray-900 ${font}`}
                   >
                     {t("plans.Personal.services.home")}
                   </h1>
-                  <div className="w-12 h-px bg-gradient-to-l from-transparent to-coolnet-orange"></div>
+                  <div className="hidden sm:block w-12 h-px shrink-0 bg-gradient-to-l from-transparent to-coolnet-orange"></div>
                 </div>
               </div>
             </div>

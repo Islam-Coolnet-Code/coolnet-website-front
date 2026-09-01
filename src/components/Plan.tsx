@@ -192,7 +192,7 @@ const Plan: React.FC<PlanProps> = ({
 
 
 
-        <h3 className={`relative text-3xl whitespace-nowrap font-bold text-center ${isRTL ? 'font-jazeera' : ''} ${font} ${!isBestValue && !isPlus && !isCustomPlan ? 'text-white' : ''
+        <h3 className={`relative text-2xl sm:text-3xl break-words font-bold text-center ${isRTL ? 'font-jazeera' : ''} ${font} ${!isBestValue && !isPlus && !isCustomPlan ? 'text-white' : ''
           }`}>
           {displayTitle}
         </h3>

@@ -6,7 +6,9 @@ import type {
   UserDetails,
   UsageData,
   CheckUserResult,
+  PasswordSmsResult,
   ExtendResult,
+  ExtendRequestResult,
   YabusAuthorizationInput,
   YabusAuthorizationResult,
   YabusAuthorizationRecord,
@@ -53,11 +55,19 @@ customerApi.interceptors.request.use((config) => {
 export class CustomerApiError extends Error {
   code: string;
   status?: number;
-  constructor(message: string, code: string, status?: number) {
+  /** Structured context behind the failure, e.g. `days_remaining` on a cooldown. */
+  details?: Record<string, unknown>;
+  constructor(
+    message: string,
+    code: string,
+    status?: number,
+    details?: Record<string, unknown>
+  ) {
     super(message);
     this.name = 'CustomerApiError';
     this.code = code;
     this.status = status;
+    this.details = details;
   }
 }
 
@@ -85,7 +95,7 @@ customerApi.interceptors.response.use(
     if (status === 401 || code === 'UNAUTHORIZED') {
       tokenStore.notifyUnauthorized();
     }
-    return Promise.reject(new CustomerApiError(message, code, status));
+    return Promise.reject(new CustomerApiError(message, code, status, envelope?.error?.details));
   }
 );
 
@@ -105,16 +115,37 @@ export async function loginUser(userno: string, password: string): Promise<AuthS
   return unwrap(res.data);
 }
 
+/**
+ * POST /api/customer/auth/request-password (public).
+ *
+ * Has a new random password generated and texted to the mobile registered on
+ * the subscriber's account — how a first-time subscriber gets a password and
+ * how anyone recovers a forgotten one. Allowed once every 30 days per
+ * subscriber; beyond that the call fails with `RESET_COOLDOWN`.
+ *
+ * `mobile` must match the number on the subscription (`MOBILE_MISMATCH`
+ * otherwise). It is only compared — the SMS goes to the number on file either
+ * way, so getting it right is a check, not a redirect.
+ */
+export async function requestPasswordSms(
+  userno: string,
+  mobile: string
+): Promise<PasswordSmsResult> {
+  const res = await customerApi.post<ApiEnvelope<PasswordSmsResult>>('/auth/request-password', {
+    userno,
+    mobile,
+  });
+  return unwrap(res.data);
+}
+
 /** POST /api/customer/auth/change-password (requires token). */
 export async function changePassword(
   newPassword: string,
-  oldPassword?: string
+  oldPassword: string
 ): Promise<{ token: string; tokenExpiresAt: string }> {
-  const body: Record<string, string> = { new_password: newPassword };
-  if (oldPassword !== undefined) body.old_password = oldPassword;
   const res = await customerApi.post<ApiEnvelope<{ token: string; tokenExpiresAt: string }>>(
     '/auth/change-password',
-    body
+    { new_password: newPassword, old_password: oldPassword }
   );
   return unwrap(res.data);
 }
@@ -140,6 +171,19 @@ export async function getUserSessions(): Promise<UsageData> {
 /** POST /api/customer/users/extend (requires token). */
 export async function extendExpiration(): Promise<ExtendResult> {
   const res = await customerApi.post<ApiEnvelope<ExtendResult>>('/users/extend', {});
+  return unwrap(res.data);
+}
+
+/**
+ * POST /api/customer/users/extend-request (requires token).
+ * Files a one-time activation request for Coolgate staff to approve or reject.
+ * Only valid once the self-service extensions are used up; the line stays as it
+ * is until someone approves.
+ */
+export async function createExtendRequest(reason?: string): Promise<ExtendRequestResult> {
+  const res = await customerApi.post<ApiEnvelope<ExtendRequestResult>>('/users/extend-request', {
+    reason: reason ?? '',
+  });
   return unwrap(res.data);
 }
 

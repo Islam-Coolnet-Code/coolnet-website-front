@@ -37,6 +37,21 @@ export function formatDate(value: string | null | undefined, language: string): 
   }
 }
 
+/**
+ * Date + time in "YYYY-MM-DD HH:MM" with Western digits.
+ *
+ * Upstream sends "Y-m-d H:i:s" with no timezone, so the string is read as-is
+ * rather than parsed — a Date() round-trip would shift a submission made at
+ * 23:30 onto the wrong day for the customer reading it.
+ */
+export function formatDateTimeNumeric(value: string | null | undefined): string {
+  if (!value) return '—';
+  const s = String(value).trim();
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+  if (m) return `${m[1]}-${m[2]}-${m[3]} ${m[4]}:${m[5]}`;
+  return formatDateNumeric(s);
+}
+
 /** Mask a mobile number, keeping only the last 4 digits (e.g. "******3456"). */
 export function maskMobile(value: string | null | undefined): string {
   if (!value) return '—';

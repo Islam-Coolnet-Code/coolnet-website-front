@@ -480,15 +480,15 @@ const ActivateService: React.FC = () => {
         dir={isRTL ? 'rtl' : 'ltr'}
       >
         {/* Content */}
-        <div className="relative container mx-auto px-4 py-24">
+        <div className="relative container mx-auto px-4 py-12 sm:py-24">
           {/* Header */}
           <div className="text-center max-w-4xl mx-auto mb-12">
-            <div className='flex items-center space-x-4 text-center justify-center mb-8'>
-              <div className="w-12 h-px bg-gradient-to-r from-transparent to-coolnet-purple"></div>
-              <h1 className={`text-6xl ${isRTL ? 'font-black' : 'font-bold'} text-white ${font}`}>
+            <div className='flex items-center gap-4 text-center justify-center mb-8'>
+              <div className="hidden sm:block w-12 h-px shrink-0 bg-gradient-to-r from-transparent to-coolnet-purple"></div>
+              <h1 className={`text-3xl sm:text-5xl lg:text-6xl break-words ${isRTL ? 'font-black' : 'font-bold'} text-white ${font}`}>
                 {t('activateService.title')}
               </h1>
-              <div className="w-12 h-px bg-gradient-to-l from-transparent to-coolnet-purple"></div>
+              <div className="hidden sm:block w-12 h-px shrink-0 bg-gradient-to-l from-transparent to-coolnet-purple"></div>
             </div>
 
             {/* Success Message */}

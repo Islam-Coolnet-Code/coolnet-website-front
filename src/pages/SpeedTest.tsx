@@ -138,15 +138,15 @@ const SpeedTest: React.FC = () => {
           {/* Main results row: Download / Upload */}
           <div className="grid grid-cols-2 gap-px bg-white/[0.04] rounded-2xl overflow-hidden border border-white/[0.06]">
             {/* Download */}
-            <div className="p-6 flex flex-col items-center gap-2" style={{ background: 'rgba(255,255,255,0.02)' }}>
+            <div className="p-4 sm:p-6 min-w-0 flex flex-col items-center gap-2" style={{ background: 'rgba(255,255,255,0.02)' }}>
               <div className="flex items-center gap-2">
                 <ArrowDown className="w-4 h-4" style={{ color: '#ff6b35' }} />
                 <span className="text-xs font-semibold uppercase tracking-wider text-white/40">
                   {t('speedTest.download')}
                 </span>
               </div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-4xl font-bold tabular-nums"
+              <div className="flex items-baseline justify-center gap-1.5 min-w-0 max-w-full">
+                <span className="text-3xl sm:text-4xl font-bold tabular-nums"
                   style={{
                     color: results.downloadSpeed !== null ? '#ff6b35' : 'rgba(255,255,255,0.15)',
                     textShadow: results.downloadSpeed !== null ? '0 0 20px rgba(255,107,53,0.2)' : 'none',
@@ -159,15 +159,15 @@ const SpeedTest: React.FC = () => {
             </div>
 
             {/* Upload */}
-            <div className="p-6 flex flex-col items-center gap-2" style={{ background: 'rgba(255,255,255,0.02)' }}>
+            <div className="p-4 sm:p-6 min-w-0 flex flex-col items-center gap-2" style={{ background: 'rgba(255,255,255,0.02)' }}>
               <div className="flex items-center gap-2">
                 <ArrowUp className="w-4 h-4" style={{ color: '#7c4dff' }} />
                 <span className="text-xs font-semibold uppercase tracking-wider text-white/40">
                   {t('speedTest.upload')}
                 </span>
               </div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-4xl font-bold tabular-nums"
+              <div className="flex items-baseline justify-center gap-1.5 min-w-0 max-w-full">
+                <span className="text-3xl sm:text-4xl font-bold tabular-nums"
                   style={{
                     color: results.uploadSpeed !== null ? '#7c4dff' : 'rgba(255,255,255,0.15)',
                     textShadow: results.uploadSpeed !== null ? '0 0 20px rgba(124,77,255,0.2)' : 'none',
