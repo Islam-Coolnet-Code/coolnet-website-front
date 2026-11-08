@@ -200,11 +200,12 @@ export async function submitYabusAuthorization(
   form.append('idNumberSalary', input.idNumberSalary);
   form.append('idNumberCoolnet', input.idNumberCoolnet);
   form.append('relationship', input.relationship);
-  form.append('salarySlip', input.salarySlip);
-  form.append('idImage', input.idImage);
-  form.append('idAnnex', input.idAnnex);
-  form.append('coolnetIdImage', input.coolnetIdImage);
-  form.append('coolnetIdAnnex', input.coolnetIdAnnex);
+  // Files can only be missing for validation-exempt subscribers.
+  if (input.salarySlip) form.append('salarySlip', input.salarySlip);
+  if (input.idImage) form.append('idImage', input.idImage);
+  if (input.idAnnex) form.append('idAnnex', input.idAnnex);
+  if (input.coolnetIdImage) form.append('coolnetIdImage', input.coolnetIdImage);
+  if (input.coolnetIdAnnex) form.append('coolnetIdAnnex', input.coolnetIdAnnex);
 
   const res = await customerApi.post<ApiEnvelope<YabusAuthorizationResult>>(
     '/yabus-authorization',

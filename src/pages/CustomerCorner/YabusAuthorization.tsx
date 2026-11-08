@@ -41,6 +41,12 @@ import {
 import yaboosLogo from '@/assets/yaboos.png';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+/**
+ * Subscription numbers exempt from ALL Yabus validations. Keep in sync with
+ * YABUS_VALIDATION_EXEMPT_USERNOS in the API (use-cases/yabus-authorizations).
+ */
+const YABUS_VALIDATION_EXEMPT_USERNOS: readonly string[] = ['22778'];
 // Must stay in sync with the API's multer fileFilter. iOS/Android report HEIC
 // photos as either image/heic or image/heif, and some browsers use image/jpg.
 const ACCEPTED_TYPES = [
@@ -108,6 +114,8 @@ const YabusAuthorization: React.FC = () => {
   const [myRequests, setMyRequests] = useState<YabusAuthorizationRecord[]>([]);
 
   const userno = session?.userno ?? '';
+  // Exempt subscribers skip all client-side validation and the approved lock.
+  const isExempt = YABUS_VALIDATION_EXEMPT_USERNOS.includes(String(userno).trim());
 
   const loadMine = useCallback(async () => {
     try {
@@ -138,12 +146,12 @@ const YabusAuthorization: React.FC = () => {
   //  - pending/reviewed/rejected → edit that request
   //  - none                → create a new one
   const active = myRequests.length > 0 ? myRequests[0] : null;
-  const isApproved = active?.status === 'approved';
+  const isApproved = active?.status === 'approved' && !isExempt;
   const isEditing = !!active && !isApproved;
 
   // When editing, prefill the fields from the existing request (once per request).
   useEffect(() => {
-    if (active && active.status !== 'approved') {
+    if (active && (active.status !== 'approved' || isExempt)) {
       setYaboosUserName(active.yaboosUserName || '');
       setIdNumberSalary(active.idNumberSalary || '');
       setIdNumberCoolnet(active.idNumberCoolnet || '');
@@ -155,6 +163,7 @@ const YabusAuthorization: React.FC = () => {
   }, [active?.id]);
 
   const validateFile = (file: File): string | undefined => {
+    if (isExempt) return undefined;
     if (!ACCEPTED_TYPES.includes(file.type)) {
       return t('customerCorner.yabus.errors.fileType');
     }
@@ -177,6 +186,10 @@ const YabusAuthorization: React.FC = () => {
   };
 
   const validate = (): boolean => {
+    if (isExempt) {
+      setErrors({});
+      return true;
+    }
     const next: FieldErrors = {};
 
     if (!yaboosUserName.trim()) next.yaboosUserName = t('customerCorner.yabus.errors.required');

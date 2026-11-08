@@ -70,6 +70,10 @@ const LineStatusCard: React.FC<LineStatusCardProps> = ({
   const limitReached = details.extendLimitReached === true;
   const showRequestButton = expired && details.canRequestExtend === true && !awaitingDecision;
   const showExtendButton = expired && !limitReached && !awaitingDecision;
+  // Expired, allowance used up and outside the request window: there is nothing
+  // to press, so say so instead of leaving a bare "Expired" badge. Skipped when a
+  // request box is already showing — it carries its own next step.
+  const showLimitNotice = expired && limitReached && !showRequestButton && !request;
 
   return (
     <Card className="shadow-sm border md:col-span-2 overflow-hidden">
@@ -88,9 +92,12 @@ const LineStatusCard: React.FC<LineStatusCardProps> = ({
             <span className={`font-semibold ${statusTone.text} ${font}`}>{statusLabel}</span>
           </div>
 
-          <p className={`text-sm text-coolnet-purple flex-1 min-w-[12rem] ${font}`}>
-            {t('customerCorner.dashboard.lineStatusNote')}
-          </p>
+          {/* The "activate from this page" note would contradict the limit notice. */}
+          {!showLimitNotice && (
+            <p className={`text-sm text-coolnet-purple flex-1 min-w-[12rem] ${font}`}>
+              {t('customerCorner.dashboard.lineStatusNote')}
+            </p>
+          )}
 
           {showExtendButton && (
             <Button
@@ -126,6 +133,20 @@ const LineStatusCard: React.FC<LineStatusCardProps> = ({
             </Button>
           )}
         </div>
+
+        {showLimitNotice && (
+          <div className="mt-4 flex items-start gap-2 rounded-xl border p-3 bg-amber-50 border-amber-200">
+            <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <p className={`text-sm font-semibold text-gray-900 ${font}`}>
+                {t('customerCorner.toast.extendLimitTitle')}
+              </p>
+              <p className={`text-sm text-gray-700 mt-0.5 ${font}`}>
+                {t('customerCorner.toast.extendLimitBody')}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* One-time activation request state.
             A turned-down request is shown as what the customer can DO about it
