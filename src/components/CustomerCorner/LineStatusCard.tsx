@@ -17,7 +17,7 @@ import {
   ShieldQuestion,
 } from 'lucide-react';
 import type { UserDetails } from '@/types/authTypes';
-import { formatDateNumeric, formatDateTimeNumeric } from '@/utils/customerZone';
+import { formatDateNumeric, formatDateTimeNumeric, isExpired } from '@/utils/customerZone';
 
 interface LineStatusCardProps {
   details: UserDetails;
@@ -65,7 +65,14 @@ const LineStatusCard: React.FC<LineStatusCardProps> = ({
   // disappearing. Eligibility (the 12..20 extend-day window, nothing pending or
   // already granted) is decided upstream: outside it neither button shows and
   // the customer has to renew or call support.
-  const request = details.extendRequest;
+  // Upstream keeps reporting an approved request after the extension it granted
+  // has run out. Telling an expired customer they are "active until" a past date
+  // is false, so a lapsed approval is treated as no request at all.
+  const approvalLapsed =
+    expired &&
+    details.extendRequest?.status === 'approved' &&
+    isExpired(details.extendRequest.newExpiration);
+  const request = approvalLapsed ? null : details.extendRequest;
   const awaitingDecision = request?.status === 'pending';
   const limitReached = details.extendLimitReached === true;
   const showRequestButton = expired && details.canRequestExtend === true && !awaitingDecision;
